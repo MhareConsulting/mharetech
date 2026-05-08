@@ -2,19 +2,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:   #09090B;
-  --bg2:  #0F1015;
-  --bg3:  #18181C;
-  --bg4:  #222228;
-  --border:    rgba(255,255,255,0.07);
-  --border-hi: rgba(255,255,255,0.13);
-  --text:     #F4F4F5;
-  --muted:    #71717A;
-  --muted-hi: #A1A1AA;
+  --bg:   #12131A;    /* lifted from #09090B — dark charcoal-blue, not pure black */
+  --bg2:  #1A1C27;    /* lifted from #0F1015 — noticeably lighter than bg */
+  --bg3:  #22253A;    /* lifted from #18181C — cards and panels */
+  --bg4:  #2C3050;    /* lifted from #222228 — inner chrome */
+  --border:    rgba(255,255,255,0.11);   /* was 0.07 — borders now visible */
+  --border-hi: rgba(255,255,255,0.18);   /* was 0.13 */
+  --text:     #F0F1F5;
+  --muted:    #8B90A8;   /* was #71717A — clearly readable now */
+  --muted-hi: #B8BDD4;   /* was #A1A1AA */
   --accent:  #A855F7;
   --accent2: #9333EA;
-  --pill-bg:     rgba(168,85,247,0.08);
-  --pill-border: rgba(168,85,247,0.2);
+  --pill-bg:     rgba(168,85,247,0.10);
+  --pill-border: rgba(168,85,247,0.28);
   --cyan:   #06B6D4;
   --green:  #22C55E;
   --red:    #EF4444;
@@ -52,7 +52,7 @@ nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(9,9,11,0.88);
+  background: rgba(18,19,26,0.92);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
 }
@@ -220,7 +220,7 @@ nav {
   background-size: cover;
   background-position: center 60%;
   background-attachment: fixed;
-  filter: brightness(0.45) saturate(0.8);
+  filter: brightness(0.55) saturate(0.9);
   transition: filter 0.3s;
 }
 
@@ -345,13 +345,13 @@ nav {
   inset: 0;
   background-size: cover;
   background-position: center 30%;
-  filter: brightness(0.22) saturate(0.6);
+  filter: brightness(0.35) saturate(0.7);
 }
 
 .product-page-header-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(9,9,11,0.92) 45%, rgba(9,9,11,0.5) 100%);
+  background: linear-gradient(90deg, rgba(18,19,26,0.90) 40%, rgba(18,19,26,0.45) 100%);
 }
 
 .product-page-header > .container {
@@ -880,7 +880,7 @@ footer {
   max-width: 560px;
   border-radius: 12px;
   overflow: hidden;
-  background: #1e2128;
+  background: #22253a;
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.07),
     0 40px 100px rgba(0,0,0,0.65),
@@ -897,7 +897,7 @@ footer {
 .product-split--flip .browser-frame:hover { transform: perspective(1400px) rotateY(2deg) rotateX(0.5deg) !important; }
 
 .browser-chrome {
-  background: #16181d;
+  background: #1a1c2a;
   padding: 10px 14px;
   display: flex;
   align-items: center;
@@ -1283,7 +1283,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(9,9,11,0.95) 0%, rgba(9,9,11,0.88) 100%);
+  background: linear-gradient(135deg, rgba(18,19,26,0.93) 0%, rgba(18,19,26,0.80) 100%);
   pointer-events: none;
   z-index: 0;
 }
