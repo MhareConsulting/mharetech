@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}myTrack — Fleet Intelligence · mhare tech{% endblock %}
+{% block description %}Live GPS telemetry, driver safety rankings, fuel monitoring, HOS compliance, camera health and shareable delivery tracking — all in one platform.{% endblock %}
+
+{% block content %}
+
+<!-- ── Product Header ──────────────────────────────── -->
+<div class="product-page-header">
+  <div class="product-page-header-bg" style="background-image:url('{% static 'img/Dispatcher.jpg' %}');"></div>
+  <div class="product-page-header-overlay"></div>
+  <div class="container">
+    <a href="{% url 'index' %}" class="product-page-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to products
+    </a>
+    <div class="product-page-eyebrow"><span class="live-dot"></span>Live Product</div>
+    <h1 class="product-page-title">Fleet intelligence from the road to the boardroom</h1>
+    <p class="product-page-sub">myTrack ingests live GPS telemetry and turns it into actionable intelligence — from the real-time map in dispatch to the driver safety report on the manager's desk.</p>
+  </div>
+</div>
+
+<!-- ── Hero Split ─────────────────────────────────── -->
+<section class="product-split-section">
+  <div class="container">
+    <div class="product-split">
+
+      <div class="split-content">
+        <p class="section-label">myTrack · Overview</p>
+        <h2 class="split-title">One platform. Every signal your fleet sends.</h2>
+        <p class="split-desc">From the GPS position of every vehicle to the fuel level in every tank — myTrack collects the data your operation generates and makes it useful, in real time.</p>
+        <ul class="split-features">
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Live GPS map with satellite, street &amp; dark modes — SSE-powered</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>7-day driver safety rankings with 30-day per-driver history</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Fuel telemetry, tank capacity tracking &amp; alert acknowledgement</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Incident-triggered video clips &amp; camera health monitoring</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Hours of service compliance with colour-coded driver status</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Shareable delivery tracking links — no customer app required</li>
+        </ul>
+      </div>
+
+      <div class="split-visual">
+        <div class="browser-frame">
+          <div class="browser-chrome">
+            <div class="bc-dots">
+              <span class="bc-dot bc-dot--red"></span>
+              <span class="bc-dot bc-dot--yellow"></span>
+              <span class="bc-dot bc-dot--green"></span>
+            </div>
+            <div class="bc-url">app.mytrack.co.za</div>
+          </div>
+          <div class="app-shell">
+            <div class="app-topbar">
+              <div class="app-brand">
+                <span class="app-brand-icon"></span>
+                <span class="app-brand-name">my<b>Track</b></span>
+              </div>
+              <div class="app-topnav">
+                <span class="app-topnav-item app-topnav-item--live">● Live</span>
+                <span class="app-topnav-item app-topnav-item--active">Fleet</span>
+                <span class="app-topnav-item">Trips</span>
+                <span class="app-topnav-item">Scores</span>
+                <span class="app-topnav-item">Reports</span>
+              </div>
+            </div>
+            <div class="app-body">
+              <div class="app-sidebar">
+                <div class="app-sidebar-item app-sidebar-item--active">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                </div>
+                <div class="app-sidebar-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12H3M3 12l5-5M3 12l5 5"/></svg>
+                </div>
+                <div class="app-sidebar-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                </div>
+                <div class="app-sidebar-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                </div>
+                <div class="app-sidebar-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+              </div>
+              <div class="app-main">
+                <div class="app-stats-row">
+                  <div class="app-stat app-stat--online">
+                    <div class="app-stat-val">12</div>
+                    <div class="app-stat-lbl">Online</div>
+                    <div class="app-stat-sub">of 18 vehicles</div>
+                  </div>
+                  <div class="app-stat">
+                    <div class="app-stat-val">847</div>
+                    <div class="app-stat-lbl">KM Today</div>
+                    <div class="app-stat-sub">fleet total</div>
+                  </div>
+                  <div class="app-stat app-stat--alert">
+                    <div class="app-stat-val">3</div>
+                    <div class="app-stat-lbl">Alerts</div>
+                    <div class="app-stat-sub">unresolved</div>
+                  </div>
+                  <div class="app-stat">
+                    <div class="app-stat-val">28</div>
+                    <div class="app-stat-lbl">Geo Events</div>
+                    <div class="app-stat-sub">today</div>
+                  </div>
+                </div>
+                <div class="app-map">
+                  <div class="map-road-h" style="top:42%;left:0;width:100%;"></div>
+                  <div class="map-road-h" style="top:68%;left:0;width:100%;"></div>
+                  <div class="map-road-v" style="left:32%;top:0;height:100%;"></div>
+                  <div class="map-road-v" style="left:67%;top:0;height:100%;"></div>
+                  <div class="map-geofence" style="width:56px;height:44px;top:55%;left:67%;"></div>
+                  <div class="map-vehicle" style="top:42%;left:32%;"></div>
+                  <div class="map-vehicle" style="top:68%;left:20%;"></div>
+                  <div class="map-vehicle" style="top:38%;left:67%;"></div>
+                  <div class="map-vehicle map-vehicle--amber" style="top:70%;left:55%;"></div>
+                  <div class="map-vehicle map-vehicle--offline" style="top:50%;left:80%;"></div>
+                  <div class="map-overlay-card">
+                    <div class="moc-row"><span class="moc-dot" style="background:#22C55E;"></span><span class="moc-label">GP 12-34 JK</span><span class="moc-badge">84 km/h</span></div>
+                    <div class="moc-row"><span class="moc-dot" style="background:#22C55E;"></span><span class="moc-label">GP 56-78 MN</span><span class="moc-badge">0 km/h</span></div>
+                    <div class="moc-row"><span class="moc-dot" style="background:#F59E0B;"></span><span class="moc-label">GP 90-11 QR</span><span class="moc-badge">stale</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Feature Deep Dive ───────────────────────────── -->
+<section class="deep-dive">
+  <div class="container">
+
+    <div class="deep-dive-row">
+      <div class="deep-dive-visual">
+        <div class="vi-livefleet">
+          <div class="vi-hdr"><span class="vi-dot vi-dot--live"></span>Johannesburg Metro · Live</div>
+          <div class="vi-table">
+            <div class="vi-row vi-row--hd"><span>Vehicle</span><span>Speed</span><span>Status</span><span>Last</span></div>
+            <div class="vi-row"><span class="vi-reg">GP 12-34 JK</span><span class="vi-speed vi-speed--ok">84 km/h</span><span class="vi-badge vi-badge--green">Moving</span><span class="vi-time">now</span></div>
+            <div class="vi-row"><span class="vi-reg">GP 56-78 MN</span><span class="vi-speed">0 km/h</span><span class="vi-badge vi-badge--blue">Idle</span><span class="vi-time">2 m</span></div>
+            <div class="vi-row"><span class="vi-reg">NW 90-11 QR</span><span class="vi-speed vi-speed--bad">112 km/h</span><span class="vi-badge vi-badge--red">Speeding</span><span class="vi-time">now</span></div>
+            <div class="vi-row vi-row--dim"><span class="vi-reg">GP 45-22 ST</span><span class="vi-speed">—</span><span class="vi-badge vi-badge--gray">Offline</span><span class="vi-time">3 h</span></div>
+          </div>
+          <div class="vi-footer">18 vehicles · 12 online · 3 alerts unresolved</div>
+        </div>
+      </div>
+      <div class="deep-dive-text">
+        <p class="section-label">myTrack · Live Map</p>
+        <h3 class="section-title">Your entire fleet. One screen. Right now.</h3>
+        <p>Every vehicle in your operation updates on the map the moment it moves — no refresh, no polling delay. Switch between satellite, street, and dark modes depending on where your dispatchers are working.</p>
+        <ul class="feature-list">
+          <li>SSE-powered live position updates with sub-second latency</li>
+          <li>Geofence zones with entry/exit event logging and instant alerts</li>
+          <li>Per-vehicle status overlay — speed, heading, idle time, last seen</li>
+          <li>Satellite, street map, and dark mode toggle for any environment</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="deep-dive-row flip">
+      <div class="deep-dive-visual">
+        <div class="vi-safety">
+          <div class="vi-hdr">7-Day Safety Rankings</div>
+          <div class="vi-rank-list">
+            <div class="vi-rank-row"><span class="vi-rank vi-rank--1">1</span><span class="vi-name">S. Mokoena</span><div class="vi-bar-wrap"><div class="vi-bar vi-bar--high" style="width:94%"></div></div><span class="vi-score vi-score--high">94</span><span class="vi-trend vi-trend--up">↑</span></div>
+            <div class="vi-rank-row"><span class="vi-rank vi-rank--2">2</span><span class="vi-name">T. Dlamini</span><div class="vi-bar-wrap"><div class="vi-bar vi-bar--high" style="width:87%"></div></div><span class="vi-score vi-score--high">87</span><span class="vi-trend vi-trend--up">↑</span></div>
+            <div class="vi-rank-row"><span class="vi-rank vi-rank--3">3</span><span class="vi-name">P. Nkosi</span><div class="vi-bar-wrap"><div class="vi-bar vi-bar--mid" style="width:72%"></div></div><span class="vi-score vi-score--mid">72</span><span class="vi-trend vi-trend--dn">↓</span></div>
+            <div class="vi-rank-row"><span class="vi-rank">4</span><span class="vi-name">J. van Wyk</span><div class="vi-bar-wrap"><div class="vi-bar vi-bar--mid" style="width:65%"></div></div><span class="vi-score vi-score--mid">65</span><span class="vi-trend">—</span></div>
+            <div class="vi-rank-row"><span class="vi-rank vi-rank--lo">5</span><span class="vi-name">M. Sithole</span><div class="vi-bar-wrap"><div class="vi-bar vi-bar--low" style="width:44%"></div></div><span class="vi-score vi-score--low">44</span><span class="vi-trend vi-trend--dn">↓</span></div>
+          </div>
+          <div class="vi-footer">Updated daily · 30-day individual history</div>
+        </div>
+      </div>
+      <div class="deep-dive-text">
+        <p class="section-label">myTrack · Safety</p>
+        <h3 class="section-title">Turn raw telemetry into driver accountability.</h3>
+        <p>myTrack scores every driver automatically — no spreadsheets, no manual log reviews. Harsh braking, acceleration events, and speeding are weighted into a clean 7-day ranking that updates daily, with 30 days of individual history behind each driver.</p>
+        <ul class="feature-list">
+          <li>Automated weekly safety league ranked across your entire driver pool</li>
+          <li>30-day per-driver event history: harsh brakes, acceleration, cornering</li>
+          <li>Incident flagging with timestamp, GPS coordinates, and speed at event</li>
+          <li>Management-ready safety reports without manual data extraction</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="deep-dive-row">
+      <div class="deep-dive-visual">
+        <div class="vi-fuel">
+          <div class="vi-hdr">Live Tank Levels</div>
+          <div class="vi-fuel-list">
+            <div class="vi-fuel-row"><span class="vi-reg">GP 12-34 JK</span><div class="vi-tank-wrap"><div class="vi-tank" style="width:78%"></div></div><span class="vi-pct">78%</span></div>
+            <div class="vi-fuel-row"><span class="vi-reg">GP 56-78 MN</span><div class="vi-tank-wrap"><div class="vi-tank vi-tank--mid" style="width:45%"></div></div><span class="vi-pct vi-pct--mid">45%</span></div>
+            <div class="vi-fuel-row"><span class="vi-reg">NW 90-11 QR</span><div class="vi-tank-wrap"><div class="vi-tank vi-tank--low" style="width:18%"></div></div><span class="vi-pct vi-pct--low">18% ⚠</span></div>
+            <div class="vi-fuel-row"><span class="vi-reg">GP 45-22 ST</span><div class="vi-tank-wrap"><div class="vi-tank" style="width:92%"></div></div><span class="vi-pct">92%</span></div>
+          </div>
+          <div class="vi-alert-row">⚠ Abnormal drop detected on NW 90-11 QR · 08:47 today</div>
+        </div>
+      </div>
+      <div class="deep-dive-text">
+        <p class="section-label">myTrack · Fuel</p>
+        <h3 class="section-title">Stop guessing where the fuel is going.</h3>
+        <p>Live tank-level telemetry means you see fills, drops, and consumption patterns in real time — not at month-end when the damage is done. Set capacity baselines per vehicle and get alerted the moment something falls outside normal parameters.</p>
+        <ul class="feature-list">
+          <li>Real-time tank level feed from onboard telemetry hardware</li>
+          <li>Capacity baseline configuration per vehicle class or individual unit</li>
+          <li>Abnormal-drop alerts with alert acknowledgement and resolution tracking</li>
+          <li>Consumption trends over time for budget forecasting and cost control</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="deep-dive-row flip">
+      <div class="deep-dive-visual">
+        <div class="vi-cameras">
+          <div class="vi-hdr">Camera Health · Live Feed</div>
+          <div class="vi-cam-grid">
+            <div class="vi-cam vi-cam--ok"><div class="vi-cam-label">GP 12-34 · Front</div><div class="vi-cam-status vi-cam-status--ok">● Live</div></div>
+            <div class="vi-cam vi-cam--ok"><div class="vi-cam-label">GP 12-34 · Cab</div><div class="vi-cam-status vi-cam-status--ok">● Live</div></div>
+            <div class="vi-cam vi-cam--incident"><div class="vi-cam-label">GP 56-78 · Front</div><div class="vi-cam-status vi-cam-status--red">◉ Incident Clip</div></div>
+            <div class="vi-cam vi-cam--offline"><div class="vi-cam-label">NW 90-11 · Front</div><div class="vi-cam-status vi-cam-status--gray">○ Offline</div></div>
+          </div>
+          <div class="vi-footer">1 incident clip captured · 1 camera offline — flagged</div>
+        </div>
+      </div>
+      <div class="deep-dive-text">
+        <p class="section-label">myTrack · Video</p>
+        <h3 class="section-title">Evidence, not opinions. Every incident, captured.</h3>
+        <p>When something goes wrong on the road, the video clip is already waiting for you. myTrack triggers clip captures on G-force events and flags any camera that stops reporting — so you always know what you can and can't see.</p>
+        <ul class="feature-list">
+          <li>Automatic incident-triggered video clip capture on impact or harsh event</li>
+          <li>Camera health monitoring — offline cameras flagged before they become blind spots</li>
+          <li>Clip review directly within the platform, no external viewer required</li>
+          <li>Linked to the safety event log so footage and telemetry match up instantly</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="deep-dive-row">
+      <div class="deep-dive-visual">
+        <div class="vi-hos">
+          <div class="vi-hdr">Driver HOS · Today</div>
+          <div class="vi-hos-list">
+            <div class="vi-hos-row"><span class="vi-name">S. Mokoena</span><div class="vi-hos-bar"><div class="vi-hos-seg vi-hos-green" style="width:62%"></div><div class="vi-hos-seg vi-hos-amber" style="width:8%"></div></div><span class="vi-hos-status vi-hs-green">Legal</span></div>
+            <div class="vi-hos-row"><span class="vi-name">T. Dlamini</span><div class="vi-hos-bar"><div class="vi-hos-seg vi-hos-green" style="width:78%"></div><div class="vi-hos-seg vi-hos-amber" style="width:10%"></div></div><span class="vi-hos-status vi-hs-amber">Near Limit</span></div>
+            <div class="vi-hos-row"><span class="vi-name">P. Nkosi</span><div class="vi-hos-bar"><div class="vi-hos-seg vi-hos-red" style="width:95%"></div></div><span class="vi-hos-status vi-hs-red">Violation</span></div>
+            <div class="vi-hos-row"><span class="vi-name">J. van Wyk</span><div class="vi-hos-bar"><div class="vi-hos-seg vi-hos-green" style="width:38%"></div></div><span class="vi-hos-status vi-hs-green">Legal</span></div>
+          </div>
+          <div class="vi-footer">1 violation flagged · 1 driver approaching limit</div>
+        </div>
+      </div>
+      <div class="deep-dive-text">
+        <p class="section-label">myTrack · HOS</p>
+        <h3 class="section-title">Compliance that runs itself. Not a clipboard exercise.</h3>
+        <p>Driver hours are tracked automatically from ignition data and rendered as colour-coded status indicators that dispatchers can read at a glance. No manual logbooks, no end-of-shift paperwork, no guessing who's legal to drive.</p>
+        <ul class="feature-list">
+          <li>Live colour-coded HOS status: green, amber, and red per driver</li>
+          <li>Automated duty and rest cycle tracking from ignition-on/off data</li>
+          <li>Violation flags before a breach — not after the inspector asks</li>
+          <li>Exportable HOS logs for audits and regulatory submissions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="deep-dive-row flip">
+      <div class="deep-dive-visual">
+        <div class="vi-tracking">
+          <div class="vi-tracking-brand"><span class="vi-tracking-dot"></span>myTrack Delivery</div>
+          <div class="vi-tracking-main">
+            <div class="vi-tracking-eta">
+              <div class="vi-eta-val">14<span style="font-size:1rem;font-weight:500"> min</span></div>
+              <div class="vi-eta-lbl">Estimated arrival</div>
+            </div>
+            <div class="vi-tracking-info">
+              <div class="vi-ti-row"><span class="vi-ti-lbl">Driver</span><span>S. Mokoena</span></div>
+              <div class="vi-ti-row"><span class="vi-ti-lbl">Vehicle</span><span>GP 12-34 JK</span></div>
+              <div class="vi-ti-row"><span class="vi-ti-lbl">Speed</span><span class="vi-speed vi-speed--ok">64 km/h</span></div>
+            </div>
+          </div>
+          <div class="vi-tracking-url">https://track.mytrack.co.za/d/xk92m-7fba</div>
+        </div>
+      </div>
+      <div class="deep-dive-text">
+        <p class="section-label">myTrack · Delivery</p>
+        <h3 class="section-title">Give your customers visibility. Without giving them access.</h3>
+        <p>Generate a shareable tracking link for any delivery and send it directly to the recipient. They see the vehicle on a live map, get an ETA, and stop calling your dispatch team asking where their order is.</p>
+        <ul class="feature-list">
+          <li>Per-delivery tracking links generated in seconds, shared via any channel</li>
+          <li>Live vehicle position and ETA visible to the recipient in any browser</li>
+          <li>No customer app download, no account creation, no friction</li>
+          <li>Links expire automatically after delivery completion</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="hero-bg"></div>
+  <div class="container cta-content">
+    <div class="hero-eyebrow">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+      Get in touch
+    </div>
+    <h2 class="cta-headline">Ready to put myTrack to work for your fleet?</h2>
+    <p class="cta-sub">Talk to the team that builds and operates myTrack every day. We'll show you exactly how it fits your operation.</p>
+    <a href="mailto:sales@mhareconsulting.co.za" class="cta-btn">
+      Contact us — sales@mhareconsulting.co.za
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+{% endblock %}

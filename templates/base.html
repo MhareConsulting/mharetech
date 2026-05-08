@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}mhare tech{% endblock %}</title>
+  <meta name="description" content="{% block description %}Purpose-built fleet intelligence and route optimisation software for the industries that keep the continent moving.{% endblock %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────── -->
+<nav>
+  <div class="container nav-inner">
+    <a href="{% url 'index' %}" class="logo" style="display:flex;align-items:center;gap:10px;">
+      <img src="{% static 'img/logo.png' %}" alt="Mhare Tech" class="nav-logo-img" />
+      mhare<span>tech</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{% url 'mytrack' %}">myTrack</a></li>
+      <li><a href="{% url 'myroutes' %}">myRoutes</a></li>
+      <li><a href="{% url 'index' %}#about">About</a></li>
+      <li><a href="https://mhareconsulting.co.za" target="_blank" rel="noopener" class="external">mhare consulting</a></li>
+    </ul>
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">mhare<span>tech</span></div>
+        <p>Purpose-built software for African fleets and logistics operations.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="{% url 'mytrack' %}">myTrack</a></li>
+          <li><a href="{% url 'myroutes' %}">myRoutes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="{% url 'index' %}#about">About</a></li>
+          <li><a href="https://mhareconsulting.co.za" target="_blank" rel="noopener">Mhare Consulting ↗</a></li>
+          <li><a href="mailto:sales@mhareconsulting.co.za">sales@mhareconsulting.co.za</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Mhare Tech. All rights reserved.</span>
+      <span>Designed &amp; built in South Africa</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,35 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mhare tech — Software built for African fleets and logistics</title>
-  <meta name="description" content="Purpose-built fleet intelligence and route optimisation software for the industries that keep the continent moving." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
 
-<!-- ── Nav ──────────────────────────────────────── -->
-<nav>
-  <div class="container nav-inner">
-    <a href="#" class="logo">mhare<span>tech</span></a>
-    <ul class="nav-links">
-      <li><a href="#products">Products</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="https://mhareconsulting.co.za" target="_blank" rel="noopener" class="external">mhare consulting</a></li>
-    </ul>
-  </div>
-</nav>
+{% block title %}mhare tech — Software built for African fleets and logistics{% endblock %}
+{% block description %}We design, develop, and operate purpose-built platforms for the industries that keep the continent moving.{% endblock %}
+
+{% block content %}
 
 <!-- ── Hero ─────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-bg"></div>
   <div class="container" style="position:relative;">
+    <div class="hero-logomark">
+      <img src="{% static 'img/logo.png' %}" alt="Mhare Tech" />
+    </div>
     <div class="hero-eyebrow">
       <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
       Software Development
@@ -45,280 +29,236 @@
   </div>
 </section>
 
-<!-- ── Products Intro ────────────────────────────── -->
-<section id="products" class="products-intro">
-  <div class="container" style="text-align:center;">
-    <p class="section-label">Our Products</p>
-    <h2 class="section-title" style="margin:0 auto 16px;">Built to solve real operational problems</h2>
-    <p class="section-sub" style="margin:0 auto;">Every product we ship is purpose-built, production-operated, and designed around how African logistics teams actually work.</p>
+<!-- ── Before-Products Image Divider ─────────────── -->
+<div class="img-divider">
+  <div class="img-divider-bg" style="background-image:url('{% static 'img/beforeProducts.jpg' %}');"></div>
+  <div class="img-divider-overlay"></div>
+  <div class="img-divider-content">
+    <p class="img-divider-label">Built for the road</p>
+    <h2 class="img-divider-headline">The industries that keep the continent moving deserve software built for them — not adapted from somewhere else.</h2>
   </div>
-</section>
+</div>
 
-<!-- ── myTrack Hero Split ─────────────────────────── -->
-<section class="product-split-section">
+<!-- ── Products ──────────────────────────────────── -->
+<section class="products-landing" id="products">
   <div class="container">
-    <div class="product-split">
-
-      <!-- Left: content -->
-      <div class="split-content">
-        <div class="split-badge">
-          <span class="live-dot"></span>
-          Live Product
-        </div>
-        <h2 class="split-title">Fleet intelligence from the road to the boardroom</h2>
-        <p class="split-desc">myTrack ingests live GPS telemetry and turns it into actionable intelligence — from the real-time map in dispatch to the driver safety report on the manager's desk.</p>
-        <ul class="split-features">
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Live GPS map with satellite, street &amp; dark modes — SSE-powered</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>7-day driver safety rankings with 30-day per-driver history</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Fuel telemetry, tank capacity tracking &amp; alert acknowledgement</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Incident-triggered video clips &amp; camera health monitoring</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Hours of service compliance with colour-coded driver status</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Shareable delivery tracking links — no customer app required</li>
-        </ul>
-      </div>
-
-      <!-- Right: myTrack app mockup -->
-      <div class="split-visual">
-        <div class="browser-frame">
-          <div class="browser-chrome">
-            <div class="bc-dots">
-              <span class="bc-dot bc-dot--red"></span>
-              <span class="bc-dot bc-dot--yellow"></span>
-              <span class="bc-dot bc-dot--green"></span>
-            </div>
-            <div class="bc-url">app.mytrack.co.za</div>
-          </div>
-          <div class="app-shell">
-            <!-- App topbar -->
-            <div class="app-topbar">
-              <div class="app-brand">
-                <span class="app-brand-icon"></span>
-                <span class="app-brand-name">my<b>Track</b></span>
-              </div>
-              <div class="app-topnav">
-                <span class="app-topnav-item app-topnav-item--live">● Live</span>
-                <span class="app-topnav-item app-topnav-item--active">Fleet</span>
-                <span class="app-topnav-item">Trips</span>
-                <span class="app-topnav-item">Scores</span>
-                <span class="app-topnav-item">Reports</span>
-              </div>
-            </div>
-            <!-- App body -->
-            <div class="app-body">
-              <!-- Sidebar -->
-              <div class="app-sidebar">
-                <div class="app-sidebar-item app-sidebar-item--active">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-                </div>
-                <div class="app-sidebar-item">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12H3M3 12l5-5M3 12l5 5"/></svg>
-                </div>
-                <div class="app-sidebar-item">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
-                </div>
-                <div class="app-sidebar-item">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-                </div>
-                <div class="app-sidebar-item">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                </div>
-              </div>
-              <!-- Main -->
-              <div class="app-main">
-                <div class="app-stats-row">
-                  <div class="app-stat app-stat--online">
-                    <div class="app-stat-val">12</div>
-                    <div class="app-stat-lbl">Online</div>
-                    <div class="app-stat-sub">of 18 vehicles</div>
-                  </div>
-                  <div class="app-stat">
-                    <div class="app-stat-val">847</div>
-                    <div class="app-stat-lbl">KM Today</div>
-                    <div class="app-stat-sub">fleet total</div>
-                  </div>
-                  <div class="app-stat app-stat--alert">
-                    <div class="app-stat-val">3</div>
-                    <div class="app-stat-lbl">Alerts</div>
-                    <div class="app-stat-sub">unresolved</div>
-                  </div>
-                  <div class="app-stat">
-                    <div class="app-stat-val">28</div>
-                    <div class="app-stat-lbl">Geo Events</div>
-                    <div class="app-stat-sub">today</div>
-                  </div>
-                </div>
-                <!-- Map -->
-                <div class="app-map">
-                  <div class="map-road-h" style="top:42%;left:0;width:100%;"></div>
-                  <div class="map-road-h" style="top:68%;left:0;width:100%;"></div>
-                  <div class="map-road-v" style="left:32%;top:0;height:100%;"></div>
-                  <div class="map-road-v" style="left:67%;top:0;height:100%;"></div>
-                  <div class="map-geofence" style="width:56px;height:44px;top:55%;left:67%;"></div>
-                  <div class="map-vehicle" style="top:42%;left:32%;"></div>
-                  <div class="map-vehicle" style="top:68%;left:20%;"></div>
-                  <div class="map-vehicle" style="top:38%;left:67%;"></div>
-                  <div class="map-vehicle map-vehicle--amber" style="top:70%;left:55%;"></div>
-                  <div class="map-vehicle map-vehicle--offline" style="top:50%;left:80%;"></div>
-                  <div class="map-overlay-card">
-                    <div class="moc-row"><span class="moc-dot" style="background:#22C55E;"></span><span class="moc-label">GP 12-34 JK</span><span class="moc-badge">84 km/h</span></div>
-                    <div class="moc-row"><span class="moc-dot" style="background:#22C55E;"></span><span class="moc-label">GP 56-78 MN</span><span class="moc-badge">0 km/h</span></div>
-                    <div class="moc-row"><span class="moc-dot" style="background:#F59E0B;"></span><span class="moc-label">GP 90-11 QR</span><span class="moc-badge">stale</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div style="text-align:center;">
+      <p class="section-label">Our Products</p>
+      <h2 class="section-title" style="margin:0 auto 14px;">Built to solve real operational problems</h2>
+      <p class="section-sub" style="margin:0 auto;">Every product we ship is purpose-built, production-operated, and designed around how African logistics teams actually work.</p>
     </div>
-  </div>
-</section>
 
-<!-- ── myRoutes Hero Split ────────────────────────── -->
-<section class="product-split-section product-split-section--alt">
-  <div class="container">
-    <div class="product-split product-split--flip">
+    <div class="products-landing-grid">
 
-      <!-- Left: myRoutes app mockup -->
-      <div class="split-visual">
-        <div class="browser-frame">
-          <div class="browser-chrome">
-            <div class="bc-dots">
-              <span class="bc-dot bc-dot--red"></span>
-              <span class="bc-dot bc-dot--yellow"></span>
-              <span class="bc-dot bc-dot--green"></span>
+      <!-- myTrack card -->
+      <div class="product-landing-card">
+        <div class="product-landing-mockup">
+          <div class="browser-frame" style="transform:none;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+            <div class="browser-chrome">
+              <div class="bc-dots">
+                <span class="bc-dot bc-dot--red"></span>
+                <span class="bc-dot bc-dot--yellow"></span>
+                <span class="bc-dot bc-dot--green"></span>
+              </div>
+              <div class="bc-url">app.mytrack.co.za</div>
             </div>
-            <div class="bc-url">app.myroutes.co.za</div>
-          </div>
-          <div class="app-shell">
-            <!-- Plan header bar -->
-            <div class="gantt-planbar">
-              <div class="gantt-breadcrumb">
-                <span class="gantt-bc-dim">OPERATIONS · PLANS</span>
-                <span class="gantt-bc-sep">›</span>
-                <span class="gantt-bc-title">Morning Run</span>
-              </div>
-              <div class="gantt-actions">
-                <span class="gantt-btn gantt-btn--blue">▶ Re-optimise</span>
-                <span class="gantt-btn gantt-btn--green">Lock &amp; Dispatch</span>
-                <span class="gantt-btn gantt-btn--yellow">Optimised</span>
-              </div>
-            </div>
-            <!-- 3-column body: fleet | timeline | details -->
-            <div class="gantt-body">
-              <!-- Fleet sidebar -->
-              <div class="gantt-fleet">
-                <div class="gantt-fleet-label">FLEET <span class="gantt-fleet-count">34 vehicles</span></div>
-                <div class="gantt-fleet-tabs">
-                  <span class="gftab gftab--active">Used</span>
-                  <span class="gftab">All</span>
+            <div class="app-shell">
+              <div class="app-topbar">
+                <div class="app-brand">
+                  <span class="app-brand-icon"></span>
+                  <span class="app-brand-name">my<b>Track</b></span>
                 </div>
-                <div class="gantt-vehicle">
-                  <input type="checkbox" checked style="width:9px;height:9px;accent-color:#8A2BE2;flex-shrink:0;" />
-                  <span class="gv-status-dot" style="background:#22C55E;"></span>
-                  <div class="gv-text">
-                    <div class="gv-reg">GP 111-001</div>
-                    <div class="gv-sub">Mercedes-Benz Ac...</div>
-                    <div class="gv-sub">3 stops · 89.0km</div>
-                  </div>
-                  <span class="gv-badge">In plan</span>
-                </div>
-                <div class="gantt-vehicle gantt-vehicle--dim">
-                  <input type="checkbox" style="width:9px;height:9px;accent-color:#8A2BE2;flex-shrink:0;" />
-                  <span class="gv-status-dot" style="background:#D1D5DB;"></span>
-                  <div class="gv-text">
-                    <div class="gv-reg">GP 201-001</div>
-                    <div class="gv-sub">Toyota Dyna 6-105</div>
-                    <div class="gv-sub">–</div>
-                  </div>
+                <div class="app-topnav">
+                  <span class="app-topnav-item app-topnav-item--live">● Live</span>
+                  <span class="app-topnav-item app-topnav-item--active">Fleet</span>
+                  <span class="app-topnav-item">Trips</span>
+                  <span class="app-topnav-item">Scores</span>
                 </div>
               </div>
-              <!-- Timeline -->
-              <div class="gantt-timeline">
-                <div class="gantt-time-header">
-                  <span>6:00</span><span>7:00</span><span>8:00</span><span>9:00</span><span>10:00</span>
-                </div>
-                <div class="gantt-track-area">
-                  <div class="gantt-track">
-                    <div class="gantt-bar">GP 111-001 · 3 · 89.0km</div>
+              <div class="app-body">
+                <div class="app-sidebar">
+                  <div class="app-sidebar-item app-sidebar-item--active">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
                   </div>
-                  <div class="gantt-track gantt-track--empty"></div>
-                </div>
-              </div>
-              <!-- Trip details panel -->
-              <div class="gantt-detail">
-                <div class="gd-header">
-                  <div>
-                    <div class="gd-trip-id">Trip 1 · GP 111-001</div>
-                    <div class="gd-trip-meta">06:30 – 09:45 · 3 stops · 89km · 135 min</div>
+                  <div class="app-sidebar-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
                   </div>
-                  <span class="gd-close">✕</span>
-                </div>
-                <div class="gd-weight-bar">Weight 0% (0/8000 kg)</div>
-                <div class="gd-stops-label">STOPS (5)</div>
-                <div class="gd-stop">
-                  <span class="gd-num gd-num--depot">●</span>
-                  <div class="gd-stop-body"><div class="gd-stop-name">Depot</div></div>
-                  <span class="gd-time">06:30</span>
-                </div>
-                <div class="gd-stop">
-                  <span class="gd-num">1</span>
-                  <div class="gd-stop-body">
-                    <div class="gd-stop-name">Spar Midrand</div>
-                    <div class="gd-stop-ref">MR-001</div>
-                    <div class="gd-stop-addr">Waterfall Corner, Midrand, Gauteng</div>
-                    <div class="gd-stop-kg">500 kg</div>
+                  <div class="app-sidebar-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
                   </div>
-                  <span class="gd-time">07:15</span>
                 </div>
-                <div class="gd-stop">
-                  <span class="gd-num">2</span>
-                  <div class="gd-stop-body">
-                    <div class="gd-stop-name">Pick n Pay Centurion</div>
-                    <div class="gd-stop-ref">MR-002</div>
-                    <div class="gd-stop-addr">Centurion Mall, Centurion, Gauteng</div>
-                    <div class="gd-stop-kg">500 kg</div>
+                <div class="app-main">
+                  <div class="app-stats-row">
+                    <div class="app-stat app-stat--online">
+                      <div class="app-stat-val">12</div>
+                      <div class="app-stat-lbl">Online</div>
+                      <div class="app-stat-sub">of 18 vehicles</div>
+                    </div>
+                    <div class="app-stat">
+                      <div class="app-stat-val">847</div>
+                      <div class="app-stat-lbl">KM Today</div>
+                      <div class="app-stat-sub">fleet total</div>
+                    </div>
+                    <div class="app-stat app-stat--alert">
+                      <div class="app-stat-val">3</div>
+                      <div class="app-stat-lbl">Alerts</div>
+                      <div class="app-stat-sub">unresolved</div>
+                    </div>
+                    <div class="app-stat">
+                      <div class="app-stat-val">28</div>
+                      <div class="app-stat-lbl">Geo Events</div>
+                      <div class="app-stat-sub">today</div>
+                    </div>
                   </div>
-                  <span class="gd-time">08:00</span>
-                </div>
-                <div class="gd-stop">
-                  <span class="gd-num">3</span>
-                  <div class="gd-stop-body">
-                    <div class="gd-stop-name">Woolworths Pretoria CBD</div>
-                    <div class="gd-stop-ref">MR-003</div>
-                    <div class="gd-stop-addr">Church Square, Pretoria, Gauteng</div>
-                    <div class="gd-stop-kg">500 kg</div>
+                  <div class="app-map">
+                    <div class="map-road-h" style="top:42%;left:0;width:100%;"></div>
+                    <div class="map-road-h" style="top:68%;left:0;width:100%;"></div>
+                    <div class="map-road-v" style="left:32%;top:0;height:100%;"></div>
+                    <div class="map-road-v" style="left:67%;top:0;height:100%;"></div>
+                    <div class="map-geofence" style="width:44px;height:36px;top:55%;left:67%;"></div>
+                    <div class="map-vehicle" style="top:42%;left:32%;"></div>
+                    <div class="map-vehicle" style="top:68%;left:20%;"></div>
+                    <div class="map-vehicle" style="top:38%;left:67%;"></div>
+                    <div class="map-vehicle map-vehicle--amber" style="top:70%;left:55%;"></div>
+                    <div class="map-overlay-card">
+                      <div class="moc-row"><span class="moc-dot" style="background:#22C55E;"></span><span class="moc-label">GP 12-34 JK</span><span class="moc-badge">84 km/h</span></div>
+                      <div class="moc-row"><span class="moc-dot" style="background:#F59E0B;"></span><span class="moc-label">GP 90-11 QR</span><span class="moc-badge">stale</span></div>
+                    </div>
                   </div>
-                  <span class="gd-time">08:45</span>
-                </div>
-                <div class="gd-stop">
-                  <span class="gd-num gd-num--depot">●</span>
-                  <div class="gd-stop-body"><div class="gd-stop-name">Depot</div></div>
-                  <span class="gd-time">09:45</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div class="product-landing-body">
+          <div class="product-landing-badge"><span class="live-dot"></span>Live Product</div>
+          <div class="product-landing-name">myTrack</div>
+          <p class="product-landing-desc">Fleet intelligence from the road to the boardroom. Live GPS telemetry turned into actionable insight — from dispatch to driver safety to fuel management.</p>
+          <ul class="product-landing-features">
+            <li>Live GPS map — SSE-powered, sub-second updates</li>
+            <li>Automated driver safety rankings &amp; 30-day history</li>
+            <li>Real-time fuel telemetry with abnormal-drop alerts</li>
+            <li>Hours of service compliance, camera health &amp; incident clips</li>
+          </ul>
+          <a href="{% url 'mytrack' %}" class="product-landing-cta">
+            Explore myTrack
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
 
-      <!-- Right: content -->
-      <div class="split-content">
-        <div class="split-badge">
-          <span class="live-dot"></span>
-          Live Product
+      <!-- myRoutes card -->
+      <div class="product-landing-card">
+        <div class="product-landing-mockup">
+          <div class="browser-frame" style="transform:none;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+            <div class="browser-chrome">
+              <div class="bc-dots">
+                <span class="bc-dot bc-dot--red"></span>
+                <span class="bc-dot bc-dot--yellow"></span>
+                <span class="bc-dot bc-dot--green"></span>
+              </div>
+              <div class="bc-url">app.myroutes.co.za</div>
+            </div>
+            <div class="app-shell">
+              <div class="gantt-planbar">
+                <div class="gantt-breadcrumb">
+                  <span class="gantt-bc-dim">OPERATIONS · PLANS</span>
+                  <span class="gantt-bc-sep">›</span>
+                  <span class="gantt-bc-title">Morning Run</span>
+                </div>
+                <div class="gantt-actions">
+                  <span class="gantt-btn gantt-btn--blue">▶ Re-optimise</span>
+                  <span class="gantt-btn gantt-btn--green">Lock &amp; Dispatch</span>
+                  <span class="gantt-btn gantt-btn--yellow">Optimised</span>
+                </div>
+              </div>
+              <div class="gantt-body">
+                <div class="gantt-fleet">
+                  <div class="gantt-fleet-label">FLEET <span class="gantt-fleet-count">34 vehicles</span></div>
+                  <div class="gantt-fleet-tabs">
+                    <span class="gftab gftab--active">Used</span>
+                    <span class="gftab">All</span>
+                  </div>
+                  <div class="gantt-vehicle">
+                    <input type="checkbox" checked style="width:9px;height:9px;accent-color:#8A2BE2;flex-shrink:0;" />
+                    <span class="gv-status-dot" style="background:#22C55E;"></span>
+                    <div class="gv-text">
+                      <div class="gv-reg">GP 111-001</div>
+                      <div class="gv-sub">3 stops · 89.0km</div>
+                    </div>
+                    <span class="gv-badge">In plan</span>
+                  </div>
+                  <div class="gantt-vehicle gantt-vehicle--dim">
+                    <input type="checkbox" style="width:9px;height:9px;accent-color:#8A2BE2;flex-shrink:0;" />
+                    <span class="gv-status-dot" style="background:#D1D5DB;"></span>
+                    <div class="gv-text">
+                      <div class="gv-reg">GP 201-001</div>
+                      <div class="gv-sub">–</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="gantt-timeline">
+                  <div class="gantt-time-header">
+                    <span>6:00</span><span>7:00</span><span>8:00</span><span>9:00</span><span>10:00</span>
+                  </div>
+                  <div class="gantt-track-area">
+                    <div class="gantt-track">
+                      <div class="gantt-bar">GP 111-001 · 3 stops · 89.0km</div>
+                    </div>
+                    <div class="gantt-track gantt-track--empty"></div>
+                  </div>
+                </div>
+                <div class="gantt-detail">
+                  <div class="gd-header">
+                    <div>
+                      <div class="gd-trip-id">Trip 1 · GP 111-001</div>
+                      <div class="gd-trip-meta">06:30 – 09:45 · 3 stops · 89km</div>
+                    </div>
+                    <span class="gd-close">✕</span>
+                  </div>
+                  <div class="gd-weight-bar">Weight 0% (0/8000 kg)</div>
+                  <div class="gd-stops-label">STOPS (3)</div>
+                  <div class="gd-stop">
+                    <span class="gd-num gd-num--depot">●</span>
+                    <div class="gd-stop-body"><div class="gd-stop-name">Depot</div></div>
+                    <span class="gd-time">06:30</span>
+                  </div>
+                  <div class="gd-stop">
+                    <span class="gd-num">1</span>
+                    <div class="gd-stop-body">
+                      <div class="gd-stop-name">Spar Midrand</div>
+                      <div class="gd-stop-addr">Waterfall Corner, Midrand</div>
+                    </div>
+                    <span class="gd-time">07:15</span>
+                  </div>
+                  <div class="gd-stop">
+                    <span class="gd-num">2</span>
+                    <div class="gd-stop-body">
+                      <div class="gd-stop-name">Pick n Pay Centurion</div>
+                      <div class="gd-stop-addr">Centurion Mall</div>
+                    </div>
+                    <span class="gd-time">08:00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <h2 class="split-title">Plan once.<br>Dispatch confidently.</h2>
-        <p class="split-desc">myRoutes takes the guesswork out of daily dispatch. Upload your stops, set your fleet constraints, and get optimised routes that minimise distance before the first vehicle leaves the depot.</p>
-        <ul class="split-features">
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Multi-stop route optimisation on real South African road data</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Drag-and-drop stop sequencing with live distance recalculation</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Driver dispatch with turn-by-turn navigation integration</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Address geocoding and validation before routes are committed</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Fleet scheduling with vehicle capacity &amp; driver hour constraints</li>
-          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Route history and replay for post-run performance analysis</li>
-        </ul>
+        <div class="product-landing-body">
+          <div class="product-landing-badge"><span class="live-dot"></span>Live Product</div>
+          <div class="product-landing-name">myRoutes</div>
+          <p class="product-landing-desc">Plan once. Dispatch confidently. Multi-stop route optimisation on real South African road data — before the first vehicle leaves the depot.</p>
+          <ul class="product-landing-features">
+            <li>Multi-vehicle route optimisation on live SA road data</li>
+            <li>Drag-and-drop dispatch board with live distance recalculation</li>
+            <li>Vehicle capacity &amp; driver hour constraints enforced</li>
+            <li>Route history, replay &amp; planned-vs-actual analysis</li>
+          </ul>
+          <a href="{% url 'myroutes' %}" class="product-landing-cta">
+            Explore myRoutes
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -339,58 +279,42 @@
           Visit mhare consulting →
         </a>
       </div>
-      <div class="about-stats">
-        <div class="stat-card">
-          <div class="stat-number">2</div>
-          <div class="stat-label">Live products in production</div>
+      <div class="about-numbers">
+        <div class="about-num-item">
+          <div class="about-num-val">&lt;1s</div>
+          <div class="about-num-lbl">GPS update latency</div>
+          <div class="about-num-sub">SSE-powered live feed</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">SA</div>
-          <div class="stat-label">Built and operated locally</div>
+        <div class="about-num-item">
+          <div class="about-num-val">−31%</div>
+          <div class="about-num-lbl">Average route distance reduction</div>
+          <div class="about-num-sub">vs manual planning</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">24/7</div>
-          <div class="stat-label">Live fleet telemetry processed</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">1</div>
-          <div class="stat-label">Team that builds and runs it all</div>
+        <div class="about-num-item">
+          <div class="about-num-val">24/7</div>
+          <div class="about-num-lbl">Fleet telemetry, always on</div>
+          <div class="about-num-sub">Zero planned downtime windows</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Footer ────────────────────────────────────── -->
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <div class="logo">mhare<span>tech</span></div>
-        <p>Purpose-built software for African fleets and logistics operations.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Products</h4>
-        <ul>
-          <li><a href="#products">myTrack</a></li>
-          <li><a href="#products">myRoutes</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="https://mhareconsulting.co.za" target="_blank" rel="noopener">Mhare Consulting ↗</a></li>
-          <li><a href="mailto:hello@mharetech.co.za">hello@mharetech.co.za</a></li>
-        </ul>
-      </div>
+<!-- ── CTA ────────────────────────────────────────── -->
+<section id="contact" class="cta-section">
+  <div class="hero-bg"></div>
+  <div class="container cta-content">
+    <div class="hero-eyebrow">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+      Get in touch
     </div>
-    <div class="footer-bottom">
-      <span>© 2025 Mhare Tech. All rights reserved.</span>
-      <span>Designed &amp; built in South Africa</span>
-    </div>
+    <h2 class="cta-headline">Ready to bring your fleet operations into focus?</h2>
+    <p class="cta-sub">Whether you're running ten vehicles or a hundred, myTrack and myRoutes are built to fit your operation from day one. Talk to the team that builds and runs the product.</p>
+    <a href="mailto:sales@mhareconsulting.co.za" class="cta-btn">
+      Contact us — sales@mhareconsulting.co.za
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
   </div>
-</footer>
+</section>
 
-</body>
-</html>
+{% endblock %}
