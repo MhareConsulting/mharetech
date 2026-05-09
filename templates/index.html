@@ -6,54 +6,68 @@
 
 {% block content %}
 
-<!-- ── Hero ─────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-bg"></div>
+  <div class="hero-deco-line hero-deco-line--a"></div>
+  <div class="hero-deco-line hero-deco-line--b"></div>
   <div class="container" style="position:relative;">
     <div class="hero-logomark">
       <img src="{% static 'img/logo.png' %}" alt="Mhare Tech" />
     </div>
     <div class="hero-eyebrow">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
-      Software Development
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="5"/></svg>
+      Product studio · Fleet &amp; logistics
     </div>
-    <h1>Software built for African fleets and logistics</h1>
-    <p>We design, develop, and operate purpose-built platforms for the industries that keep the continent moving.</p>
-    <div class="scroll-hint">
-      <span>Scroll to explore</span>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <h1 class="hero-title">
+      Fleet intelligence &amp; routes<br />
+      <span class="hero-gradient">engineered for Africa</span>
+    </h1>
+    <p class="hero-lead">We design, build, and operate production platforms for dispatch, telemetry, and road-based operations — shaped by real African logistics constraints.</p>
+    <div class="hero-actions">
+      <a class="btn-gradient btn-gradient--lg" href="#products">Explore products</a>
+      <a class="btn-gradient btn-solid-dark" href="https://mhareconsulting.co.za" target="_blank" rel="noopener">Mhare Consulting</a>
+    </div>
+    <p class="hero-tagline">Precision // Performance // Clarity</p>
+    <div class="scroll-hint" style="margin-top:48px;">
+      <span>Scroll</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M8 3v10M3 9l5 5 5-5"/>
       </svg>
     </div>
   </div>
 </section>
 
-<!-- ── Before-Products Image Divider ─────────────── -->
+<section class="studio-strip" aria-label="Group context">
+  <div class="container studio-strip-inner">
+    <span class="studio-strip-label">Mhare Tech is the product studio inside the Mhare group</span>
+    <span class="studio-strip-pipe" aria-hidden="true">·</span>
+    <a href="https://mhareconsulting.co.za" target="_blank" rel="noopener">Strategy &amp; consulting at Mhare Consulting ↗</a>
+  </div>
+</section>
+
 <div class="img-divider">
   <div class="img-divider-bg" style="background-image:url('{% static 'img/beforeProducts.jpg' %}');"></div>
   <div class="img-divider-overlay"></div>
   <div class="img-divider-content">
     <p class="img-divider-label">Built for the road</p>
-    <h2 class="img-divider-headline">The industries that keep the continent moving deserve software built for them — not adapted from somewhere else.</h2>
+    <h2 class="img-divider-headline">The industries that move the continent deserve software built for them — not imported and adapted.</h2>
   </div>
 </div>
 
-<!-- ── Products ──────────────────────────────────── -->
 <section class="products-landing" id="products">
   <div class="container">
     <div style="text-align:center;">
-      <p class="section-label">Our Products</p>
-      <h2 class="section-title" style="margin:0 auto 14px;">Built to solve real operational problems</h2>
-      <p class="section-sub" style="margin:0 auto;">Every product we ship is purpose-built, production-operated, and designed around how African logistics teams actually work.</p>
+      <p class="section-label">Our products</p>
+      <h2 class="section-title">Operational systems, <span class="section-gradient">not slide decks</span></h2>
+      <p class="section-sub" style="margin:0 auto;">Every product we ship is purpose-built, production-operated, and tuned to how African logistics teams actually run their day.</p>
     </div>
 
     <div class="products-landing-grid">
 
-      <!-- myTrack card -->
       <div class="product-landing-card">
         <div class="product-landing-mockup">
-          <div class="browser-frame" style="transform:none;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+          <div class="browser-frame" style="transform:none;box-shadow:0 20px 60px rgba(0,0,0,0.12);">
             <div class="browser-chrome">
               <div class="bc-dots">
                 <span class="bc-dot bc-dot--red"></span>
@@ -131,7 +145,7 @@
           </div>
         </div>
         <div class="product-landing-body">
-          <div class="product-landing-badge"><span class="live-dot"></span>Live Product</div>
+          <div class="product-landing-badge"><span class="live-dot"></span> Live product</div>
           <div class="product-landing-name">myTrack</div>
           <p class="product-landing-desc">Fleet intelligence from the road to the boardroom. Live GPS telemetry turned into actionable insight — from dispatch to driver safety to fuel management.</p>
           <ul class="product-landing-features">
@@ -147,10 +161,9 @@
         </div>
       </div>
 
-      <!-- myRoutes card -->
       <div class="product-landing-card">
         <div class="product-landing-mockup">
-          <div class="browser-frame" style="transform:none;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+          <div class="browser-frame" style="transform:none;box-shadow:0 20px 60px rgba(0,0,0,0.12);">
             <div class="browser-chrome">
               <div class="bc-dots">
                 <span class="bc-dot bc-dot--red"></span>
@@ -180,7 +193,7 @@
                     <span class="gftab">All</span>
                   </div>
                   <div class="gantt-vehicle">
-                    <input type="checkbox" checked style="width:9px;height:9px;accent-color:#8A2BE2;flex-shrink:0;" />
+                    <input type="checkbox" checked style="width:9px;height:9px;accent-color:#2563eb;flex-shrink:0;" />
                     <span class="gv-status-dot" style="background:#22C55E;"></span>
                     <div class="gv-text">
                       <div class="gv-reg">GP 111-001</div>
@@ -189,7 +202,7 @@
                     <span class="gv-badge">In plan</span>
                   </div>
                   <div class="gantt-vehicle gantt-vehicle--dim">
-                    <input type="checkbox" style="width:9px;height:9px;accent-color:#8A2BE2;flex-shrink:0;" />
+                    <input type="checkbox" style="width:9px;height:9px;accent-color:#2563eb;flex-shrink:0;" />
                     <span class="gv-status-dot" style="background:#D1D5DB;"></span>
                     <div class="gv-text">
                       <div class="gv-reg">GP 201-001</div>
@@ -245,7 +258,7 @@
           </div>
         </div>
         <div class="product-landing-body">
-          <div class="product-landing-badge"><span class="live-dot"></span>Live Product</div>
+          <div class="product-landing-badge"><span class="live-dot"></span> Live product</div>
           <div class="product-landing-name">myRoutes</div>
           <p class="product-landing-desc">Plan once. Dispatch confidently. Multi-stop route optimisation on real South African road data — before the first vehicle leaves the depot.</p>
           <ul class="product-landing-features">
@@ -265,8 +278,6 @@
   </div>
 </section>
 
-<!-- ── About ─────────────────────────────────────── -->
-{% load static %}
 <section id="about" style="background-image:url('{% static 'img/jolame-chirwa-6gWNhnQnU8c-unsplash.jpg' %}');background-size:cover;background-position:center;">
   <div class="container">
     <div class="about-inner">
@@ -276,7 +287,7 @@
         <p>Mhare Tech is a software development house that designs, builds, and operates its own products. We don't just deliver projects — we run what we build, which means our products are shaped by the real operational feedback of production use.</p>
         <p>Mhare Tech is the product studio within the Mhare group. Our consulting arm, Mhare Consulting, handles strategy, advisory, and implementation work for clients across industries. The two operate in parallel: consulting informs what we build; the products demonstrate what we can deliver.</p>
         <a href="https://mhareconsulting.co.za" target="_blank" rel="noopener" class="about-link">
-          Visit mhare consulting →
+          Visit Mhare Consulting →
         </a>
       </div>
       <div class="about-numbers">
@@ -300,18 +311,17 @@
   </div>
 </section>
 
-<!-- ── CTA ────────────────────────────────────────── -->
 <section id="contact" class="cta-section">
   <div class="hero-bg"></div>
   <div class="container cta-content">
     <div class="hero-eyebrow">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="5"/></svg>
       Get in touch
     </div>
-    <h2 class="cta-headline">Ready to bring your fleet operations into focus?</h2>
+    <h2 class="cta-headline">Ready for <span class="cta-gradient">fleet clarity</span>?</h2>
     <p class="cta-sub">Whether you're running ten vehicles or a hundred, myTrack and myRoutes are built to fit your operation from day one. Talk to the team that builds and runs the product.</p>
     <a href="mailto:sales@mhareconsulting.co.za" class="cta-btn">
-      Contact us — sales@mhareconsulting.co.za
+      Contact — sales@mhareconsulting.co.za
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>

@@ -7,37 +7,43 @@
   <meta name="description" content="{% block description %}Purpose-built fleet intelligence and route optimisation software for the industries that keep the continent moving.{% endblock %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   {% block extra_head %}{% endblock %}
 </head>
 <body>
 
-<!-- ── Nav ──────────────────────────────────────────── -->
 <nav>
   <div class="container nav-inner">
-    <a href="{% url 'index' %}" class="logo" style="display:flex;align-items:center;gap:10px;">
-      <img src="{% static 'img/logo.png' %}" alt="Mhare Tech" class="nav-logo-img" />
-      mhare<span>tech</span>
+    <a href="{% url 'index' %}" class="logo logo-link">
+      <span class="nav-logo-wrap">
+        <img src="{% static 'img/logo.png' %}" alt="Mhare Tech" class="nav-logo-img" />
+      </span>
+      <span class="logo-text">
+        <span class="logo-mhare">MHARE</span>
+        <span class="subbrand">Tech</span>
+      </span>
     </a>
     <ul class="nav-links">
-      <li><a href="{% url 'mytrack' %}">myTrack</a></li>
-      <li><a href="{% url 'myroutes' %}">myRoutes</a></li>
-      <li><a href="{% url 'index' %}#about">About</a></li>
+      <li><a href="{% url 'mytrack' %}" class="{% block nav_mytrack_class %}{% endblock %}">myTrack</a></li>
+      <li><a href="{% url 'myroutes' %}" class="{% block nav_myroutes_class %}{% endblock %}">myRoutes</a></li>
+      <li><a href="{% url 'index' %}#about" class="{% block nav_about_class %}{% endblock %}">About</a></li>
       <li><a href="https://mhareconsulting.co.za" target="_blank" rel="noopener" class="external">mhare consulting</a></li>
     </ul>
+    <div class="nav-cta">
+      <a class="btn-gradient" href="mailto:sales@mhareconsulting.co.za">Contact</a>
+    </div>
   </div>
 </nav>
 
 {% block content %}{% endblock %}
 
-<!-- ── Footer ─────────────────────────────────────── -->
 <footer>
   <div class="container">
     <div class="footer-inner">
       <div class="footer-brand">
-        <div class="logo">mhare<span>tech</span></div>
+        <div class="footer-brand-mark"><span>MHARE</span> <span class="subbrand">Tech</span></div>
         <p>Purpose-built software for African fleets and logistics operations.</p>
       </div>
       <div class="footer-col">
@@ -57,8 +63,8 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 Mhare Tech. All rights reserved.</span>
-      <span>Designed &amp; built in South Africa</span>
+      <span>© 2026 Mhare Tech. All rights reserved.</span>
+      <span>Designed &amp; built in South Africa · Precision // Performance // Clarity</span>
     </div>
   </div>
 </footer>

@@ -1,25 +1,46 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block nav_mytrack_class %}is-active{% endblock %}
+
 {% block title %}myTrack — Fleet Intelligence · mhare tech{% endblock %}
 {% block description %}Live GPS telemetry, driver safety rankings, fuel monitoring, HOS compliance, camera health and shareable delivery tracking — all in one platform.{% endblock %}
 
 {% block content %}
 
 <!-- ── Product Header ──────────────────────────────── -->
-<div class="product-page-header">
+<div class="product-page-header product-page-header--hero">
   <div class="product-page-header-bg" style="background-image:url('{% static 'img/Dispatcher.jpg' %}');"></div>
   <div class="product-page-header-overlay"></div>
   <div class="container">
     <a href="{% url 'index' %}" class="product-page-back">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Back to products
     </a>
-    <div class="product-page-eyebrow"><span class="live-dot"></span>Live Product</div>
-    <h1 class="product-page-title">Fleet intelligence from the road to the boardroom</h1>
+    <div class="product-page-eyebrow"><span class="live-dot"></span> Live product</div>
+    <h1 class="product-page-title">Fleet intelligence from the <span class="hero-gradient">road to the boardroom</span></h1>
     <p class="product-page-sub">myTrack ingests live GPS telemetry and turns it into actionable intelligence — from the real-time map in dispatch to the driver safety report on the manager's desk.</p>
   </div>
 </div>
+
+<section class="product-video-section" aria-labelledby="mytrack-demo-heading">
+  <div class="container">
+    <div class="product-video-head">
+      <p class="section-label">See it in action</p>
+      <h2 class="section-title" id="mytrack-demo-heading"><span class="section-gradient">Product demo</span> · myTrack</h2>
+      <p class="section-sub" style="margin:0 auto;">Screen recording of the live platform — fleet map, signals, and operational views your team uses every day.</p>
+    </div>
+    <div class="product-video-frame">
+      <div class="product-video-inner">
+        <video controls playsinline preload="metadata">
+          <source src="{% static 'vid/Demo-Test.mp4' %}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+    <p class="product-video-caption">Demo video: internal test recording. For a tailored walkthrough, contact <a href="mailto:sales@mhareconsulting.co.za">sales@mhareconsulting.co.za</a>.</p>
+  </div>
+</section>
 
 <!-- ── Hero Split ─────────────────────────────────── -->
 <section class="product-split-section">
@@ -310,7 +331,7 @@
       <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
       Get in touch
     </div>
-    <h2 class="cta-headline">Ready to put myTrack to work for your fleet?</h2>
+    <h2 class="cta-headline">Ready to run <span class="cta-gradient">myTrack</span> in your fleet?</h2>
     <p class="cta-sub">Talk to the team that builds and operates myTrack every day. We'll show you exactly how it fits your operation.</p>
     <a href="mailto:sales@mhareconsulting.co.za" class="cta-btn">
       Contact us — sales@mhareconsulting.co.za
