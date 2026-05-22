@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}mhare tech{% endblock %}</title>
   <meta name="description" content="{% block description %}Purpose-built fleet intelligence and route optimisation software for the industries that keep the continent moving.{% endblock %}" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   {% load static %}
+  <link rel="icon" href="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Primary Icon.svg' %}" type="image/svg+xml" />
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   {% block extra_head %}{% endblock %}
 </head>
@@ -18,10 +16,9 @@
   <div class="container nav-inner">
     <a href="{% url 'index' %}" class="logo logo-link">
       <span class="nav-logo-wrap">
-        <img src="{% static 'img/logo.png' %}" alt="Mhare Tech" class="nav-logo-img" />
+        <img src="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Primary Logo.svg' %}" alt="Mhare Consulting" class="nav-logo-img" />
       </span>
       <span class="logo-text">
-        <span class="logo-mhare">MHARE</span>
         <span class="subbrand">Tech</span>
       </span>
     </a>
@@ -43,7 +40,7 @@
   <div class="container">
     <div class="footer-inner">
       <div class="footer-brand">
-        <div class="footer-brand-mark"><span>MHARE</span> <span class="subbrand">Tech</span></div>
+        <div class="footer-brand-mark"><span class="subbrand">Tech</span></div>
         <p>Purpose-built software for African fleets and logistics operations.</p>
       </div>
       <div class="footer-col">
