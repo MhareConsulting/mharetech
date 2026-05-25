@@ -79,15 +79,14 @@ def expo_submit(request):
             status=429,
         )
 
-    lead, err = parse_lead(request.POST, request.META.get('HTTP_USER_AGENT', ''))
-    if err == 'invalid':
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'ok': True})
-        src = normalize_src(request.POST.get('src'))
-        return redirect(f'/expo/?src={src}&thanks=1')
-
     src = normalize_src(request.POST.get('src'))
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+    lead, err = parse_lead(request.POST, request.META.get('HTTP_USER_AGENT', ''))
+    if err == 'invalid':
+        if is_ajax:
+            return JsonResponse({'ok': True, 'redirect': f'/expo/?src={src}&thanks=1'})
+        return redirect(f'/expo/?src={src}&thanks=1')
 
     if lead is None:
         if is_ajax:

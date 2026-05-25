@@ -51,8 +51,8 @@
       {% csrf_token %}
       <input type="hidden" name="src" value="{{ src }}" />
       <div class="expo-honeypot" aria-hidden="true">
-        <label for="expo-website">Website</label>
-        <input type="text" name="website" id="expo-website" tabindex="-1" autocomplete="off" />
+        <label for="expo-hp">Leave blank</label>
+        <input type="text" name="contact_hp" id="expo-hp" tabindex="-1" autocomplete="new-password" value="" />
       </div>
 
       <div class="expo-field">
@@ -231,7 +231,13 @@
     submitBtn.textContent = 'Sending…';
 
     const formData = new FormData(form);
-    const csrf = form.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrfInput = form.querySelector('[name=csrfmiddlewaretoken]');
+    const csrf = csrfInput ? csrfInput.value : '';
+
+    function getCsrfCookie() {
+      const m = document.cookie.match(/csrftoken=([^;]+)/);
+      return m ? decodeURIComponent(m[1]) : '';
+    }
 
     try {
       const res = await fetch(form.action, {
@@ -239,17 +245,37 @@
         body: formData,
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRFToken': csrf,
+          'Accept': 'application/json',
+          'X-CSRFToken': csrf || getCsrfCookie(),
         },
         credentials: 'same-origin',
+        redirect: 'manual',
       });
-      const data = await res.json().catch(function () { return {}; });
-      if (res.ok && data.ok && data.redirect) {
+
+      let data = {};
+      const ct = res.headers.get('content-type') || '';
+      if (ct.indexOf('application/json') !== -1) {
+        data = await res.json();
+      }
+
+      if (data.ok && data.redirect) {
         window.location.href = data.redirect;
         return;
       }
+
+      if (res.type === 'opaqueredirect' || res.status === 302 || res.status === 301) {
+        window.location.href = '/expo/?src=' + encodeURIComponent(form.querySelector('[name=src]').value) + '&thanks=1';
+        return;
+      }
+
       const errEl = document.querySelector('.expo-error');
-      const msg = data.error || 'Something went wrong. Please try again.';
+      let msg = data.error;
+      if (!msg && res.status === 403) {
+        msg = 'Session expired. Please refresh the page and try again.';
+      }
+      if (!msg) {
+        msg = 'Something went wrong. Please try again.';
+      }
       if (errEl) {
         errEl.textContent = msg;
       } else {
@@ -260,7 +286,17 @@
         form.closest('.expo-card').insertAdjacentElement('beforebegin', div);
       }
     } catch (_) {
-      form.submit();
+      const errEl = document.querySelector('.expo-error');
+      const netMsg = 'Network error — check your connection and try again.';
+      if (errEl) {
+        errEl.textContent = netMsg;
+      } else {
+        const div = document.createElement('div');
+        div.className = 'expo-error';
+        div.setAttribute('role', 'alert');
+        div.textContent = netMsg;
+        form.closest('.expo-card').insertAdjacentElement('beforebegin', div);
+      }
       return;
     } finally {
       submitBtn.disabled = false;

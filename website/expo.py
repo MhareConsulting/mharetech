@@ -133,7 +133,8 @@ def parse_interests(post_data: Any, fallback_src: str | None = None) -> list[str
 
 def parse_lead(post_data: Any, user_agent: str) -> tuple[ExpoLead | None, str | None]:
     """Return (lead, error_message). error_message is set on validation failure."""
-    honeypot = (post_data.get('website') or '').strip()
+    # Obscure name — avoid "website" (browsers autofill it on iOS)
+    honeypot = (post_data.get('contact_hp') or '').strip()
     if honeypot:
         return None, 'invalid'
 

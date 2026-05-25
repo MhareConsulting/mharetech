@@ -53,7 +53,7 @@ class ExpoHelpersTests(SimpleTestCase):
         self.assertIn('agree', err)
 
     def test_honeypot_silent(self):
-        lead, err = parse_lead({'website': 'spam'}, 'test')
+        lead, err = parse_lead({'contact_hp': 'spam'}, 'test')
         self.assertIsNone(lead)
         self.assertEqual(err, 'invalid')
 
@@ -78,6 +78,42 @@ class ExpoViewsTests(SimpleTestCase):
     def test_expo_submit_validation(self):
         r = self.client.post(reverse('expo_submit'), {'name': 'x'})
         self.assertEqual(r.status_code, 400)
+
+    def test_website_autofill_does_not_trigger_honeypot(self):
+        lead, err = parse_lead(
+            {
+                'name': 'Jane Doe',
+                'email': 'jane@example.com',
+                'phone': '+27123456789',
+                'interest': ['mytrack'],
+                'website': 'https://company.co.za',
+                'consent': 'on',
+            },
+            'test',
+        )
+        self.assertIsNone(err)
+        self.assertEqual(lead.name, 'Jane Doe')
+
+    def test_expo_ajax_returns_json_error_when_no_smtp(self):
+        r = self.client.get(reverse('expo_connect'))
+        csrf = r.cookies['csrftoken'].value
+        r2 = self.client.post(
+            reverse('expo_submit'),
+            {
+                'name': 'Jane Doe',
+                'email': 'jane@example.com',
+                'phone': '+27123456789',
+                'interest': ['mytrack'],
+                'src': 'mytrack',
+                'consent': 'on',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+            HTTP_X_CSRFTOKEN=csrf,
+        )
+        self.assertEqual(r2.status_code, 503)
+        data = r2.json()
+        self.assertFalse(data['ok'])
+        self.assertIn('not configured', data['error'])
 
     @override_settings(EMAIL_HOST='')
     def test_expo_submit_no_smtp(self):
