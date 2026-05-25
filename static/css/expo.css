@@ -1,0 +1,264 @@
+/* Expo QR contact landing — mobile-first */
+body.expo-page nav,
+body.expo-page footer {
+  display: none;
+}
+
+body.expo-page {
+  background: var(--space-blue);
+  color: #fff;
+  min-height: 100dvh;
+}
+
+.expo-wrap {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2.5rem;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.expo-logo {
+  height: 2rem;
+  margin-bottom: 1.5rem;
+  filter: brightness(0) invert(1);
+}
+
+.expo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--magenta);
+  margin-bottom: 0.75rem;
+}
+
+.expo-badge-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--magenta);
+}
+
+.expo-headline {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+
+.expo-tagline {
+  font-size: 0.95rem;
+  opacity: 0.82;
+  line-height: 1.5;
+  margin-bottom: 1.75rem;
+}
+
+.expo-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.expo-card h2 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+.expo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.25rem;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.expo-btn:active {
+  transform: scale(0.98);
+}
+
+.expo-btn-primary {
+  background: linear-gradient(120deg, var(--digital-violet) 0%, var(--magenta) 100%);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(247, 53, 123, 0.35);
+  margin-bottom: 0.75rem;
+}
+
+.expo-btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+}
+
+.expo-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.expo-hint {
+  font-size: 0.8rem;
+  opacity: 0.65;
+  text-align: center;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+.expo-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+}
+
+.expo-divider::before,
+.expo-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.expo-field {
+  margin-bottom: 0.85rem;
+}
+
+.expo-field label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  opacity: 0.85;
+}
+
+.expo-field input,
+.expo-field select {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(11, 1, 70, 0.5);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 1rem;
+}
+
+.expo-field input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.expo-field select option {
+  color: var(--space-blue);
+}
+
+.expo-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  opacity: 0.9;
+  margin: 1rem 0;
+}
+
+.expo-consent input {
+  margin-top: 0.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+}
+
+.expo-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.expo-error {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #fecaca;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.expo-thanks {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.expo-thanks-icon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  background: linear-gradient(120deg, var(--digital-violet), var(--magenta));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+}
+
+.expo-thanks h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.expo-thanks p {
+  opacity: 0.85;
+  margin-bottom: 1.5rem;
+}
+
+.expo-footer-note {
+  margin-top: auto;
+  padding-top: 2rem;
+  font-size: 0.7rem;
+  opacity: 0.45;
+  text-align: center;
+}
+
+.expo-picker-status {
+  font-size: 0.85rem;
+  color: var(--sun-yellow);
+  margin-bottom: 0.75rem;
+  display: none;
+}
+
+.expo-picker-status.is-visible {
+  display: block;
+}
