@@ -1,5 +1,7 @@
 """Send a test email using the same SMTP settings as the expo lead form."""
 
+from pathlib import Path
+
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand, CommandError
@@ -16,11 +18,14 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        env_path = Path(settings.BASE_DIR) / '.env'
         host = getattr(settings, 'EMAIL_HOST', '')
         if not host:
-            raise CommandError(
-                'SMTP_HOST is empty. Set SMTP_* variables in .env on the server, then restart mharetech.'
+            hint = f'No .env at {env_path}' if not env_path.is_file() else (
+                f'.env exists at {env_path} but SMTP_HOST is missing or empty. '
+                'Add SMTP_HOST, SMTP_PORT, SMTP_USE_SSL, SMTP_USER, SMTP_PASSWORD.'
             )
+            raise CommandError(hint)
 
         to_addr = options['to']
         from_addr = getattr(settings, 'EXPO_LEAD_FROM', settings.DEFAULT_FROM_EMAIL)
