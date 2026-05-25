@@ -44,6 +44,13 @@ body.expo-page {
   background: var(--magenta);
 }
 
+.expo-event-date {
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.88;
+  margin-bottom: 0.5rem;
+}
+
 .expo-headline {
   font-size: 1.65rem;
   font-weight: 800;
@@ -176,6 +183,48 @@ body.expo-page {
 
 .expo-field select option {
   color: var(--space-blue);
+}
+
+.expo-optional {
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+.expo-field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}
+
+.expo-check-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.expo-check {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(11, 1, 70, 0.35);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.expo-check input {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  accent-color: var(--magenta);
+}
+
+.expo-picker-block[hidden] {
+  display: none !important;
 }
 
 .expo-consent {

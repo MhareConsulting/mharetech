@@ -3,14 +3,39 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET, require_POST
 
 from .expo import (
+    EVENT_DATE,
+    EVENT_NAME,
+    EXPO_PRODUCT_OPTIONS,
     build_vcard,
     is_rate_limited,
     normalize_src,
+    parse_interests,
     parse_lead,
     record_submission,
     send_lead_email,
     source_context,
 )
+
+
+def _expo_context(
+    *,
+    src: str,
+    thanks: bool = False,
+    form_error: str | None = None,
+    post=None,
+) -> dict:
+    selected = parse_interests(post, fallback_src=src) if post else [src]
+    return {
+        'src': src,
+        'source': source_context(src),
+        'event_name': EVENT_NAME,
+        'event_date': EVENT_DATE,
+        'thanks': thanks,
+        'form_error': form_error,
+        'form_values': post or {},
+        'selected_interests': selected,
+        'expo_product_options': EXPO_PRODUCT_OPTIONS,
+    }
 
 
 def index(request):
@@ -29,20 +54,7 @@ def myroutes(request):
 def expo_connect(request):
     src = normalize_src(request.GET.get('src'))
     thanks = request.GET.get('thanks') == '1'
-    ctx = {
-        'src': src,
-        'source': source_context(src),
-        'thanks': thanks,
-        'form_error': None,
-        'form_values': {},
-        'expo_sources': [
-            ('mytrack', 'myTrack'),
-            ('myroutes', 'myRoutes'),
-            ('kasistock', 'KasiStock'),
-            ('general', 'General / Mhare Tech'),
-        ],
-    }
-    return render(request, 'expo_connect.html', ctx)
+    return render(request, 'expo_connect.html', _expo_context(src=src, thanks=thanks))
 
 
 @require_GET
@@ -59,22 +71,11 @@ def expo_submit(request):
         msg = 'Too many submissions from this connection. Please wait a while or email sales@mhareconsulting.co.za.'
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({'ok': False, 'error': msg}, status=429)
+        src = normalize_src(request.POST.get('src'))
         return render(
             request,
             'expo_connect.html',
-            {
-                'src': normalize_src(request.POST.get('interest') or request.POST.get('src')),
-                'source': source_context(normalize_src(request.POST.get('interest') or request.POST.get('src'))),
-                'thanks': False,
-                'form_error': msg,
-                'expo_sources': [
-                    ('mytrack', 'myTrack'),
-                    ('myroutes', 'myRoutes'),
-                    ('kasistock', 'KasiStock'),
-                    ('general', 'General / Mhare Tech'),
-                ],
-                'form_values': request.POST,
-            },
+            _expo_context(src=src, form_error=msg, post=request.POST),
             status=429,
         )
 
@@ -82,10 +83,10 @@ def expo_submit(request):
     if err == 'invalid':
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({'ok': True})
-        src = normalize_src(request.POST.get('interest') or request.POST.get('src'))
+        src = normalize_src(request.POST.get('src'))
         return redirect(f'/expo/?src={src}&thanks=1')
 
-    src = normalize_src(request.POST.get('interest') or request.POST.get('src'))
+    src = normalize_src(request.POST.get('src'))
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
     if lead is None:
@@ -94,19 +95,7 @@ def expo_submit(request):
         return render(
             request,
             'expo_connect.html',
-            {
-                'src': src,
-                'source': source_context(src),
-                'thanks': False,
-                'form_error': err,
-                'expo_sources': [
-                    ('mytrack', 'myTrack'),
-                    ('myroutes', 'myRoutes'),
-                    ('kasistock', 'KasiStock'),
-                    ('general', 'General / Mhare Tech'),
-                ],
-                'form_values': request.POST,
-            },
+            _expo_context(src=src, form_error=err, post=request.POST),
             status=400,
         )
 
@@ -117,19 +106,7 @@ def expo_submit(request):
         return render(
             request,
             'expo_connect.html',
-            {
-                'src': src,
-                'source': source_context(src),
-                'thanks': False,
-                'form_error': mail_err,
-                'expo_sources': [
-                    ('mytrack', 'myTrack'),
-                    ('myroutes', 'myRoutes'),
-                    ('kasistock', 'KasiStock'),
-                    ('general', 'General / Mhare Tech'),
-                ],
-                'form_values': request.POST,
-            },
+            _expo_context(src=src, form_error=mail_err, post=request.POST),
             status=503,
         )
 

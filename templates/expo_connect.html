@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}Connect · {{ source.label }} · Mhare Tech{% endblock %}
-{% block description %}Share your contact at Logistics Expo SA 2026 — {{ source.label }}{% endblock %}
+{% block description %}Share your contact at {{ event_name }} — {{ source.label }}{% endblock %}
 
 {% block body_class %}expo-page{% endblock %}
 
@@ -18,12 +18,13 @@
   <div class="expo-thanks">
     <div class="expo-thanks-icon" aria-hidden="true">✓</div>
     <h1>Thank you</h1>
-    <p>We have your details and will follow up soon.</p>
+    <p>We have your details and will follow up after {{ event_name }}.</p>
     <a class="expo-btn expo-btn-secondary" href="{% url 'expo_vcard' %}">Save Mhare to your phone</a>
-    <p class="expo-hint" style="margin-top:1rem">Booth · Logistics Expo SA 2026</p>
+    <p class="expo-hint" style="margin-top:1rem">{{ event_name }} · {{ event_date }}</p>
   </div>
   {% else %}
-  <div class="expo-badge"><span class="expo-badge-dot"></span> Logistics Expo SA 2026</div>
+  <div class="expo-badge"><span class="expo-badge-dot"></span> {{ event_name }}</div>
+  <p class="expo-event-date">{{ event_date }}</p>
   <h1 class="expo-headline">{{ source.headline }}</h1>
   <p class="expo-tagline">{{ source.tagline }}</p>
 
@@ -33,13 +34,15 @@
 
   <div class="expo-card">
     <h2>Share your details</h2>
-    <p id="expo-picker-status" class="expo-picker-status" role="status"></p>
-    <button type="button" class="expo-btn expo-btn-primary" id="expo-pick-contact" hidden>
-      Pick from contacts
-    </button>
-    <p id="expo-picker-hint" class="expo-hint" hidden>Available on Android Chrome — fills the form below.</p>
 
-    <div class="expo-divider">or enter details</div>
+    <div id="expo-picker-block" class="expo-picker-block" hidden>
+      <button type="button" class="expo-btn expo-btn-primary" id="expo-pick-contact">
+        Pick from contacts
+      </button>
+      <p class="expo-hint">Android Chrome only — fills the form below.</p>
+      <p id="expo-picker-status" class="expo-picker-status" role="status"></p>
+      <div class="expo-divider">or enter details</div>
+    </div>
 
     <form id="expo-form" method="post" action="{% url 'expo_submit' %}" novalidate>
       {% csrf_token %}
@@ -65,17 +68,21 @@
                value="{{ form_values.phone|default:'' }}" placeholder="+27 …" />
       </div>
       <div class="expo-field">
-        <label for="expo-company">Company <span style="opacity:0.6;font-weight:400">(optional)</span></label>
+        <label for="expo-company">Company <span class="expo-optional">(optional)</span></label>
         <input type="text" id="expo-company" name="company" autocomplete="organization"
                value="{{ form_values.company|default:'' }}" placeholder="Your company" />
       </div>
       <div class="expo-field">
-        <label for="expo-interest">Interested in</label>
-        <select id="expo-interest" name="interest" required>
-          {% for key, label in expo_sources %}
-          <option value="{{ key }}" {% if src == key %}selected{% endif %}>{{ label }}</option>
+        <span class="expo-field-label" id="expo-interest-label">Interested in <span class="expo-optional">(select all that apply)</span></span>
+        <div class="expo-check-group" role="group" aria-labelledby="expo-interest-label">
+          {% for key, label in expo_product_options %}
+          <label class="expo-check">
+            <input type="checkbox" name="interest" value="{{ key }}"
+                   {% if key in selected_interests %}checked{% endif %} />
+            <span>{{ label }}</span>
+          </label>
           {% endfor %}
-        </select>
+        </div>
       </div>
 
       <label class="expo-consent">
@@ -99,22 +106,28 @@
 <script>
 (function () {
   const form = document.getElementById('expo-form');
+  const pickerBlock = document.getElementById('expo-picker-block');
   const pickBtn = document.getElementById('expo-pick-contact');
-  const pickHint = document.getElementById('expo-picker-hint');
   const pickStatus = document.getElementById('expo-picker-status');
   const submitBtn = document.getElementById('expo-submit-btn');
 
-  const supportsContacts = 'contacts' in navigator && 'ContactsManager' in window;
-  if (supportsContacts) {
-    pickBtn.hidden = false;
-    pickHint.hidden = false;
+  function supportsContactPicker() {
+    const ua = navigator.userAgent || '';
+    const isAndroid = /Android/i.test(ua);
+    return isAndroid
+      && 'contacts' in navigator
+      && typeof navigator.contacts.select === 'function';
+  }
+
+  if (supportsContactPicker()) {
+    pickerBlock.hidden = false;
   }
 
   pickBtn.addEventListener('click', async function () {
+    pickStatus.textContent = '';
+    pickStatus.classList.remove('is-visible');
     try {
-      const props = ['name', 'email', 'tel'];
-      const opts = { multiple: false };
-      const contacts = await navigator.contacts.select(props, opts);
+      const contacts = await navigator.contacts.select(['name', 'email', 'tel'], { multiple: false });
       if (!contacts || !contacts.length) return;
       const c = contacts[0];
       if (c.name && c.name.length) {
@@ -130,13 +143,27 @@
       pickStatus.classList.add('is-visible');
     } catch (err) {
       if (err.name !== 'AbortError') {
-        pickStatus.textContent = 'Could not read contacts. Please type your details below.';
+        pickStatus.textContent = 'Could not open contacts. Please enter your details below.';
         pickStatus.classList.add('is-visible');
       }
     }
   });
 
   form.addEventListener('submit', async function (e) {
+    const checked = form.querySelectorAll('input[name="interest"]:checked');
+    if (!checked.length) {
+      e.preventDefault();
+      let errEl = document.querySelector('.expo-error');
+      if (!errEl) {
+        errEl = document.createElement('div');
+        errEl.className = 'expo-error';
+        errEl.setAttribute('role', 'alert');
+        form.closest('.expo-card').insertAdjacentElement('beforebegin', errEl);
+      }
+      errEl.textContent = 'Please select at least one product you are interested in.';
+      return;
+    }
+
     e.preventDefault();
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';

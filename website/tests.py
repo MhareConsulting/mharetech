@@ -1,7 +1,7 @@
 from django.test import Client, SimpleTestCase, override_settings
 from django.urls import reverse
 
-from .expo import build_vcard, normalize_src, parse_lead
+from .expo import EVENT_NAME, build_vcard, normalize_src, parse_interests, parse_lead
 
 
 class ExpoHelpersTests(SimpleTestCase):
@@ -13,6 +13,36 @@ class ExpoHelpersTests(SimpleTestCase):
         vcf = build_vcard()
         self.assertIn('BEGIN:VCARD', vcf)
         self.assertIn('sales@mhareconsulting.co.za', vcf)
+        self.assertIn(EVENT_NAME, vcf)
+
+    def test_parse_multiple_interests(self):
+        lead, err = parse_lead(
+            {
+                'name': 'Jane Doe',
+                'email': 'jane@example.com',
+                'phone': '+27123456789',
+                'interest': ['mytrack', 'myroutes'],
+                'src': 'mytrack',
+                'consent': 'on',
+            },
+            'test',
+        )
+        self.assertIsNone(err)
+        self.assertEqual(lead.interests, ['mytrack', 'myroutes'])
+
+    def test_parse_requires_interest(self):
+        lead, err = parse_lead(
+            {
+                'name': 'Jane Doe',
+                'email': 'jane@example.com',
+                'phone': '+27123456789',
+                'src': 'mytrack',
+                'consent': 'on',
+            },
+            'test',
+        )
+        self.assertIsNone(lead)
+        self.assertIn('select at least one', err)
 
     def test_parse_lead_requires_consent(self):
         lead, err = parse_lead(
@@ -37,6 +67,7 @@ class ExpoViewsTests(SimpleTestCase):
         self.assertEqual(r.status_code, 200)
         self.assertContains(r, 'myTrack')
         self.assertContains(r, 'Share your details')
+        self.assertContains(r, EVENT_NAME)
 
     def test_expo_vcard_download(self):
         r = self.client.get(reverse('expo_vcard'))
@@ -56,7 +87,8 @@ class ExpoViewsTests(SimpleTestCase):
                 'name': 'Jane Doe',
                 'email': 'jane@example.com',
                 'phone': '+27123456789',
-                'interest': 'mytrack',
+                'interest': ['mytrack'],
+                'src': 'mytrack',
                 'consent': 'on',
             },
         )
