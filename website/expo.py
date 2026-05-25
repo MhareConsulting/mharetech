@@ -12,7 +12,7 @@ from django.core.mail import send_mail
 from django.utils import timezone
 
 EVENT_NAME = 'Sloane Connect'
-EVENT_DATE = 'Friday 29 May'
+EVENT_DATE = 'Friday 29 May 2026'
 
 EXPO_SOURCES: dict[str, dict[str, str]] = {
     'mytrack': {
