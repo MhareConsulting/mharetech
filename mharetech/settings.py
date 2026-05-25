@@ -28,6 +28,13 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['mharetech.co.za', 'www.mharetech.co.za', 'localhost', '127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://mharetech.co.za',
+    'https://www.mharetech.co.za',
+]
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SAMESITE = 'Lax'
+
 
 # Application definition
 

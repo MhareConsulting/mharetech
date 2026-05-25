@@ -9,6 +9,17 @@ sudo systemctl restart mharetech
 Expo QR contact (after pull)
 pip install -r requirements.txt
 python scripts/generate_expo_qr.py   # if QR PNGs changed
-# Set on the VM (gunicorn env): SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD,
-# EXPO_LEAD_TO=sales@mhareconsulting.co.za, EXPO_LEAD_FROM=noreply@mharetech.co.za
+# In /home/azureuser/mharetech/.env (host-ww.net example):
+# SMTP_HOST=da12.host-ww.net
+# SMTP_PORT=465
+# SMTP_USE_SSL=True
+# SMTP_USE_TLS=False
+# SMTP_USER=sales@mhareconsulting.co.za
+# SMTP_PASSWORD=(mailbox password)
+# EXPO_LEAD_TO=sales@mhareconsulting.co.za
+# EXPO_LEAD_FROM=sales@mhareconsulting.co.za
 # Landing: https://mharetech.co.za/expo?src=mytrack (myroutes / kasistock / general)
+
+Test SMTP on the VM:
+  source .venv/bin/activate
+  python manage.py test_expo_smtp

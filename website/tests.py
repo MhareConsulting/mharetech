@@ -68,6 +68,25 @@ class ExpoViewsTests(SimpleTestCase):
         self.assertContains(r, 'myTrack')
         self.assertContains(r, 'Share your details')
         self.assertContains(r, EVENT_NAME)
+        self.assertContains(r, 'expo-header')
+
+    def test_expo_form_post_with_csrf(self):
+        r = self.client.get(reverse('expo_connect'))
+        token = r.cookies['csrftoken'].value
+        r2 = self.client.post(
+            reverse('expo_submit'),
+            {
+                'name': 'Jane Doe',
+                'email': 'jane@example.com',
+                'phone': '+27123456789',
+                'interest': ['mytrack'],
+                'src': 'mytrack',
+                'consent': 'on',
+            },
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertNotEqual(r2.status_code, 403)
+        self.assertIn(r2.status_code, (302, 503))
 
     def test_expo_vcard_download(self):
         r = self.client.get(reverse('expo_vcard'))

@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
 from .expo import (
@@ -50,6 +51,7 @@ def myroutes(request):
     return render(request, 'myroutes.html')
 
 
+@ensure_csrf_cookie
 @require_GET
 def expo_connect(request):
     src = normalize_src(request.GET.get('src'))

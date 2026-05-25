@@ -20,11 +20,13 @@
     <h1>Thank you</h1>
     <p>We have your details and will follow up after {{ event_name }}.</p>
     <a class="expo-btn expo-btn-secondary" href="{% url 'expo_vcard' %}">Save Mhare to your phone</a>
-    <p class="expo-hint" style="margin-top:1rem">{{ event_name }} · {{ event_date }}</p>
+    <p class="expo-hint expo-hint--center">{{ event_name }} · {{ event_date }}</p>
   </div>
   {% else %}
-  <div class="expo-badge"><span class="expo-badge-dot"></span> {{ event_name }}</div>
-  <p class="expo-event-date">{{ event_date }}</p>
+  <header class="expo-header">
+    <div class="expo-badge"><span class="expo-badge-dot"></span> {{ event_name }}</div>
+    <p class="expo-event-date">{{ event_date }}</p>
+  </header>
   <h1 class="expo-headline">{{ source.headline }}</h1>
   <p class="expo-tagline">{{ source.tagline }}</p>
 
@@ -42,12 +44,7 @@
       <p id="expo-picker-status" class="expo-picker-status" role="status"></p>
     </div>
 
-    <p id="expo-ios-tip" class="expo-ios-tip" hidden>
-      <button type="button" class="expo-link-btn" id="expo-ios-autofill">Use my contact card</button>
-      — tap a field, then pick yourself from iPhone suggestions.
-    </p>
-
-    <form id="expo-form" method="post" action="{% url 'expo_submit' %}" novalidate>
+    <form id="expo-form" method="post" action="{% url 'expo_submit' %}">
       {% csrf_token %}
       <input type="hidden" name="src" value="{{ src }}" />
       <div class="expo-honeypot" aria-hidden="true">
@@ -109,7 +106,7 @@
   </div>
 
   <a class="expo-btn expo-btn-secondary" href="{% url 'expo_vcard' %}">Save Mhare to your phone</a>
-  <p class="expo-hint">Download our contact card — no form required.</p>
+  <p class="expo-hint expo-hint--center">Download our contact card — no form required.</p>
   {% endif %}
 
   <p class="expo-footer-note">Mhare Tech · mharetech.co.za</p>
@@ -122,8 +119,6 @@
   const pickerBlock = document.getElementById('expo-picker-block');
   const pickBtn = document.getElementById('expo-pick-contact');
   const pickStatus = document.getElementById('expo-picker-status');
-  const iosTip = document.getElementById('expo-ios-tip');
-  const iosAutofill = document.getElementById('expo-ios-autofill');
   const submitBtn = document.getElementById('expo-submit-btn');
   const msWrap = document.getElementById('expo-multiselect');
   const msToggle = document.getElementById('expo-interest-toggle');
@@ -131,19 +126,10 @@
   const msSummary = document.getElementById('expo-interest-summary');
   const interestChecks = form.querySelectorAll('input[name="interest"]');
 
-  const ua = navigator.userAgent || '';
-  const isIOS = /iPhone|iPad|iPod/i.test(ua);
-
-  function supportsContactPicker() {
-    return /Android/i.test(ua)
+  if (/Android/i.test(navigator.userAgent || '')
       && 'contacts' in navigator
-      && typeof navigator.contacts.select === 'function';
-  }
-
-  if (supportsContactPicker()) {
+      && typeof navigator.contacts.select === 'function') {
     pickerBlock.hidden = false;
-  } else if (isIOS) {
-    iosTip.hidden = false;
   }
 
   function updateInterestSummary() {
@@ -179,10 +165,6 @@
     if (!msWrap.contains(e.target)) closeInterestPanel();
   });
 
-  iosAutofill.addEventListener('click', function () {
-    document.getElementById('expo-name').focus();
-  });
-
   pickBtn.addEventListener('click', async function () {
     pickStatus.textContent = '';
     pickStatus.classList.remove('is-visible');
@@ -190,26 +172,20 @@
       const contacts = await navigator.contacts.select(['name', 'email', 'tel'], { multiple: false });
       if (!contacts || !contacts.length) return;
       const c = contacts[0];
-      if (c.name && c.name.length) {
-        document.getElementById('expo-name').value = c.name[0] || '';
-      }
-      if (c.email && c.email.length) {
-        document.getElementById('expo-email').value = c.email[0] || '';
-      }
-      if (c.tel && c.tel.length) {
-        document.getElementById('expo-phone').value = c.tel[0] || '';
-      }
+      if (c.name && c.name.length) document.getElementById('expo-name').value = c.name[0] || '';
+      if (c.email && c.email.length) document.getElementById('expo-email').value = c.email[0] || '';
+      if (c.tel && c.tel.length) document.getElementById('expo-phone').value = c.tel[0] || '';
       pickStatus.textContent = 'Contact loaded — review and tap Send.';
       pickStatus.classList.add('is-visible');
     } catch (err) {
       if (err.name !== 'AbortError') {
-        pickStatus.textContent = 'Could not open contacts. Please enter your details below.';
+        pickStatus.textContent = 'Could not open contacts. Please type your details below.';
         pickStatus.classList.add('is-visible');
       }
     }
   });
 
-  form.addEventListener('submit', async function (e) {
+  form.addEventListener('submit', function (e) {
     closeInterestPanel();
     const checked = form.querySelectorAll('input[name="interest"]:checked');
     if (!checked.length) {
@@ -220,88 +196,13 @@
         errEl = document.createElement('div');
         errEl.className = 'expo-error';
         errEl.setAttribute('role', 'alert');
-        form.closest('.expo-card').insertAdjacentElement('beforebegin', errEl);
+        form.closest('.expo-wrap').insertBefore(errEl, form.closest('.expo-card'));
       }
       errEl.textContent = 'Please select at least one product you are interested in.';
       return;
     }
-
-    e.preventDefault();
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
-
-    const formData = new FormData(form);
-    const csrfInput = form.querySelector('[name=csrfmiddlewaretoken]');
-    const csrf = csrfInput ? csrfInput.value : '';
-
-    function getCsrfCookie() {
-      const m = document.cookie.match(/csrftoken=([^;]+)/);
-      return m ? decodeURIComponent(m[1]) : '';
-    }
-
-    try {
-      const res = await fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          'Accept': 'application/json',
-          'X-CSRFToken': csrf || getCsrfCookie(),
-        },
-        credentials: 'same-origin',
-        redirect: 'manual',
-      });
-
-      let data = {};
-      const ct = res.headers.get('content-type') || '';
-      if (ct.indexOf('application/json') !== -1) {
-        data = await res.json();
-      }
-
-      if (data.ok && data.redirect) {
-        window.location.href = data.redirect;
-        return;
-      }
-
-      if (res.type === 'opaqueredirect' || res.status === 302 || res.status === 301) {
-        window.location.href = '/expo/?src=' + encodeURIComponent(form.querySelector('[name=src]').value) + '&thanks=1';
-        return;
-      }
-
-      const errEl = document.querySelector('.expo-error');
-      let msg = data.error;
-      if (!msg && res.status === 403) {
-        msg = 'Session expired. Please refresh the page and try again.';
-      }
-      if (!msg) {
-        msg = 'Something went wrong. Please try again.';
-      }
-      if (errEl) {
-        errEl.textContent = msg;
-      } else {
-        const div = document.createElement('div');
-        div.className = 'expo-error';
-        div.setAttribute('role', 'alert');
-        div.textContent = msg;
-        form.closest('.expo-card').insertAdjacentElement('beforebegin', div);
-      }
-    } catch (_) {
-      const errEl = document.querySelector('.expo-error');
-      const netMsg = 'Network error — check your connection and try again.';
-      if (errEl) {
-        errEl.textContent = netMsg;
-      } else {
-        const div = document.createElement('div');
-        div.className = 'expo-error';
-        div.setAttribute('role', 'alert');
-        div.textContent = netMsg;
-        form.closest('.expo-card').insertAdjacentElement('beforebegin', div);
-      }
-      return;
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send my details';
-    }
   });
 })();
 </script>
