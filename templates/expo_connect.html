@@ -36,13 +36,16 @@
     <h2>Share your details</h2>
 
     <div id="expo-picker-block" class="expo-picker-block" hidden>
-      <button type="button" class="expo-btn expo-btn-primary" id="expo-pick-contact">
-        Pick from contacts
+      <button type="button" class="expo-btn expo-btn-compact" id="expo-pick-contact">
+        Fill from contacts
       </button>
-      <p class="expo-hint">Android Chrome only — fills the form below.</p>
       <p id="expo-picker-status" class="expo-picker-status" role="status"></p>
-      <div class="expo-divider">or enter details</div>
     </div>
+
+    <p id="expo-ios-tip" class="expo-ios-tip" hidden>
+      <button type="button" class="expo-link-btn" id="expo-ios-autofill">Use my contact card</button>
+      — tap a field, then pick yourself from iPhone suggestions.
+    </p>
 
     <form id="expo-form" method="post" action="{% url 'expo_submit' %}" novalidate>
       {% csrf_token %}
@@ -54,17 +57,20 @@
 
       <div class="expo-field">
         <label for="expo-name">Name</label>
-        <input type="text" id="expo-name" name="name" required autocomplete="name"
+        <input type="text" id="expo-name" name="name" required
+               autocomplete="name" autocapitalize="words" enterkeyhint="next"
                value="{{ form_values.name|default:'' }}" placeholder="Your full name" />
       </div>
       <div class="expo-field">
         <label for="expo-email">Email</label>
-        <input type="email" id="expo-email" name="email" required autocomplete="email"
+        <input type="email" id="expo-email" name="email" required
+               autocomplete="email" inputmode="email" enterkeyhint="next"
                value="{{ form_values.email|default:'' }}" placeholder="you@company.co.za" />
       </div>
       <div class="expo-field">
         <label for="expo-phone">Phone</label>
-        <input type="tel" id="expo-phone" name="phone" required autocomplete="tel"
+        <input type="tel" id="expo-phone" name="phone" required
+               autocomplete="tel" inputmode="tel" enterkeyhint="done"
                value="{{ form_values.phone|default:'' }}" placeholder="+27 …" />
       </div>
       <div class="expo-field">
@@ -73,15 +79,22 @@
                value="{{ form_values.company|default:'' }}" placeholder="Your company" />
       </div>
       <div class="expo-field">
-        <span class="expo-field-label" id="expo-interest-label">Interested in <span class="expo-optional">(select all that apply)</span></span>
-        <div class="expo-check-group" role="group" aria-labelledby="expo-interest-label">
-          {% for key, label in expo_product_options %}
-          <label class="expo-check">
-            <input type="checkbox" name="interest" value="{{ key }}"
-                   {% if key in selected_interests %}checked{% endif %} />
-            <span>{{ label }}</span>
-          </label>
-          {% endfor %}
+        <label id="expo-interest-label" for="expo-interest-toggle">Interested in</label>
+        <div class="expo-multiselect" id="expo-multiselect">
+          <button type="button" class="expo-multiselect-toggle" id="expo-interest-toggle"
+                  aria-haspopup="listbox" aria-expanded="false" aria-labelledby="expo-interest-label">
+            <span class="expo-multiselect-value" id="expo-interest-summary">Select products…</span>
+            <span class="expo-multiselect-chevron" aria-hidden="true"></span>
+          </button>
+          <div class="expo-multiselect-panel" id="expo-interest-panel" role="listbox" aria-multiselectable="true" hidden>
+            {% for key, label in expo_product_options %}
+            <label class="expo-multiselect-option">
+              <input type="checkbox" name="interest" value="{{ key }}"
+                     {% if key in selected_interests %}checked{% endif %} />
+              <span>{{ label }}</span>
+            </label>
+            {% endfor %}
+          </div>
         </div>
       </div>
 
@@ -109,19 +122,66 @@
   const pickerBlock = document.getElementById('expo-picker-block');
   const pickBtn = document.getElementById('expo-pick-contact');
   const pickStatus = document.getElementById('expo-picker-status');
+  const iosTip = document.getElementById('expo-ios-tip');
+  const iosAutofill = document.getElementById('expo-ios-autofill');
   const submitBtn = document.getElementById('expo-submit-btn');
+  const msWrap = document.getElementById('expo-multiselect');
+  const msToggle = document.getElementById('expo-interest-toggle');
+  const msPanel = document.getElementById('expo-interest-panel');
+  const msSummary = document.getElementById('expo-interest-summary');
+  const interestChecks = form.querySelectorAll('input[name="interest"]');
+
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
 
   function supportsContactPicker() {
-    const ua = navigator.userAgent || '';
-    const isAndroid = /Android/i.test(ua);
-    return isAndroid
+    return /Android/i.test(ua)
       && 'contacts' in navigator
       && typeof navigator.contacts.select === 'function';
   }
 
   if (supportsContactPicker()) {
     pickerBlock.hidden = false;
+  } else if (isIOS) {
+    iosTip.hidden = false;
   }
+
+  function updateInterestSummary() {
+    const labels = [];
+    interestChecks.forEach(function (cb) {
+      if (cb.checked) labels.push(cb.closest('label').querySelector('span').textContent);
+    });
+    msSummary.textContent = labels.length ? labels.join(', ') : 'Select products…';
+    msToggle.classList.toggle('has-value', labels.length > 0);
+  }
+
+  function closeInterestPanel() {
+    msPanel.hidden = true;
+    msToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function openInterestPanel() {
+    msPanel.hidden = false;
+    msToggle.setAttribute('aria-expanded', 'true');
+  }
+
+  msToggle.addEventListener('click', function () {
+    if (msPanel.hidden) openInterestPanel();
+    else closeInterestPanel();
+  });
+
+  interestChecks.forEach(function (cb) {
+    cb.addEventListener('change', updateInterestSummary);
+  });
+  updateInterestSummary();
+
+  document.addEventListener('click', function (e) {
+    if (!msWrap.contains(e.target)) closeInterestPanel();
+  });
+
+  iosAutofill.addEventListener('click', function () {
+    document.getElementById('expo-name').focus();
+  });
 
   pickBtn.addEventListener('click', async function () {
     pickStatus.textContent = '';
@@ -150,9 +210,11 @@
   });
 
   form.addEventListener('submit', async function (e) {
+    closeInterestPanel();
     const checked = form.querySelectorAll('input[name="interest"]:checked');
     if (!checked.length) {
       e.preventDefault();
+      openInterestPanel();
       let errEl = document.querySelector('.expo-error');
       if (!errEl) {
         errEl = document.createElement('div');

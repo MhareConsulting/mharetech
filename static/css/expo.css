@@ -190,41 +190,135 @@ body.expo-page {
   font-weight: 400;
 }
 
-.expo-field-label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 600;
+.expo-btn-compact {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.6rem 1rem;
   margin-bottom: 0.5rem;
-  opacity: 0.85;
-}
-
-.expo-check-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.expo-check {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.65rem 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 8px;
-  background: rgba(11, 1, 70, 0.35);
-  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.expo-check input {
-  width: 1.15rem;
-  height: 1.15rem;
+.expo-ios-tip {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0.8;
+  margin-bottom: 0.85rem;
+}
+
+.expo-ios-tip[hidden],
+.expo-picker-block[hidden] {
+  display: none !important;
+}
+
+.expo-link-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--sun-yellow);
+  font-family: var(--font);
+  font-size: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.expo-multiselect {
+  position: relative;
+}
+
+.expo-multiselect-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(11, 1, 70, 0.5);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.expo-multiselect-toggle.has-value .expo-multiselect-value {
+  opacity: 1;
+}
+
+.expo-multiselect-value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.55;
+  font-size: 0.95rem;
+}
+
+.expo-multiselect-chevron {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid rgba(255, 255, 255, 0.7);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+  transform: rotate(45deg);
+  margin-top: -0.15rem;
+  flex-shrink: 0;
+}
+
+.expo-multiselect-panel {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  max-height: 11rem;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  background: #120a52;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.expo-multiselect-panel[hidden] {
+  display: none;
+}
+
+.expo-multiselect-option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.expo-multiselect-option:last-child {
+  border-bottom: none;
+}
+
+.expo-multiselect-option:active {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.expo-multiselect-option input {
+  width: 1rem;
+  height: 1rem;
   flex-shrink: 0;
   accent-color: var(--magenta);
 }
 
-.expo-picker-block[hidden] {
-  display: none !important;
+.expo-picker-block {
+  margin-bottom: 0.5rem;
 }
 
 .expo-consent {
