@@ -490,14 +490,13 @@ function TrackSceneAlert() {
 // Scene 3 — WhatsApp instant alerts
 function TrackSceneWhatsApp() {
   const WA_GREEN = "#25D366";
-  const WA_DARK  = "#128C7E";
-  const msgs = [
-    { time:"13:38", text:"Fleet Alert for your vehicle KX98NBGP: Harsh Acceleration has been detected. Details: . Please take corrective action immediately." },
-    { time:"13:38", text:"Fleet Alert for your vehicle KX98NBGP: Harsh Braking has been detected. Details: . Please take corrective action immediately." },
-    { time:"13:46", text:"Fleet Alert for your vehicle KX98NBGP: Harsh Braking has been detected. Details: . Please take corrective action immediately." },
-    { time:"14:05", text:"Fleet Alert for your vehicle KX98NBGP: Harsh Acceleration has been detected. Details: . Please take corrective action immediately." },
-    { time:"14:05", text:"Fleet Alert for your vehicle KX98NBGP: Harsh Cornering has been detected. Details: . Please take corrective action immediately." },
-    { time:"14:05", text:"Fleet Alert for your vehicle KX98NBGP: Harsh Braking has been detected. Details: . Please take corrective action immediately." },
+  const alerts = [
+    { event:"Harsh Acceleration", vehicle:"KX98NBGP", time:"13:38", color:TRACK_MAGENTA },
+    { event:"Harsh Braking",      vehicle:"KX98NBGP", time:"13:38", color:"#FF6B35" },
+    { event:"Harsh Braking",      vehicle:"KX98NBGP", time:"13:46", color:"#FF6B35" },
+    { event:"Harsh Acceleration", vehicle:"KX98NBGP", time:"14:05", color:TRACK_MAGENTA },
+    { event:"Harsh Cornering",    vehicle:"KX98NBGP", time:"14:05", color:TRACK_PURPLE_2 },
+    { event:"Harsh Braking",      vehicle:"KX98NBGP", time:"14:05", color:"#FF6B35" },
   ];
   return (
     <div style={{ display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:64, width:"100%", alignItems:"center" }}>
@@ -516,110 +515,71 @@ function TrackSceneWhatsApp() {
         </h2>
         <div style={{ marginTop:28, display:"flex", flexDirection:"column", gap:14 }}>
           {[
-            { icon:"⛽", label:"Fuel drain alerts",      sub:"Triggered the moment theft starts" },
-            { icon:"⚡", label:"Harsh driving events",   sub:"Braking · acceleration · cornering" },
-            { icon:"📍", label:"Geofence breaches",      sub:"Real-time location violations" },
+            { dot:TRACK_MAGENTA,   label:"Harsh driving events",  sub:"Acceleration · braking · cornering" },
+            { dot:"#FF6B35",       label:"Fuel drain alerts",      sub:"Triggered the moment theft starts" },
+            { dot:TRACK_PURPLE_2,  label:"Geofence breaches",      sub:"Real-time location violations" },
           ].map((item, i) => (
-            <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:14 }}>
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
               <div style={{
-                width:36, height:36, borderRadius:10, flexShrink:0,
-                background:"rgba(37,211,102,.1)", border:`1px solid ${WA_GREEN}33`,
-                display:"grid", placeItems:"center", fontSize:16
-              }}>{item.icon}</div>
+                width:10, height:10, borderRadius:"50%", flexShrink:0,
+                background:item.dot, boxShadow:`0 0 10px ${item.dot}`
+              }}/>
               <div>
                 <div style={{ fontWeight:700, fontSize:17 }}>{item.label}</div>
-                <div style={{ fontSize:13, opacity:.55, marginTop:2 }}>{item.sub}</div>
+                <div style={{ fontSize:13, opacity:.55 }}>{item.sub}</div>
               </div>
             </div>
           ))}
         </div>
+        <div style={{ marginTop:28, fontSize:15, opacity:.5, fontWeight:500, letterSpacing:".01em" }}>
+          Sent directly via WhatsApp to your fleet manager.<br/>No app. No login. Just a message.
+        </div>
       </div>
 
-      {/* RIGHT · WhatsApp chat mockup — matches real myTrack notification format */}
-      <div style={{ display:"flex", justifyContent:"center" }}>
-        <div style={{
-          width:310, borderRadius:12, overflow:"hidden",
-          boxShadow:`0 40px 80px -10px rgba(0,0,0,.75), 0 0 0 1px rgba(255,255,255,.07)`,
-          background:"#ECE5DD", display:"flex", flexDirection:"column"
-        }}>
-          {/* Status bar */}
+      {/* RIGHT · notification cards */}
+      <div style={{ position:"relative", display:"flex", flexDirection:"column", gap:10 }}>
+        {/* header */}
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
           <div style={{
-            background:WA_DARK, padding:"6px 14px 0",
-            display:"flex", justifyContent:"space-between", alignItems:"center"
+            width:32, height:32, borderRadius:8, background:WA_GREEN,
+            display:"grid", placeItems:"center"
           }}>
-            <span style={{ fontSize:11, fontWeight:700, color:"#fff" }}>15:28</span>
-            <div style={{ display:"flex", gap:6, alignItems:"center" }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(255,255,255,.8)"><path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0119 12.55M5 12.55a10.94 10.94 0 015.17-2.39M10.71 5.05A16 16 0 0122.56 9M1.42 9a15.91 15.91 0 014.7-2.88M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(255,255,255,.8)"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
-            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.99.574 3.842 1.563 5.4L2 22l4.744-1.543A9.956 9.956 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+            </svg>
           </div>
-
-          {/* Contact header */}
-          <div style={{
-            background:WA_DARK, padding:"8px 14px 12px",
-            display:"flex", alignItems:"center", gap:10
-          }}>
-            <div style={{
-              width:38, height:38, borderRadius:"50%", flexShrink:0,
-              background:"#6B8E6B", display:"grid", placeItems:"center",
-              fontSize:16, color:"#fff", fontWeight:700
-            }}>M</div>
-            <div style={{ flex:1, minWidth:0 }}>
-              <div style={{ fontWeight:700, fontSize:14, color:"#fff", lineHeight:1.2 }}>MyTrack Notifications</div>
-              <div style={{ fontSize:11, color:"rgba(255,255,255,.6)", marginTop:1 }}>Test Number</div>
-            </div>
-            <div style={{ display:"flex", gap:14 }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.22 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" strokeWidth="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-            </div>
-          </div>
-
-          {/* Chat wallpaper + messages */}
-          <div style={{
-            background:"#E5DDD5",
-            backgroundImage:"url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='%23d4cfc7' fill-opacity='0.3'/%3E%3C/svg%3E\")",
-            padding:"8px 8px 4px", display:"flex", flexDirection:"column", gap:4,
-          }}>
-            {/* Day label */}
-            <div style={{ textAlign:"center", marginBottom:4 }}>
-              <span style={{
-                fontSize:11, color:"#6b6b6b", background:"rgba(255,255,255,.75)",
-                padding:"3px 10px", borderRadius:999, boxShadow:"0 1px 1px rgba(0,0,0,.08)"
-              }}>Friday</span>
-            </div>
-
-            {msgs.map((msg, i) => (
-              <div key={i} style={{ display:"flex", justifyContent:"flex-start" }}>
-                <div style={{
-                  maxWidth:"88%",
-                  borderRadius:"8px 8px 8px 2px",
-                  padding:"5px 7px 4px",
-                  background:"#fff",
-                  boxShadow:"0 1px 1px rgba(0,0,0,.12)",
-                  marginBottom:1
-                }}>
-                  <div style={{ fontSize:11.5, lineHeight:1.5, color:"#303030" }}>{msg.text}</div>
-                  <div style={{ fontSize:10, color:"#999", textAlign:"right", marginTop:1 }}>{msg.time}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Input bar */}
-          <div style={{
-            background:"#F0F0F0", padding:"6px 8px",
-            display:"flex", alignItems:"center", gap:6,
-            borderTop:"1px solid #ddd"
-          }}>
-            <div style={{ fontSize:18, color:"#8696a0", lineHeight:1 }}>+</div>
-            <div style={{
-              flex:1, background:"#fff", borderRadius:999,
-              padding:"6px 12px", fontSize:11.5, color:"#aaa",
-              boxShadow:"0 1px 2px rgba(0,0,0,.08)"
-            }}></div>
-            <div style={{ fontSize:16, color:"#8696a0" }}>🎙</div>
+          <div>
+            <div style={{ fontWeight:700, fontSize:14, color:"#fff" }}>MyTrack Notifications</div>
+            <div style={{ fontSize:11, opacity:.45 }}>Fleet alerts · KX98NBGP</div>
           </div>
         </div>
+
+        {alerts.map((a, i) => (
+          <div key={i} style={{
+            background:"rgba(255,255,255,.05)",
+            border:`1px solid ${a.color}33`,
+            borderLeft:`3px solid ${a.color}`,
+            borderRadius:10, padding:"12px 16px",
+            display:"flex", justifyContent:"space-between", alignItems:"center",
+            boxShadow:`0 4px 20px ${a.color}15`
+          }}>
+            <div>
+              <div style={{ fontSize:12, fontWeight:700, color:a.color, letterSpacing:".06em", textTransform:"uppercase" }}>
+                Fleet Alert · {a.vehicle}
+              </div>
+              <div style={{ fontSize:14, fontWeight:600, color:"#fff", marginTop:3, lineHeight:1.35 }}>
+                {a.event} has been detected.
+              </div>
+              <div style={{ fontSize:11, opacity:.45, marginTop:2 }}>
+                Please take corrective action immediately.
+              </div>
+            </div>
+            <div style={{ fontFamily:"monospace", fontSize:12, opacity:.5, flexShrink:0, marginLeft:16 }}>
+              {a.time}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -1377,143 +1337,130 @@ function BoothPlayer() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const scale = Math.min(vw / 1600, vh / 900);
+  const CHROME_H = 58;
+  const scale = Math.min(vw / 1600, (vh - CHROME_H) / 900);
   const { Frame } = product;
 
   return (
     <div
-      style={{ width:"100vw", height:"100vh", background:"#000", position:"relative", overflow:"hidden", cursor: showCtrl ? "default" : "none" }}
+      style={{ width:"100vw", height:"100vh", background:"#000", display:"flex", flexDirection:"column", overflow:"hidden" }}
       onMouseMove={revealControls}
       onMouseLeave={() => playing && setShowCtrl(false)}
     >
-      {/* ── Artboard ── */}
-      <div style={{
-        position:"absolute", top:"50%", left:"50%",
-        transform:`translate(-50%,-50%) scale(${scale})`,
-        transformOrigin:"center", width:1600, height:900
-      }}>
-        <Frame scene={scene}/>
-      </div>
-
-      {/* ── Controls overlay ── */}
-      <div style={{
-        position:"absolute", inset:0,
-        pointerEvents: showCtrl ? "auto" : "none",
-        opacity: showCtrl ? 1 : 0,
-        transition:"opacity 0.4s ease",
-        display:"flex", flexDirection:"column", justifyContent:"space-between"
-      }}>
-
-        {/* Top — product tabs */}
+      {/* ── Artboard area ── */}
+      <div style={{ flex:1, position:"relative", overflow:"hidden" }}>
         <div style={{
-          display:"flex", gap:10, padding:"20px 28px",
-          background:"linear-gradient(to bottom,rgba(0,0,0,.72),transparent)",
-          alignItems:"center"
+          position:"absolute", top:"50%", left:"50%",
+          transform:`translate(-50%,-50%) scale(${scale})`,
+          transformOrigin:"center", width:1600, height:900
         }}>
-          {PRODUCTS.map((p, i) => (
-            <button key={p.id} onClick={() => { setProductIdx(i); setScene(1); }}
-              style={{
-                padding:"8px 20px", borderRadius:999, border:"none", cursor:"pointer",
-                fontFamily:"Montserrat,sans-serif", fontWeight:700, fontSize:13, letterSpacing:"0.04em",
-                background: i===productIdx ? p.accent : "rgba(255,255,255,.12)",
-                color: i===productIdx ? (p.id==="myroutes" ? "#151B29" : "#fff") : "rgba(255,255,255,.7)",
-                transition:"all .2s"
-              }}>
-              {p.name}
-              <span style={{ fontSize:10, fontWeight:500, opacity:.75, marginLeft:8 }}>{p.label}</span>
-            </button>
-          ))}
-          <div style={{ flex:1 }}/>
-          <div style={{ fontFamily:"monospace", fontSize:11, color:"rgba(255,255,255,.4)", letterSpacing:".15em" }}>
-            SCENE 0{scene} / 04 · {product.name.toUpperCase()}
-          </div>
+          <Frame scene={scene}/>
         </div>
 
-        {/* Side arrows */}
+        {/* Side arrows — fade with controls */}
         {[
-          { dir:"left",  fn: () => goScene(scene===1 ? 4 : scene-1) },
-          { dir:"right", fn: () => goScene(scene===4 ? 1 : scene+1) }
+          { dir:"left",  fn: () => goScene(scene===1 ? product.sceneCount : scene-1) },
+          { dir:"right", fn: () => goScene(scene===product.sceneCount ? 1 : scene+1) }
         ].map(({ dir, fn }) => (
           <button key={dir} onClick={fn} style={{
-            position:"absolute", top:"50%", [dir]:24, transform:"translateY(-50%)",
+            position:"absolute", top:"50%", [dir]:20, transform:"translateY(-50%)",
             border:"none", background:"rgba(255,255,255,.1)", color:"#fff",
-            width:52, height:52, borderRadius:26, cursor:"pointer",
+            width:48, height:48, borderRadius:24, cursor:"pointer",
             display:"flex", alignItems:"center", justifyContent:"center",
-            backdropFilter:"blur(6px)", transition:"background .15s"
+            backdropFilter:"blur(6px)", transition:"background .15s, opacity .4s",
+            opacity: showCtrl ? 1 : 0, pointerEvents: showCtrl ? "auto" : "none"
           }}
           onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.22)"}
           onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.1)"}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
               <path d={dir==="left" ? "M13 4L7 10l6 6" : "M7 4l6 6-6 6"}/>
             </svg>
           </button>
         ))}
+      </div>
 
-        {/* Bottom — progress + controls */}
-        <div style={{ padding:"0 28px 24px", background:"linear-gradient(to top,rgba(0,0,0,.78),transparent)" }}>
-          {/* progress bar */}
-          <div style={{ height:3, background:"rgba(255,255,255,.15)", borderRadius:2, marginBottom:18, overflow:"hidden" }}>
-            <div style={{
-              height:"100%", borderRadius:2, background:product.accent,
-              width:`${progress*100}%`, transition: playing ? "none" : "width .1s"
-            }}/>
-          </div>
-          <div style={{ display:"flex", alignItems:"center", gap:16 }}>
-            {/* play / pause */}
-            <button onClick={togglePlay} style={{
-              border:"none", background:"rgba(255,255,255,.12)", color:"#fff",
-              width:44, height:44, borderRadius:22, cursor:"pointer",
-              display:"flex", alignItems:"center", justifyContent:"center",
-              backdropFilter:"blur(6px)", flexShrink:0, transition:"background .15s"
-            }}
-            onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.22)"}
-            onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.12)"}>
-              {playing
-                ? <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12" rx="1"/><rect x="9" y="2" width="4" height="12" rx="1"/></svg>
-                : <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2l10 6-10 6V2z"/></svg>
-              }
-            </button>
+      {/* ── Bottom chrome — always visible, never overlays artboard ── */}
+      <div style={{
+        height: CHROME_H, flexShrink:0,
+        background:"rgba(8,10,16,0.97)", borderTop:"1px solid rgba(255,255,255,.07)",
+        display:"flex", flexDirection:"column", padding:"0 20px"
+      }}>
+        {/* progress bar */}
+        <div style={{ height:2, background:"rgba(255,255,255,.1)", overflow:"hidden" }}>
+          <div style={{
+            height:"100%", background:product.accent,
+            width:`${progress*100}%`, transition: playing ? "none" : "width .1s"
+          }}/>
+        </div>
 
-            {/* scene dots */}
-            <div style={{ display:"flex", gap:10, alignItems:"center" }}>
-              {[1,2,3,4].map(n => (
-                <button key={n} onClick={() => goScene(n)}
-                  style={{ border:"none", cursor:"pointer", padding:0, background:"transparent", display:"flex", alignItems:"center" }}>
-                  <div style={{
-                    width: n===scene ? 32 : 8, height:8, borderRadius:4,
-                    background: n===scene ? product.accent : "rgba(255,255,255,.3)",
-                    transition:"all .25s ease"
-                  }}/>
-                </button>
-              ))}
-            </div>
+        {/* controls row */}
+        <div style={{ flex:1, display:"flex", alignItems:"center", gap:10 }}>
 
-            <div style={{ flex:1 }}/>
+          {/* play/pause */}
+          <button onClick={togglePlay} style={{
+            border:"none", background:"rgba(255,255,255,.08)", color:"#fff",
+            width:34, height:34, borderRadius:17, cursor:"pointer",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            flexShrink:0, transition:"background .15s"
+          }}
+          onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.18)"}
+          onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.08)"}>
+            {playing
+              ? <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12" rx="1"/><rect x="9" y="2" width="4" height="12" rx="1"/></svg>
+              : <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2l10 6-10 6V2z"/></svg>
+            }
+          </button>
 
-            {/* scene label */}
-            <div style={{ fontFamily:"Montserrat,sans-serif", fontSize:12, fontWeight:600, color:"rgba(255,255,255,.55)", letterSpacing:".06em" }}>
-              {["Hook","Demo","Proof","CTA"][scene-1]}
-              <span style={{ opacity:.5, marginLeft:8, fontFamily:"monospace", fontSize:11 }}>
-                {(SCENE_TIMINGS[scene-1]/1000).toFixed(0)}s
-              </span>
-            </div>
+          <div style={{ width:1, height:18, background:"rgba(255,255,255,.1)", flexShrink:0 }}/>
 
-            {/* fullscreen */}
-            <button
-              onClick={() => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()}
+          {/* product tabs */}
+          {PRODUCTS.map((p, i) => (
+            <button key={p.id} onClick={() => { setProductIdx(i); setScene(1); }}
               style={{
-                border:"none", background:"rgba(255,255,255,.12)", color:"#fff",
-                width:44, height:44, borderRadius:22, cursor:"pointer",
-                display:"flex", alignItems:"center", justifyContent:"center",
-                backdropFilter:"blur(6px)", transition:"background .15s"
-              }}
-              onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.22)"}
-              onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.12)"}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                <path d="M1 5V1h4M11 1h4v4M15 11v4h-4M5 15H1v-4"/>
-              </svg>
+                padding:"5px 16px", borderRadius:999, border:"none", cursor:"pointer",
+                fontFamily:"Montserrat,sans-serif", fontWeight:700, fontSize:12, letterSpacing:"0.04em",
+                background: i===productIdx ? p.accent : "rgba(255,255,255,.07)",
+                color: i===productIdx ? (p.id==="myroutes" ? "#151B29" : "#fff") : "rgba(255,255,255,.5)",
+                transition:"all .2s", flexShrink:0
+              }}>
+              {p.name}
+              <span style={{ fontSize:10, fontWeight:500, opacity:.7, marginLeft:6 }}>{p.label}</span>
             </button>
+          ))}
+
+          <div style={{ flex:1 }}/>
+
+          {/* scene dots */}
+          <div style={{ display:"flex", gap:6, alignItems:"center" }}>
+            {Array.from({length: product.sceneCount}, (_, i) => i+1).map(n => (
+              <button key={n} onClick={() => goScene(n)}
+                style={{ border:"none", cursor:"pointer", padding:0, background:"transparent", display:"flex", alignItems:"center" }}>
+                <div style={{
+                  width: n===scene ? 24 : 6, height:6, borderRadius:3,
+                  background: n===scene ? product.accent : "rgba(255,255,255,.25)",
+                  transition:"all .25s ease"
+                }}/>
+              </button>
+            ))}
           </div>
+
+          <div style={{ width:1, height:18, background:"rgba(255,255,255,.1)", flexShrink:0 }}/>
+
+          {/* fullscreen */}
+          <button
+            onClick={() => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()}
+            style={{
+              border:"none", background:"rgba(255,255,255,.08)", color:"#fff",
+              width:34, height:34, borderRadius:17, cursor:"pointer",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              transition:"background .15s", flexShrink:0
+            }}
+            onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.18)"}
+            onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.08)"}>
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              <path d="M1 5V1h4M11 1h4v4M15 11v4h-4M5 15H1v-4"/>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
