@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
+from .crm import push_expo_lead_to_crm
 from .expo import (
     EVENT_DATE,
     EVENT_NAME,
@@ -49,6 +50,10 @@ def mytrack(request):
 
 def myroutes(request):
     return render(request, 'myroutes.html')
+
+
+def sloane_loop(request):
+    return render(request, '22onsloane.html')
 
 
 @ensure_csrf_cookie
@@ -110,6 +115,8 @@ def expo_submit(request):
             _expo_context(src=src, form_error=mail_err, post=request.POST),
             status=503,
         )
+
+    push_expo_lead_to_crm(lead)
 
     record_submission(request)
 

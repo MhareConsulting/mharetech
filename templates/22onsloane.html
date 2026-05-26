@@ -1,0 +1,1380 @@
+﻿{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Mhare Consulting · Booth Loop Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<style>
+@font-face{font-family:"Montserrat";font-weight:300;src:url("{% static 'Assets/Fonts/Primary Font/Montserrat-Light.ttf' %}") format("truetype");font-display:swap;}
+@font-face{font-family:"Montserrat";font-weight:400;src:url("{% static 'Assets/Fonts/Primary Font/Montserrat-Regular.ttf' %}") format("truetype");font-display:swap;}
+@font-face{font-family:"Montserrat";font-weight:500;src:url("{% static 'Assets/Fonts/Primary Font/Montserrat-Medium.ttf' %}") format("truetype");font-display:swap;}
+@font-face{font-family:"Montserrat";font-weight:600;src:url("{% static 'Assets/Fonts/Primary Font/Montserrat-SemiBold.ttf' %}") format("truetype");font-display:swap;}
+@font-face{font-family:"Montserrat";font-weight:700;src:url("{% static 'Assets/Fonts/Primary Font/Montserrat-Bold.ttf' %}") format("truetype");font-display:swap;}
+@font-face{font-family:"Montserrat";font-weight:800;src:url("{% static 'Assets/Fonts/Primary Font/Montserrat-ExtraBold.ttf' %}") format("truetype");font-display:swap;}
+@font-face{font-family:"Montserrat";font-weight:900;src:url("{% static 'Assets/Fonts/Primary Font/Montserrat-Black.ttf' %}") format("truetype");font-display:swap;}
+:root{
+  --navy:#151B29;--navy-2:#0e131e;--navy-3:#1d2536;
+  --white:#FFFFFF;--orange:#FF9D00;--magenta:#E1266B;
+  --purple:#4827CC;--purple-2:#6B3FE0;
+  --mono:"JetBrains Mono","SF Mono",ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"Montserrat",system-ui,sans-serif;}
+.mh-artboard{font-family:"Montserrat",sans-serif;background:var(--navy);color:var(--white);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;letter-spacing:-0.01em;}
+.mh-grain::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:3px 3px;pointer-events:none;z-index:1;}
+.mh-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");mix-blend-mode:overlay;opacity:.35;pointer-events:none;z-index:2;}
+.mh-grad-track{background:radial-gradient(80% 60% at 80% 20%,rgba(225,38,107,.55),transparent 60%),radial-gradient(70% 70% at 10% 90%,rgba(72,39,204,.65),transparent 65%);}
+.mh-grad-routes{background:radial-gradient(70% 60% at 90% 10%,rgba(255,157,0,.55),transparent 60%),radial-gradient(70% 80% at 10% 100%,rgba(72,39,204,.45),transparent 65%);}
+.mh-grad-kasi{background:linear-gradient(135deg,rgba(72,39,204,.85) 0%,rgba(225,38,107,.85) 100%);}
+.mh-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);backdrop-filter:blur(6px);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;}
+.mh-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.mh-dot.live{background:#27D17F;box-shadow:0 0 12px #27D17F;animation:pulse 1.6s infinite;}
+.mh-dot.orange{background:var(--orange);box-shadow:0 0 12px var(--orange);}
+.mh-dot.magenta{background:var(--magenta);box-shadow:0 0 14px var(--magenta);}
+.mh-dot.purple{background:var(--purple-2);box-shadow:0 0 14px var(--purple-2);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.55;transform:scale(1.4);}}
+.mh-check{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.mh-check:last-child{border-bottom:none;}
+.mh-check-icon{flex:none;width:36px;height:36px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+<!-- ============================================================
+     BLOCK 1 · Brand tokens + shared widgets
+     ============================================================ -->
+<script type="text/babel" data-presets="env,react">
+/* global React */
+const { useState, useEffect } = React;
+
+const COLORS = {
+  navy: "#151B29",
+  white: "#FFFFFF",
+  orange: "#FF9D00",
+  magenta: "#E1266B",
+  purple: "#4827CC",
+};
+
+function MhareLogo({ height = 28, color = "#fff" }) {
+  return (
+    <div style={{ display:"flex", alignItems:"center", gap: height * 0.4, height }}>
+      <MhareMark size={height * 1.15} color={color} />
+      <span style={{
+        fontFamily:"Montserrat", fontWeight:900, fontSize: height * 0.78,
+        letterSpacing:"0.01em", color, lineHeight:1
+      }}>MHARE</span>
+    </div>
+  );
+}
+
+function MhareMark({ size = 32, color = "#fff" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <path d="M10 90 L35 10 L50 60 Z" fill={color}/>
+      <path d="M50 60 L65 10 L90 90 Z" fill={color} opacity="0.55"/>
+      <path d="M65 10 L90 90 L75 90 L57 38 Z" fill={color}/>
+    </svg>
+  );
+}
+
+function MhareLogoLockup({ height = 28, color = "#fff", tagline }) {
+  return (
+    <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+      <MhareLogo height={height} color={color} />
+      {tagline && (
+        <>
+          <div style={{ width:1, height:height*0.7, background:color, opacity:.35 }}/>
+          <div style={{
+            fontFamily:"Montserrat", fontSize:height*0.32, fontWeight:500,
+            letterSpacing:"0.18em", textTransform:"uppercase",
+            color, opacity:.75, lineHeight:1.1, maxWidth: 220
+          }}>{tagline}</div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function CheckRow({ icon, label, accent = COLORS.orange }) {
+  return (
+    <div className="mh-check">
+      <div className="mh-check-icon" style={{ color: accent }}>
+        {icon}
+      </div>
+      <div style={{ flex:1, paddingTop:6 }}>
+        <div style={{ fontWeight:600, fontSize:18, letterSpacing:"-0.005em" }}>{label}</div>
+      </div>
+      <div style={{ paddingTop:9, color:accent }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12.5l4 4 10-10" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+const Icons = {
+  Gps: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="10" r="3"/><path d="M12 21s-7-6.5-7-12a7 7 0 1114 0c0 5.5-7 12-7 12z"/></svg>),
+  Fuel: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="4" y="3" width="9" height="18" rx="1"/><path d="M13 8h3a2 2 0 012 2v7a2 2 0 002 2"/><path d="M7 8h3"/></svg>),
+  Shield: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>),
+  Chat: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 12a8 8 0 11-3.5-6.6L21 4l-1 4a7.9 7.9 0 011 4z"/></svg>),
+  Route: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h6a4 4 0 014 4v0a4 4 0 01-4 4h-4a4 4 0 00-4 4"/></svg>),
+  Bolt: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>),
+  Phone: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>),
+  Pin: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s-7-6-7-13a7 7 0 1114 0c0 7-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>),
+  Scan: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><path d="M7 12h10"/></svg>),
+  Box: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>),
+  Bell: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8z"/><path d="M10 21a2 2 0 004 0"/></svg>),
+  Tag: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/></svg>),
+  Bottle: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 2h4v3l2 3v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V8l2-3V2z"/><path d="M8 12h8"/></svg>),
+  Wifi: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 9a16 16 0 0120 0"/><path d="M5 13a11 11 0 0114 0"/><path d="M8.5 16.5a6 6 0 017 0"/><circle cx="12" cy="20" r="1.2" fill="currentColor"/></svg>),
+  Clock: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>),
+};
+
+window.MH = { COLORS, MhareLogo, MhareMark, MhareLogoLockup, CheckRow, Icons };
+</script>
+
+<!-- ============================================================
+     BLOCK 2 · Logo override — use real SVG asset file
+     ============================================================ -->
+<script type="text/babel" data-presets="env,react">
+(function() {
+  const _orig = window.MH;
+  function MhareLogo({ height = 36 }) {
+    return (
+      <img
+        src="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Secondary Logo.svg' %}"
+        alt="Mhare Consulting"
+        style={{ height, width:"auto", display:"block", objectFit:"contain" }}
+      />
+    );
+  }
+  function MhareLogoLockup({ height = 36, tagline }) {
+    return (
+      <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+        <MhareLogo height={height}/>
+        {tagline && <>
+          <div style={{ width:1, height:height*0.7, background:"#fff", opacity:.35 }}/>
+          <div style={{
+            fontFamily:"Montserrat", fontSize:height*0.32, fontWeight:500,
+            letterSpacing:"0.18em", textTransform:"uppercase",
+            color:"#fff", opacity:.75, lineHeight:1.1, maxWidth:220
+          }}>{tagline}</div>
+        </>}
+      </div>
+    );
+  }
+  window.MH = { ..._orig, MhareLogo, MhareLogoLockup };
+})();
+</script>
+
+<!-- ============================================================
+     BLOCK 3 · QR helper — uses expo-qr-general.png
+     ============================================================ -->
+<script type="text/babel" data-presets="env,react">
+function RealQR({ size = 120 }) {
+  return (
+    <img
+      src="{% static 'Assets/Expo QR/expo-qr-general.png' %}"
+      alt="Scan to learn more"
+      style={{ width:size, height:size, borderRadius:10, display:"block", objectFit:"contain" }}
+    />
+  );
+}
+</script>
+
+<!-- ============================================================
+     BLOCK 4 · myTrack component
+     ============================================================ -->
+<script type="text/babel" data-presets="env,react">
+/* global React, MH, RealQR */
+const { MhareLogo, MhareLogoLockup, COLORS, CheckRow, Icons } = MH;
+
+const TRACK_PURPLE   = "#4827CC";
+const TRACK_PURPLE_2 = "#6B3FE0";
+const TRACK_MAGENTA  = "#E1266B";
+
+/*
+  SAMap — geographically accurate South Africa outline
+  Coordinate system (viewBox 700 × 560):
+    X = (lon − 16.5) / 16.4 × 660 + 20   lon range 16.5°E → 32.9°E
+    Y = (|lat| − 22.1) / 12.7 × 520 + 24  lat range 22.1°S → 34.8°S (N=top)
+  Key anchors:
+    Orange River mouth  32,294  | NW corner (Namibia) 163,24
+    JHB/PTA            488,188  | Durban              601,339
+    Port Elizabeth     386,503  | Cape Agulhas        162,542
+    Cape Town           96,503  | Beit Bridge         648,24
+    Kosi Bay           680,219
+*/
+function SAMap({ pins = [] }) {
+  return (
+    <svg viewBox="0 0 700 560" style={{ width:"100%", height:"100%", display:"block" }} preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="mtGlow" cx="42%" cy="58%" r="48%">
+          <stop offset="0%" stopColor="#4827CC" stopOpacity="0.38"/>
+          <stop offset="100%" stopColor="#4827CC" stopOpacity="0"/>
+        </radialGradient>
+        <linearGradient id="mapFill" x1="0" y1="0" x2="0.6" y2="1">
+          <stop offset="0%" stopColor="#1a2133"/>
+          <stop offset="100%" stopColor="#0d1018"/>
+        </linearGradient>
+        <filter id="pinGlow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="5"/>
+        </filter>
+      </defs>
+
+      {/* ambient glow */}
+      <ellipse cx="350" cy="310" rx="290" ry="230" fill="url(#mtGlow)"/>
+
+      {/* ── SA border path ──
+          Tracing clockwise: Orange River mouth → Orange River east →
+          Namibia corner → northern border (straight) → Beit Bridge →
+          Mozambique border → Kosi Bay → KZN coast → Cape Agulhas →
+          Cape Town → Atlantic coast → back to Orange River mouth       */}
+      <path
+        d="M 32 294
+           C 75 291 130 285 163 283
+           L 163 24
+           L 402 24
+           L 648 24
+           C 657 29 665 62 672 115
+           C 678 160 681 190 681 219
+           C 682 242 670 264 651 289
+           C 633 311 613 326 601 339
+           C 585 360 573 373 565 387
+           C 545 422 516 448 488 468
+           C 465 482 453 495 416 505
+           C 396 511 374 515 350 517
+           C 322 517 294 519 266 521
+           C 240 523 215 529 194 535
+           C 178 540 167 543 162 542
+           C 148 541 128 536 114 530
+           C 101 523 91 518 85 515
+           C 76 509 71 494 70 460
+           C 62 423 53 389 49 357
+           C 41 329 34 314 32 294 Z"
+        fill="url(#mapFill)"
+        stroke="rgba(225,38,107,0.6)"
+        strokeWidth="1.6"
+      />
+
+      {/* Lesotho — 28.5°E 29.7°S → (503,331) */}
+      <path d="M 491 323 L 515 316 L 523 334 L 511 349 L 488 343 Z"
+        fill="#0a0f1a" stroke="rgba(255,255,255,.22)" strokeWidth="1"/>
+
+      {/* eSwatini — 31.5°E 26.5°S → (623,200) */}
+      <path d="M 617 193 L 630 188 L 637 201 L 628 212 L 614 207 Z"
+        fill="#0a0f1a" stroke="rgba(255,255,255,.18)" strokeWidth="1"/>
+
+      {/* Geo grid */}
+      <g opacity="0.09">
+        {Array.from({ length: 13 }).map((_, i) => (
+          <line key={"v"+i} x1={i*58} y1="0" x2={i*58} y2="560" stroke="white" strokeWidth=".5"/>
+        ))}
+        {Array.from({ length: 11 }).map((_, i) => (
+          <line key={"h"+i} x1="0" y1={i*56} x2="700" y2={i*56} stroke="white" strokeWidth=".5"/>
+        ))}
+      </g>
+
+      {/* N1 highway: Cape Town → Bloemfontein → JHB */}
+      <path d="M 96 503 C 148 478 200 430 252 388 C 300 350 356 322 412 305 C 452 294 470 242 488 188"
+        fill="none" stroke={TRACK_MAGENTA} strokeWidth="2" strokeLinecap="round" opacity="0.65"/>
+      {/* N3 highway: Durban → JHB */}
+      <path d="M 601 339 C 566 296 530 250 488 188"
+        fill="none" stroke={TRACK_PURPLE_2} strokeWidth="2" strokeLinecap="round" opacity="0.6"/>
+      {/* N4: JHB → Mozambique border */}
+      <path d="M 488 188 C 545 172 594 184 651 213"
+        fill="none" stroke={TRACK_MAGENTA} strokeWidth="1.5" strokeLinecap="round"
+        opacity="0.38" strokeDasharray="4 5"/>
+
+      {/* City markers */}
+      {/* JHB / PTA — 28.1°E 26.2°S */}
+      <circle cx="488" cy="188" r="7" fill={TRACK_PURPLE_2} opacity="0.9"/>
+      <circle cx="488" cy="188" r="15" fill={TRACK_PURPLE_2} opacity="0.16"/>
+      <text x="504" y="193" fontFamily="Montserrat" fontWeight="700" fontSize="12"
+        fill="rgba(255,255,255,.82)" letterSpacing="0.04em">JHB · PTA</text>
+
+      {/* Durban — 31.0°E 29.9°S */}
+      <circle cx="601" cy="339" r="5.5" fill={TRACK_MAGENTA} opacity="0.9"/>
+      <circle cx="601" cy="339" r="12" fill={TRACK_MAGENTA} opacity="0.18"/>
+      <text x="614" y="344" fontFamily="Montserrat" fontWeight="700" fontSize="11"
+        fill="rgba(255,255,255,.78)">DURBAN</text>
+
+      {/* Cape Town — 18.4°E 33.9°S */}
+      <circle cx="96" cy="503" r="5.5" fill={TRACK_PURPLE_2} opacity="0.9"/>
+      <circle cx="96" cy="503" r="12" fill={TRACK_PURPLE_2} opacity="0.18"/>
+      <text x="110" y="508" fontFamily="Montserrat" fontWeight="700" fontSize="11"
+        fill="rgba(255,255,255,.78)">CAPE TOWN</text>
+
+      {/* Port Elizabeth — 25.6°E 33.9°S */}
+      <circle cx="386" cy="503" r="4" fill={TRACK_MAGENTA} opacity="0.75"/>
+      <text x="397" y="508" fontFamily="Montserrat" fontWeight="600" fontSize="10"
+        fill="rgba(255,255,255,.55)">PORT ELIZABETH</text>
+
+      {/* Vehicle pins */}
+      {pins.map((p, i) => (
+        <g key={i}>
+          <circle cx={p.x} cy={p.y} r="16" fill={p.color || TRACK_MAGENTA} opacity=".2" filter="url(#pinGlow)"/>
+          <circle cx={p.x} cy={p.y} r="6" fill={p.color || TRACK_MAGENTA}/>
+          <circle cx={p.x} cy={p.y} r="2.5" fill="white"/>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+// Mini dashboard tile
+function DashTile({ label, value, accent = TRACK_MAGENTA, sub, sparkline }) {
+  return (
+    <div style={{
+      background:"rgba(255,255,255,.04)",
+      border:"1px solid rgba(255,255,255,.08)",
+      borderRadius:14, padding:"16px 18px", position:"relative", overflow:"hidden"
+    }}>
+      <div style={{ fontSize:10, letterSpacing:".18em", textTransform:"uppercase", opacity:.55, fontWeight:600 }}>{label}</div>
+      <div style={{ fontFamily:"Montserrat", fontWeight:800, fontSize:30, letterSpacing:"-0.02em", marginTop:6, color:accent, lineHeight:1 }}>{value}</div>
+      {sub && <div style={{ fontSize:11, opacity:.6, marginTop:6 }}>{sub}</div>}
+      {sparkline && (
+        <svg viewBox="0 0 100 24" style={{ width:"100%", height:24, marginTop:8 }}>
+          <path d={sparkline} fill="none" stroke={accent} strokeWidth="1.5" opacity=".9"/>
+        </svg>
+      )}
+    </div>
+  );
+}
+
+// ====================== BOOTH SCREEN LOOP ======================
+function MyTrackBoothFrame({ scene = 1 }) {
+  return (
+    <div className="mh-artboard mh-grain" style={{ width:1600, height:900 }}>
+      <div className="mh-grad-track" style={{ position:"absolute", inset:0 }}/>
+      <div className="mh-noise"/>
+
+      {/* scene progress dots */}
+      <div style={{ position:"absolute", top:28, left:32, zIndex:5, display:"flex", gap:8, alignItems:"center" }}>
+        {[1,2,3,4].map(n => (
+          <div key={n} style={{
+            width: n===scene ? 36 : 8, height:8, borderRadius:4,
+            background: n===scene ? TRACK_MAGENTA : "rgba(255,255,255,.2)",
+            transition:"all .3s ease"
+          }}/>
+        ))}
+        <div style={{ fontFamily:"monospace", fontSize:11, opacity:.5, marginLeft:10, letterSpacing:".15em" }}>
+          SCENE 0{scene} / 04 · myTRACK
+        </div>
+      </div>
+
+      {/* logo top-right */}
+      <div style={{ position:"absolute", top:22, right:32, zIndex:5 }}>
+        <MhareLogo height={36}/>
+      </div>
+
+      <div style={{ position:"absolute", inset:0, padding:"96px 80px", display:"flex", zIndex:3 }}>
+        {scene === 1 && <TrackSceneHook/>}
+        {scene === 2 && <TrackSceneAlert/>}
+        {scene === 3 && <TrackSceneReports/>}
+        {scene === 4 && <TrackSceneCTA/>}
+      </div>
+    </div>
+  );
+}
+
+function TrackSceneHook() {
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:64, width:"100%" }}>
+      <div style={{ display:"flex", flexDirection:"column", justifyContent:"center" }}>
+        <div className="mh-chip" style={{ borderColor:`${TRACK_MAGENTA}55`, color:TRACK_MAGENTA, alignSelf:"flex-start" }}>
+          <span className="mh-dot magenta"/> myTrack · Live across SA
+        </div>
+        <h1 style={{ fontWeight:900, fontSize:140, lineHeight:.9, letterSpacing:"-0.04em", margin:"24px 0 0" }}>
+          Stop fuel<br/>theft.
+        </h1>
+        <div style={{ fontWeight:600, fontSize:36, opacity:.85, marginTop:24, letterSpacing:"-0.01em" }}>
+          Track it. Protect it.{" "}
+          <span style={{ fontWeight:900, color:TRACK_MAGENTA }}>myTrack.</span>
+        </div>
+      </div>
+      <div style={{ position:"relative" }}>
+        <div style={{
+          position:"absolute", inset:0, borderRadius:24, overflow:"hidden",
+          background:"#0a0f1a", border:"1px solid rgba(255,255,255,.08)",
+          boxShadow:`0 0 80px -10px ${TRACK_PURPLE}aa`
+        }}>
+          <SAMap pins={[
+            { x:488, y:188 },                         // JHB/PTA
+            { x:601, y:339, color:TRACK_PURPLE_2 },   // Durban
+            { x:544, y:94  },                         // Polokwane
+            { x:608, y:162, color:TRACK_PURPLE_2 },   // Nelspruit
+            { x:412, y:305 },                         // Bloemfontein
+            { x:386, y:503, color:TRACK_PURPLE_2 },   // Port Elizabeth
+            { x: 96, y:503 },                         // Cape Town
+            { x:240, y:388, color:TRACK_PURPLE_2 },   // Beaufort West
+          ]}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Scene 2 — Live fuel theft alert
+function TrackSceneAlert() {
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, width:"100%", alignItems:"center" }}>
+      <div>
+        <div style={{ fontFamily:"monospace", fontSize:14, color:TRACK_MAGENTA, letterSpacing:".15em" }}>
+          02:34:12 · N3 HEIDELBERG
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.035em", lineHeight:.95, margin:"16px 0 24px" }}>
+          62 litres<br/>gone in<br/>9 minutes.
+        </h2>
+        <div style={{ fontWeight:500, fontSize:22, opacity:.8, maxWidth:520 }}>
+          myTrack flagged it. Geofence triggered. WhatsApp to manager. Vehicle immobilised remotely.{" "}
+          <span style={{ color:TRACK_MAGENTA, fontWeight:700 }}>Total time: 14 seconds.</span>
+        </div>
+      </div>
+      <div style={{
+        background:"#0a0f1a", borderRadius:20, border:"1px solid rgba(255,255,255,.08)",
+        boxShadow:`0 40px 80px -20px ${TRACK_MAGENTA}66`, padding:24
+      }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          <span className="mh-dot magenta"/>
+          <span style={{ fontSize:13, fontWeight:700, color:TRACK_MAGENTA, letterSpacing:".15em", textTransform:"uppercase" }}>Critical alert</span>
+          <span style={{ marginLeft:"auto", fontFamily:"monospace", fontSize:11, opacity:.55 }}>02:34:12</span>
+        </div>
+        <div style={{ fontSize:18, fontWeight:600, marginTop:16 }}>Truck NDP-44 GP</div>
+        <div style={{ fontSize:13, opacity:.6, marginTop:2 }}>Driver: Sipho M. · Route 12</div>
+        <div style={{ marginTop:20, padding:16, background:"rgba(255,255,255,.03)", borderRadius:12 }}>
+          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
+            <span style={{ fontSize:11, opacity:.55, textTransform:"uppercase", letterSpacing:".15em" }}>Fuel level</span>
+            <span style={{ fontSize:11, color:TRACK_MAGENTA, fontWeight:700 }}>−62 L</span>
+          </div>
+          <svg viewBox="0 0 300 80" style={{ width:"100%", height:80 }}>
+            <defs>
+              <linearGradient id="fuelFall" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={TRACK_MAGENTA} stopOpacity=".4"/>
+                <stop offset="100%" stopColor={TRACK_MAGENTA} stopOpacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 20 L80 20 L100 22 L160 22 L180 60 L240 65 L300 65" fill="none" stroke={TRACK_MAGENTA} strokeWidth="2.5" strokeLinecap="round"/>
+            <path d="M0 20 L80 20 L100 22 L160 22 L180 60 L240 65 L300 65 L300 80 L0 80 Z" fill="url(#fuelFall)"/>
+            <circle cx="180" cy="60" r="5" fill={TRACK_MAGENTA}/>
+            <line x1="180" y1="0" x2="180" y2="80" stroke={TRACK_MAGENTA} strokeWidth="1" strokeDasharray="3 3" opacity=".6"/>
+          </svg>
+        </div>
+        <div style={{
+          marginTop:16, padding:"12px 14px",
+          background:`${TRACK_PURPLE_2}22`, border:`1px solid ${TRACK_PURPLE_2}55`,
+          borderRadius:10, display:"flex", alignItems:"center", gap:10
+        }}>
+          <span className="mh-dot purple"/>
+          <span style={{ fontSize:13, fontWeight:600 }}>WhatsApp sent to manager · 02:34:14</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Scene 3 — Automated reporting: daily / weekly / monthly digest
+function TrackSceneReports() {
+  const rows = [
+    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"Value 0 / threshold 0", time:"10:40" },
+    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"Value 0 / threshold 0", time:"10:38" },
+    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"Value 0 / threshold 0", time:"10:35" },
+    { vehicle:"DEF 456 GP", type:"Idle",               detail:"16 min idle (threshold 10)", time:"10:34" },
+    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"Value 0 / threshold 0", time:"10:17" },
+    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"Value 0 / threshold 0", time:"10:15" },
+    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"Value 0 / threshold 0", time:"10:02" },
+    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"Value 0 / threshold 0", time:"09:36" },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:56, width:"100%", alignItems:"center" }}>
+
+      {/* ── LEFT · messaging ── */}
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${TRACK_PURPLE_2}55`, color:TRACK_PURPLE_2 }}>
+          <span className="mh-dot purple"/> Automated Reporting
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:90, letterSpacing:"-0.035em", lineHeight:.92, margin:"20px 0 0" }}>
+          Every event.<br/>Logged.<br/><span style={{ color:TRACK_MAGENTA }}>Reported.</span>
+        </h2>
+
+        <div style={{ display:"flex", gap:14, marginTop:28 }}>
+          {[
+            { period:"Daily",   name:"Alert Digest",    sub:"Email + WhatsApp",     active:true  },
+            { period:"Weekly",  name:"Fleet Report",    sub:"Fuel & compliance",    active:false },
+            { period:"Monthly", name:"Driver Ranking",  sub:"Scores + coaching",    active:false },
+          ].map((p, i) => (
+            <div key={i} style={{
+              flex:1, borderRadius:12, padding:"14px 16px",
+              background: p.active ? `${TRACK_MAGENTA}20` : "rgba(255,255,255,.04)",
+              border:`1px solid ${p.active ? TRACK_MAGENTA+"55" : "rgba(255,255,255,.1)"}`,
+            }}>
+              <div style={{ fontSize:10, opacity:.5, textTransform:"uppercase", letterSpacing:".15em" }}>{p.period}</div>
+              <div style={{ fontWeight:800, fontSize:15, marginTop:4, color: p.active ? TRACK_MAGENTA : "#fff" }}>{p.name}</div>
+              <div style={{ fontSize:11, opacity:.5, marginTop:3 }}>{p.sub}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop:20, fontSize:16, opacity:.65, fontWeight:500 }}>
+          Custom recipients · Scheduled delivery · No login required
+        </div>
+      </div>
+
+      {/* ── RIGHT · email digest mockup ── */}
+      <div style={{ display:"flex", justifyContent:"center" }}>
+        <div style={{
+          width:352, borderRadius:14, overflow:"hidden",
+          boxShadow:"0 40px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.06)"
+        }}>
+          {/* Email subject line */}
+          <div style={{ background:"#e8edf4", padding:"10px 14px", display:"flex", alignItems:"center", gap:10, borderBottom:"1px solid #d0d7e2" }}>
+            <div style={{ width:28, height:28, borderRadius:6, background:"#1B3A6B", display:"grid", placeItems:"center", flexShrink:0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/>
+              </svg>
+            </div>
+            <div>
+              <div style={{ fontSize:11, fontWeight:700, color:"#1a1a1a", lineHeight:1.2 }}>[myTrack] Daily alert digest — My Fleet</div>
+              <div style={{ fontSize:10, color:"#666", marginTop:1 }}>DoNotReply · To: Thabang, support</div>
+            </div>
+          </div>
+
+          {/* Email header */}
+          <div style={{ background:"#1B3A6B", padding:"16px 18px 14px" }}>
+            <div style={{ fontFamily:"Montserrat", fontWeight:800, fontSize:17, color:"#fff", lineHeight:1.2 }}>
+              myTrack — Daily Alert Digest
+            </div>
+            <div style={{ fontSize:12, color:"#63B3ED", marginTop:4, fontWeight:600 }}>My Fleet</div>
+          </div>
+
+          {/* Table header */}
+          <div style={{
+            display:"grid", gridTemplateColumns:"1fr 1.3fr 1.5fr 0.85fr",
+            background:"#1B3A6B", padding:"7px 14px", gap:6
+          }}>
+            {["Vehicle","Type","Detail","Time"].map((h, i) => (
+              <span key={i} style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,.85)", letterSpacing:".06em" }}>{h}</span>
+            ))}
+          </div>
+
+          {/* Table rows */}
+          <div>
+            {rows.map((r, i) => (
+              <div key={i} style={{
+                display:"grid", gridTemplateColumns:"1fr 1.3fr 1.5fr 0.85fr",
+                padding:"7px 14px", gap:6,
+                background: i%2===0 ? "#ffffff" : "#f7f8fc",
+                borderBottom:"1px solid #eaedf2"
+              }}>
+                <span style={{ fontSize:10, color:"#1B3A6B", fontWeight:700 }}>{r.vehicle}</span>
+                <span style={{ fontSize:10, color:"#333", fontWeight:600 }}>{r.type}</span>
+                <span style={{ fontSize:10, color:"#666" }}>{r.detail}</span>
+                <span style={{ fontSize:10, color:"#888" }}>25 May {r.time}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div style={{ background:"#f0f2f5", padding:"9px 14px", display:"flex", justifyContent:"space-between", alignItems:"center", borderTop:"1px solid #dde1ea" }}>
+            <span style={{ fontSize:10, color:"#888" }}>Scheduled · Yesterday</span>
+            <span style={{ fontSize:10, color:"#1B3A6B", fontWeight:700 }}>View full report →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+function TrackSceneCTA() {
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1.5fr 1fr", gap:64, alignItems:"center" }}>
+      <div>
+        <div style={{
+          fontWeight:900, fontSize:96, letterSpacing:"-0.035em", lineHeight:.95,
+          background:`linear-gradient(90deg, #fff, ${TRACK_MAGENTA})`,
+          WebkitBackgroundClip:"text", color:"transparent"
+        }}>
+          See it live.<br/>Right now.<br/>At our booth.
+        </div>
+        <div style={{ marginTop:36, display:"flex", gap:16, alignItems:"center" }}>
+          <div style={{
+            padding:"18px 28px", borderRadius:999,
+            background:`linear-gradient(90deg, ${TRACK_PURPLE}, ${TRACK_MAGENTA})`,
+            fontWeight:800, fontSize:22
+          }}>Friday 29 May 2026</div>
+          <div style={{ fontSize:18, opacity:.7 }}>mharetech.co.za/22onsloane</div>
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }}>
+        <div style={{
+          background:"#fff", borderRadius:20, padding:16,
+          boxShadow:`0 40px 80px -20px ${TRACK_MAGENTA}88`
+        }}>
+          <RealQR size={200}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.MyTrack = { MyTrackBoothFrame };
+</script>
+
+<!-- ============================================================
+     BLOCK 5 · MyRoutes component
+     ============================================================ -->
+<script type="text/babel" data-presets="env,react">
+/* global React, MH, RealQR */
+const { MhareLogo: MhLogoR, COLORS: COLO_R, Icons: IconsR } = MH;
+
+const RT_ORANGE   = "#FF9D00";
+const RT_ORANGE_2 = "#FFB840";
+const RT_PURPLE   = "#4827CC";
+
+function PaperPile() {
+  const papers = [
+    { rot: -8, x: 10, y: 30, w: 220, h: 280, tint: "#f7eed8" },
+    { rot:  6, x: 70, y: 60, w: 230, h: 290, tint: "#f3e7c5" },
+    { rot: -2, x: 40, y:110, w: 240, h: 300, tint: "#fff7e4" },
+    { rot: 12, x:120, y:140, w: 220, h: 290, tint: "#efe2b8" },
+  ];
+  return (
+    <svg viewBox="0 0 380 460" style={{ width:"100%", height:"100%", display:"block" }}>
+      <defs>
+        <filter id="paperShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="6" stdDeviation="6" floodOpacity=".35"/>
+        </filter>
+        <pattern id="lines" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="14" x2="20" y2="14" stroke="#a08960" strokeWidth=".6" opacity=".5"/>
+        </pattern>
+      </defs>
+      {papers.map((p, i) => (
+        <g key={i} transform={`rotate(${p.rot} ${p.x + p.w/2} ${p.y + p.h/2})`} filter="url(#paperShadow)">
+          <rect x={p.x} y={p.y} width={p.w} height={p.h} fill={p.tint} rx="2"/>
+          <rect x={p.x} y={p.y} width={p.w} height={p.h} fill="url(#lines)" rx="2"/>
+          <rect x={p.x+14} y={p.y+16} width={p.w*0.5} height={6} fill="#806840" opacity=".5"/>
+          <rect x={p.x+14} y={p.y+32} width={p.w*0.7} height={4} fill="#806840" opacity=".35"/>
+          <rect x={p.x+14} y={p.y+60} width={p.w*0.4} height={4} fill="#806840" opacity=".35"/>
+          <rect x={p.x+14} y={p.y+72} width={p.w*0.55} height={4} fill="#806840" opacity=".3"/>
+          <rect x={p.x+14} y={p.y+84} width={p.w*0.3} height={4} fill="#806840" opacity=".3"/>
+        </g>
+      ))}
+      <circle cx="120" cy="380" r="40" fill="none" stroke="#5a3c1a" strokeWidth="3" opacity=".25"/>
+      <circle cx="120" cy="380" r="35" fill="none" stroke="#5a3c1a" strokeWidth="1.5" opacity=".15"/>
+    </svg>
+  );
+}
+
+function CityRouteMap({ accent = RT_ORANGE }) {
+  return (
+    <svg viewBox="0 0 600 460" style={{ width:"100%", height:"100%", display:"block" }}>
+      <defs>
+        <linearGradient id="cityBg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0f1320"/>
+          <stop offset="100%" stopColor="#161e30"/>
+        </linearGradient>
+        <linearGradient id="routeGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={RT_ORANGE_2}/>
+          <stop offset="100%" stopColor={RT_ORANGE}/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="460" fill="url(#cityBg)"/>
+      <path d="M0 90 Q200 70 280 130 T600 180" stroke="rgba(255,255,255,.06)" strokeWidth="22" fill="none"/>
+      <path d="M0 320 Q180 360 320 320 T600 340" stroke="rgba(255,255,255,.06)" strokeWidth="22" fill="none"/>
+      <g stroke="rgba(255,255,255,.08)" strokeWidth="1">
+        {Array.from({length:14}).map((_,i) => <line key={"sv"+i} x1={i*45} y1="0" x2={i*45} y2="460"/>)}
+        {Array.from({length:11}).map((_,i) => <line key={"sh"+i} x1="0" y1={i*45} x2="600" y2={i*45}/>)}
+      </g>
+      <g fill="rgba(255,255,255,.04)">
+        <rect x="80" y="100" width="60" height="40" rx="4"/>
+        <rect x="220" y="60" width="80" height="55" rx="4"/>
+        <rect x="350" y="160" width="70" height="60" rx="4"/>
+        <rect x="180" y="220" width="90" height="50" rx="4"/>
+        <rect x="380" y="290" width="70" height="55" rx="4"/>
+        <rect x="120" y="340" width="90" height="50" rx="4"/>
+      </g>
+      <path d="M60 380 L60 280 L150 280 L150 200 L280 200 L280 130 L420 130 L420 240 L520 240 L520 90"
+        stroke="rgba(255,255,255,.18)" strokeWidth="3" fill="none" strokeDasharray="6 6" strokeLinecap="round"/>
+      <path d="M60 380 Q120 360 180 320 T300 240 Q360 200 420 180 T540 90"
+        stroke="url(#routeGrad)" strokeWidth="6" fill="none" strokeLinecap="round"
+        style={{ filter:`drop-shadow(0 0 8px ${RT_ORANGE})` }}/>
+      {[
+        { x:60,  y:380, label:"01 Depot", main:true },
+        { x:180, y:320, label:"02" },
+        { x:260, y:280, label:"03" },
+        { x:330, y:230, label:"04" },
+        { x:400, y:190, label:"05" },
+        { x:480, y:140, label:"06" },
+        { x:540, y:90,  label:"07" }
+      ].map((s,i) => (
+        <g key={i}>
+          <circle cx={s.x} cy={s.y} r="14" fill={s.main ? RT_PURPLE : "#0a0f1a"} stroke={RT_ORANGE} strokeWidth="3"/>
+          <text x={s.x} y={s.y+4} textAnchor="middle" fontFamily="Montserrat" fontWeight="800" fontSize="10" fill="#fff">{s.label.split(" ")[0]}</text>
+        </g>
+      ))}
+      <g transform="translate(20,20)">
+        <rect width="170" height="68" rx="8" fill="rgba(0,0,0,.55)" stroke="rgba(255,255,255,.08)"/>
+        <line x1="14" y1="22" x2="40" y2="22" stroke="rgba(255,255,255,.4)" strokeWidth="2" strokeDasharray="3 3"/>
+        <text x="50" y="26" fontFamily="Montserrat" fontSize="10" fill="rgba(255,255,255,.6)">Old route · 142 km</text>
+        <line x1="14" y1="48" x2="40" y2="48" stroke={RT_ORANGE} strokeWidth="3"/>
+        <text x="50" y="52" fontFamily="Montserrat" fontSize="10" fontWeight="700" fill="#fff">Optimised · 98 km</text>
+      </g>
+    </svg>
+  );
+}
+
+function MyRoutesBoothFrame({ scene = 1 }) {
+  return (
+    <div className="mh-artboard mh-grain" style={{ width:1600, height:900 }}>
+      <div className="mh-grad-routes" style={{ position:"absolute", inset:0 }}/>
+      <div className="mh-noise"/>
+
+      <div style={{ position:"absolute", top:28, left:32, zIndex:5, display:"flex", gap:8, alignItems:"center" }}>
+        {[1,2,3,4].map(n => (
+          <div key={n} style={{
+            width: n===scene ? 36 : 8, height:8, borderRadius:4,
+            background: n===scene ? RT_ORANGE : "rgba(255,255,255,.2)",
+            transition:"all .3s ease"
+          }}/>
+        ))}
+        <div style={{ fontFamily:"monospace", fontSize:11, opacity:.5, marginLeft:10, letterSpacing:".15em" }}>
+          SCENE 0{scene} / 04 · MyROUTES
+        </div>
+      </div>
+
+      <div style={{ position:"absolute", top:22, right:32, zIndex:5 }}>
+        <MhLogoR height={36}/>
+      </div>
+
+      <div style={{ position:"absolute", inset:0, padding:"96px 80px", display:"flex", zIndex:3 }}>
+        {scene === 1 && <RoutesSceneHook/>}
+        {scene === 2 && <RoutesScenePlanLive/>}
+        {scene === 3 && <RoutesSceneSavings/>}
+        {scene === 4 && <RoutesSceneCTA/>}
+      </div>
+    </div>
+  );
+}
+
+function RoutesSceneHook() {
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:48, width:"100%", alignItems:"center" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${RT_ORANGE}55`, color:RT_ORANGE }}>
+          <span className="mh-dot orange"/> MyRoutes
+        </div>
+        <h1 style={{ fontWeight:900, fontSize:160, lineHeight:.85, letterSpacing:"-0.045em", margin:"24px 0 0" }}>
+          Plan less.<br/><span style={{ color:RT_ORANGE }}>Deliver more.</span>
+        </h1>
+        <div style={{ fontWeight:600, fontSize:30, opacity:.85, marginTop:24, letterSpacing:"-0.01em" }}>
+          Smarter routes for South African fleets.
+        </div>
+      </div>
+      <div style={{ position:"relative", height:"100%" }}>
+        <div style={{
+          position:"absolute", inset:0, borderRadius:24, overflow:"hidden",
+          background:"#0a0f1a", border:"1px solid rgba(255,255,255,.08)",
+          boxShadow:`0 0 80px -10px ${RT_ORANGE}aa`
+        }}>
+          <CityRouteMap/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RoutesScenePlanLive() {
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1fr 1.2fr", gap:48, alignItems:"center" }}>
+      <div>
+        <div style={{ fontFamily:"monospace", fontSize:14, color:RT_ORANGE, letterSpacing:".15em" }}>
+          06:14:08 · DEPOT JHB
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:84, letterSpacing:"-0.035em", lineHeight:.95, margin:"16px 0 24px" }}>
+          22 stops.<br/>3 trucks.<br/><span style={{ color:RT_ORANGE }}>1.8 seconds.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:20, opacity:.8, maxWidth:520 }}>
+          MyRoutes plans the whole morning faster than your dispatcher pours coffee. Live traffic. Load-shedding aware. Re-routes when reality changes.
+        </div>
+      </div>
+      <div style={{ position:"relative", height:"100%" }}>
+        <div style={{
+          position:"absolute", inset:0, background:"#0a0f1a", borderRadius:20,
+          overflow:"hidden", border:"1px solid rgba(255,255,255,.08)",
+          boxShadow:`0 40px 80px -20px ${RT_ORANGE}66`
+        }}>
+          <CityRouteMap/>
+          <div style={{
+            position:"absolute", top:20, right:20,
+            background:"rgba(0,0,0,.7)", border:`1px solid ${RT_ORANGE}55`,
+            borderRadius:12, padding:"14px 18px", backdropFilter:"blur(8px)", minWidth:220
+          }}>
+            <div style={{ fontSize:10, opacity:.55, textTransform:"uppercase", letterSpacing:".15em" }}>Optimising</div>
+            <div style={{ display:"flex", alignItems:"baseline", gap:6, marginTop:4 }}>
+              <span style={{ fontWeight:900, fontSize:28, color:RT_ORANGE }}>98</span>
+              <span style={{ fontWeight:600, fontSize:14, opacity:.7 }}>km · was 142 km</span>
+            </div>
+            <div style={{ height:6, background:"rgba(255,255,255,.1)", borderRadius:3, marginTop:10, overflow:"hidden" }}>
+              <div style={{ width:"78%", height:"100%", background:RT_ORANGE, boxShadow:`0 0 8px ${RT_ORANGE}` }}/>
+            </div>
+            <div style={{ display:"flex", justifyContent:"space-between", marginTop:8, fontSize:11, opacity:.6 }}>
+              <span>Saved 44 km</span><span>1.8 s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RoutesSceneSavings() {
+  const stats = [
+    { val:"−31%",   label:"Kilometres",       note:"Avg across 28 fleets" },
+    { val:"−3h 08m",label:"Daily idle time",   note:"Per truck" },
+    { val:"R 7 200",label:"Fuel saved /mo",    note:"Per vehicle" },
+    { val:"+18%",   label:"Drops per day",     note:"Same head-count" },
+  ];
+  return (
+    <div style={{ width:"100%", display:"flex", flexDirection:"column", justifyContent:"center" }}>
+      <div className="mh-chip" style={{ borderColor:`${RT_ORANGE}55`, color:RT_ORANGE, alignSelf:"flex-start" }}>
+        <span className="mh-dot orange"/> Pilot results · 90 days
+      </div>
+      <h2 style={{ fontWeight:900, fontSize:100, letterSpacing:"-0.04em", lineHeight:.92, margin:"16px 0 36px" }}>
+        Math <span style={{ color:RT_ORANGE }}>that ships.</span>
+      </h2>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:18 }}>
+        {stats.map((s,i) => (
+          <div key={i} style={{
+            background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.08)",
+            borderRadius:18, padding:"28px 24px"
+          }}>
+            <div style={{ fontWeight:900, fontSize:68, letterSpacing:"-0.04em", lineHeight:.95, color:RT_ORANGE }}>
+              {s.val}
+            </div>
+            <div style={{ fontSize:15, fontWeight:700, marginTop:14 }}>{s.label}</div>
+            <div style={{ fontSize:12, opacity:.6, marginTop:4 }}>{s.note}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RoutesSceneCTA() {
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1.4fr 1fr", gap:64, alignItems:"center" }}>
+      <div>
+        <h2 style={{ fontWeight:900, fontSize:112, letterSpacing:"-0.04em", lineHeight:.92, color:RT_ORANGE }}>
+          Plan your<br/>route at the<br/>booth. Free.
+        </h2>
+        <div style={{ marginTop:36, display:"flex", gap:16, alignItems:"center", flexWrap:"wrap" }}>
+          <div style={{
+            padding:"18px 28px", borderRadius:999,
+            background:RT_ORANGE, color:COLO_R.navy,
+            fontWeight:800, fontSize:22
+          }}>Bring your route sheet</div>
+          <div style={{ fontSize:18, opacity:.7 }}>mharetech.co.za/22onsloane</div>
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }}>
+        <div style={{
+          background:"#fff", borderRadius:20, padding:16,
+          boxShadow:`0 40px 80px -20px ${RT_ORANGE}88`
+        }}>
+          <RealQR size={200}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.MyRoutes = { MyRoutesBoothFrame };
+</script>
+
+<!-- ============================================================
+     BLOCK 6 · KasiStock component
+     ============================================================ -->
+<script type="text/babel" data-presets="env,react">
+/* global React, MH, RealQR */
+const { MhareLogo: MhLogoK, COLORS: COLO_K } = MH;
+
+const KS_PURPLE  = "#4827CC";
+const KS_MAGENTA = "#E1266B";
+const KS_WARM    = "#FFB840";
+
+function ShopPhotoPlaceholder() {
+  return (
+    <div style={{
+      position:"absolute", inset:0,
+      background:`
+        linear-gradient(180deg, rgba(20,15,30,.1) 0%, rgba(72,39,204,.55) 60%, rgba(225,38,107,.65) 100%),
+        repeating-linear-gradient(95deg,
+          #c4853a 0 60px, #b06d3c 60px 110px, #d09548 110px 160px,
+          #9c5a3a 160px 200px, #c4853a 200px 270px
+        )
+      `,
+      overflow:"hidden"
+    }}>
+      <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" style={{ position:"absolute", inset:0, width:"100%", height:"100%", mixBlendMode:"overlay", opacity:.5 }}>
+        <rect y="40"  width="600" height="60" fill="rgba(0,0,0,.3)"/>
+        <rect y="160" width="600" height="60" fill="rgba(0,0,0,.3)"/>
+        <rect y="280" width="600" height="60" fill="rgba(0,0,0,.3)"/>
+        {[...Array(30)].map((_,i) => {
+          const row = Math.floor(i/10), col = i%10;
+          const colors = ["#FF9D00","#E1266B","#4827CC","#27D17F","#fff"];
+          return (
+            <rect key={i}
+              x={20 + col*58} y={50 + row*120}
+              width={i%3===0 ? 30 : 36} height={42} rx="3"
+              fill={colors[i%colors.length]} opacity={0.85}/>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function KasiPhoneScreen({ scale = 1 }) {
+  return (
+    <div style={{
+      width:300*scale, aspectRatio:"9/19",
+      borderRadius:36*scale, padding:8*scale,
+      background:"#0a0a0a",
+      boxShadow:`0 30px 60px -10px rgba(0,0,0,.6), 0 0 0 ${1.5*scale}px rgba(255,255,255,.06)`,
+      position:"relative", overflow:"hidden"
+    }}>
+      <div style={{
+        position:"absolute", top:10*scale, left:"50%", transform:"translateX(-50%)",
+        width:90*scale, height:22*scale, background:"#000", borderRadius:99
+      }}/>
+      <div style={{
+        width:"100%", height:"100%", borderRadius:28*scale,
+        background:COLO_K.navy, overflow:"hidden",
+        display:"flex", flexDirection:"column", color:"#fff", position:"relative"
+      }}>
+        <div style={{ display:"flex", justifyContent:"space-between", padding:`${10*scale}px ${20*scale}px ${8*scale}px`, fontSize:10*scale, fontWeight:600, fontFamily:"Montserrat", opacity:.85 }}>
+          <span>09:42</span><span>● ● ●</span>
+        </div>
+        <div style={{ padding:`${6*scale}px ${18*scale}px` }}>
+          <div style={{ fontSize:10*scale, fontWeight:600, letterSpacing:".15em", textTransform:"uppercase", opacity:.55 }}>Spaza Mart · Soweto</div>
+          <div style={{ fontWeight:900, fontSize:18*scale, letterSpacing:"-.02em", marginTop:2*scale }}>Scan a product</div>
+        </div>
+        <div style={{
+          margin:`${10*scale}px ${18*scale}px`, aspectRatio:"1/1",
+          borderRadius:14*scale, position:"relative", overflow:"hidden",
+          background:`linear-gradient(135deg, ${KS_PURPLE}, ${KS_MAGENTA})`
+        }}>
+          <div style={{ position:"absolute", inset:12*scale, borderRadius:10*scale, background:"#1d1410", overflow:"hidden" }}>
+            <div style={{ position:"absolute", inset:"15%", background:"linear-gradient(160deg, #d4a05a, #8b5e2b)", borderRadius:6*scale }}/>
+            <div style={{ position:"absolute", left:"30%", right:"30%", top:"45%", height:28*scale, background:"rgba(0,0,0,.4)" }}/>
+          </div>
+          <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%" }} viewBox="0 0 100 100">
+            <path d="M10 25 V10 H25 M75 10 H90 V25 M90 75 V90 H75 M25 90 H10 V75" stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round"/>
+            <line x1="15" y1="50" x2="85" y2="50" stroke={KS_MAGENTA} strokeWidth="1.5">
+              <animate attributeName="y1" values="20;80;20" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="y2" values="20;80;20" dur="2s" repeatCount="indefinite"/>
+            </line>
+          </svg>
+        </div>
+        <div style={{
+          margin:`${8*scale}px ${18*scale}px`, padding:`${12*scale}px ${14*scale}px`,
+          background:`linear-gradient(120deg, ${KS_PURPLE}, ${KS_MAGENTA})`,
+          borderRadius:14*scale
+        }}>
+          <div style={{ fontSize:9*scale, fontWeight:700, letterSpacing:".15em", textTransform:"uppercase", opacity:.85 }}>Match found</div>
+          <div style={{ fontWeight:900, fontSize:16*scale, letterSpacing:"-.02em", marginTop:3*scale }}>Iwisa Maize Meal 5kg</div>
+          <div style={{ display:"flex", alignItems:"baseline", gap:6*scale, marginTop:6*scale }}>
+            <span style={{ fontWeight:900, fontSize:22*scale }}>R 84.99</span>
+            <span style={{ fontSize:10*scale, opacity:.85, textDecoration:"line-through" }}>R 94.99</span>
+            <span style={{ fontSize:9*scale, padding:"2px 6px", background:"#fff", color:KS_PURPLE, borderRadius:99, fontWeight:800, marginLeft:"auto" }}>DEAL</span>
+          </div>
+          <div style={{ fontSize:10*scale, opacity:.85, marginTop:4*scale }}>Stock: 12 · Low at 8</div>
+        </div>
+        <div style={{ flex:1 }}/>
+        <div style={{ padding:`${10*scale}px ${18*scale}px ${18*scale}px`, display:"flex", gap:8*scale }}>
+          <div style={{ flex:1, padding:`${12*scale}px`, borderRadius:99, background:"#fff", color:COLO_K.navy, fontWeight:800, fontSize:13*scale, textAlign:"center" }}>Add to sale</div>
+          <div style={{ width:44*scale, height:44*scale, borderRadius:99, background:"rgba(255,255,255,.1)", border:"1px solid rgba(255,255,255,.2)" }}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function KasiStockBoothFrame({ scene = 1 }) {
+  return (
+    <div className="mh-artboard" style={{ width:1600, height:900, background:COLO_K.navy }}>
+      {scene !== 3 && <ShopPhotoPlaceholder/>}
+      {scene === 3 && <div className="mh-grad-kasi" style={{ position:"absolute", inset:0, opacity:.5 }}/>}
+      <div className="mh-noise"/>
+
+      <div style={{ position:"absolute", top:28, left:32, zIndex:5, display:"flex", gap:8, alignItems:"center" }}>
+        {[1,2,3,4].map(n => (
+          <div key={n} style={{
+            width: n===scene ? 36 : 8, height:8, borderRadius:4,
+            background: n===scene ? KS_WARM : "rgba(255,255,255,.25)",
+            transition:"all .3s ease"
+          }}/>
+        ))}
+        <div style={{ fontFamily:"monospace", fontSize:11, opacity:.7, marginLeft:10, color:"#fff", letterSpacing:".15em" }}>
+          SCENE 0{scene} / 04 · KasiSTOCK
+        </div>
+      </div>
+
+      <div style={{ position:"absolute", top:22, right:32, zIndex:5 }}>
+        <MhLogoK height={36}/>
+      </div>
+
+      <div style={{ position:"absolute", inset:0, padding:"96px 80px", display:"flex", zIndex:3 }}>
+        {scene === 1 && <KasiSceneHook/>}
+        {scene === 2 && <KasiSceneScan/>}
+        {scene === 3 && <KasiSceneNumbers/>}
+        {scene === 4 && <KasiSceneCTA/>}
+      </div>
+    </div>
+  );
+}
+
+function KasiSceneHook() {
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1.3fr 1fr", gap:48, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:"rgba(255,255,255,.35)", color:"#fff", background:"rgba(0,0,0,.3)" }}>
+          <span className="mh-dot orange"/> KasiStock
+        </div>
+        <h1 style={{
+          fontWeight:900, fontSize:140, lineHeight:.85, letterSpacing:"-0.045em", margin:"24px 0 0",
+          textShadow:"0 6px 30px rgba(0,0,0,.45)"
+        }}>
+          Know your<br/><span style={{ color:KS_WARM }}>stock.</span><br/>Grow your store.
+        </h1>
+        <div style={{ fontWeight:600, fontSize:30, marginTop:24, letterSpacing:"-0.01em", textShadow:"0 2px 14px rgba(0,0,0,.4)" }}>
+          No internet? <span style={{ color:KS_WARM, fontWeight:800 }}>No problem.</span>
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center", transform:"rotate(-5deg)" }}>
+        <KasiPhoneScreen scale={1.4}/>
+      </div>
+    </div>
+  );
+}
+
+function KasiSceneScan() {
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"center", color:"#fff" }}>
+      <div>
+        <div style={{ fontFamily:"monospace", fontSize:14, color:KS_WARM, letterSpacing:".15em", textShadow:"0 2px 10px rgba(0,0,0,.4)" }}>
+          09:42:11 · SPAZA MART · SOWETO
+        </div>
+        <h2 style={{
+          fontWeight:900, fontSize:88, letterSpacing:"-0.035em", lineHeight:.95, margin:"16px 0 24px",
+          textShadow:"0 4px 20px rgba(0,0,0,.5)"
+        }}>
+          Scan.<br/>Sell.<br/>Sorted.
+        </h2>
+        <div style={{ fontWeight:500, fontSize:22, opacity:.92, maxWidth:520, textShadow:"0 2px 10px rgba(0,0,0,.4)" }}>
+          One tap and the price is right, the stock is counted and the special is applied. No more sticky notes. No more "ag, ek dink so".
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center", transform:"rotate(4deg)" }}>
+        <KasiPhoneScreen scale={1.5}/>
+      </div>
+    </div>
+  );
+}
+
+function KasiSceneNumbers() {
+  const stats = [
+    { val:"R 312", label:"Avg daily upside",   note:"Catch deals that walked out the door" },
+    { val:"0 sec", label:"Lights out, sales on",note:"Offline-first by design" },
+    { val:"−47%",  label:"Stock-outs",          note:"Stayers always in stock" },
+    { val:"1 min", label:"To onboard",          note:"Scan your shelf, you're in" },
+  ];
+  return (
+    <div style={{ width:"100%", display:"flex", flexDirection:"column", justifyContent:"center", color:"#fff" }}>
+      <div className="mh-chip" style={{ borderColor:"rgba(255,255,255,.35)", color:"#fff", background:"rgba(0,0,0,.25)", alignSelf:"flex-start" }}>
+        <span className="mh-dot orange"/> Pilot · 12 stores · 60 days
+      </div>
+      <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.04em", lineHeight:.92, margin:"16px 0 36px" }}>
+        Small shop. <span style={{ color:KS_WARM }}>Big margin.</span>
+      </h2>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:18 }}>
+        {stats.map((s,i) => (
+          <div key={i} style={{
+            background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.18)",
+            borderRadius:18, padding:"28px 24px", backdropFilter:"blur(6px)"
+          }}>
+            <div style={{ fontWeight:900, fontSize:60, letterSpacing:"-0.03em", lineHeight:.95, color: i%2===0 ? KS_WARM : "#fff" }}>{s.val}</div>
+            <div style={{ fontSize:14, fontWeight:700, marginTop:14 }}>{s.label}</div>
+            <div style={{ fontSize:12, opacity:.7, marginTop:4 }}>{s.note}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function KasiSceneCTA() {
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1.4fr 1fr", gap:64, alignItems:"center", color:"#fff" }}>
+      <div>
+        <h2 style={{
+          fontWeight:900, fontSize:112, letterSpacing:"-0.04em", lineHeight:.92,
+          textShadow:"0 4px 20px rgba(0,0,0,.45)"
+        }}>
+          Try it <span style={{ color:KS_WARM }}>at the booth.</span><br/>30 days free.
+        </h2>
+        <div style={{ marginTop:36, display:"flex", gap:16, alignItems:"center", flexWrap:"wrap" }}>
+          <div style={{
+            padding:"18px 28px", borderRadius:999,
+            background:"#fff", color:COLO_K.navy,
+            fontWeight:800, fontSize:22
+          }}>Bring your phone</div>
+          <div style={{ fontSize:18, opacity:.9 }}>mharetech.co.za/22onsloane</div>
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }}>
+        <div style={{
+          background:"#fff", borderRadius:20, padding:16,
+          boxShadow:`0 40px 80px -20px ${KS_MAGENTA}aa`
+        }}>
+          <RealQR size={200}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.KasiStock = { KasiStockBoothFrame };
+</script>
+
+<!-- ============================================================
+     BLOCK 7 · Booth Player app
+     ============================================================ -->
+<script type="text/babel" data-presets="env,react">
+const { MyTrackBoothFrame }   = window.MyTrack;
+const { MyRoutesBoothFrame }  = window.MyRoutes;
+const { KasiStockBoothFrame } = window.KasiStock;
+
+const SCENE_TIMINGS = [5000, 7000, 6000, 4000];
+const PRODUCTS = [
+  { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame },
+  { id:"myroutes",  name:"MyRoutes",  label:"Routing",       accent:"#FF9D00", Frame:MyRoutesBoothFrame },
+  { id:"kasistock", name:"KasiStock", label:"Community POS", accent:"#FFB840", Frame:KasiStockBoothFrame },
+];
+
+function BoothPlayer() {
+  const [productIdx, setProductIdx] = React.useState(0);
+  const [scene,      setScene]      = React.useState(1);
+  const [playing,    setPlaying]    = React.useState(true);
+  const [progress,   setProgress]   = React.useState(0);
+  const [showCtrl,   setShowCtrl]   = React.useState(true);
+  const timerRef = React.useRef(null);
+  const progRef  = React.useRef(null);
+  const startRef = React.useRef(Date.now());
+  const hideRef  = React.useRef(null);
+  const product  = PRODUCTS[productIdx];
+
+  const revealControls = React.useCallback(() => {
+    setShowCtrl(true);
+    clearTimeout(hideRef.current);
+    hideRef.current = setTimeout(() => setShowCtrl(false), 3000);
+  }, []);
+
+  React.useEffect(() => {
+    revealControls();
+    return () => clearTimeout(hideRef.current);
+  }, []);
+
+  const startProgress = React.useCallback(() => {
+    cancelAnimationFrame(progRef.current);
+    startRef.current = Date.now();
+    const dur = SCENE_TIMINGS[scene - 1];
+    const tick = () => {
+      const elapsed = Date.now() - startRef.current;
+      setProgress(Math.min(elapsed / dur, 1));
+      if (elapsed < dur) progRef.current = requestAnimationFrame(tick);
+    };
+    progRef.current = requestAnimationFrame(tick);
+  }, [scene]);
+
+  React.useEffect(() => {
+    clearTimeout(timerRef.current);
+    cancelAnimationFrame(progRef.current);
+    setProgress(0);
+    if (!playing) return;
+    startProgress();
+    timerRef.current = setTimeout(
+      () => setScene(s => s === 4 ? 1 : s + 1),
+      SCENE_TIMINGS[scene - 1]
+    );
+    return () => {
+      clearTimeout(timerRef.current);
+      cancelAnimationFrame(progRef.current);
+    };
+  }, [scene, playing, productIdx]);
+
+  const goScene    = n  => { setScene(n); setProgress(0); };
+  const togglePlay = () => setPlaying(p => !p);
+
+  const [vw, setVw] = React.useState(window.innerWidth);
+  const [vh, setVh] = React.useState(window.innerHeight);
+  React.useEffect(() => {
+    const onResize = () => { setVw(window.innerWidth); setVh(window.innerHeight); };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const scale = Math.min(vw / 1600, vh / 900);
+  const { Frame } = product;
+
+  return (
+    <div
+      style={{ width:"100vw", height:"100vh", background:"#000", position:"relative", overflow:"hidden", cursor: showCtrl ? "default" : "none" }}
+      onMouseMove={revealControls}
+      onMouseLeave={() => playing && setShowCtrl(false)}
+    >
+      {/* ── Artboard ── */}
+      <div style={{
+        position:"absolute", top:"50%", left:"50%",
+        transform:`translate(-50%,-50%) scale(${scale})`,
+        transformOrigin:"center", width:1600, height:900
+      }}>
+        <Frame scene={scene}/>
+      </div>
+
+      {/* ── Controls overlay ── */}
+      <div style={{
+        position:"absolute", inset:0,
+        pointerEvents: showCtrl ? "auto" : "none",
+        opacity: showCtrl ? 1 : 0,
+        transition:"opacity 0.4s ease",
+        display:"flex", flexDirection:"column", justifyContent:"space-between"
+      }}>
+
+        {/* Top — product tabs */}
+        <div style={{
+          display:"flex", gap:10, padding:"20px 28px",
+          background:"linear-gradient(to bottom,rgba(0,0,0,.72),transparent)",
+          alignItems:"center"
+        }}>
+          {PRODUCTS.map((p, i) => (
+            <button key={p.id} onClick={() => { setProductIdx(i); setScene(1); }}
+              style={{
+                padding:"8px 20px", borderRadius:999, border:"none", cursor:"pointer",
+                fontFamily:"Montserrat,sans-serif", fontWeight:700, fontSize:13, letterSpacing:"0.04em",
+                background: i===productIdx ? p.accent : "rgba(255,255,255,.12)",
+                color: i===productIdx ? (p.id==="myroutes" ? "#151B29" : "#fff") : "rgba(255,255,255,.7)",
+                transition:"all .2s"
+              }}>
+              {p.name}
+              <span style={{ fontSize:10, fontWeight:500, opacity:.75, marginLeft:8 }}>{p.label}</span>
+            </button>
+          ))}
+          <div style={{ flex:1 }}/>
+          <div style={{ fontFamily:"monospace", fontSize:11, color:"rgba(255,255,255,.4)", letterSpacing:".15em" }}>
+            SCENE 0{scene} / 04 · {product.name.toUpperCase()}
+          </div>
+        </div>
+
+        {/* Side arrows */}
+        {[
+          { dir:"left",  fn: () => goScene(scene===1 ? 4 : scene-1) },
+          { dir:"right", fn: () => goScene(scene===4 ? 1 : scene+1) }
+        ].map(({ dir, fn }) => (
+          <button key={dir} onClick={fn} style={{
+            position:"absolute", top:"50%", [dir]:24, transform:"translateY(-50%)",
+            border:"none", background:"rgba(255,255,255,.1)", color:"#fff",
+            width:52, height:52, borderRadius:26, cursor:"pointer",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            backdropFilter:"blur(6px)", transition:"background .15s"
+          }}
+          onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.22)"}
+          onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.1)"}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+              <path d={dir==="left" ? "M13 4L7 10l6 6" : "M7 4l6 6-6 6"}/>
+            </svg>
+          </button>
+        ))}
+
+        {/* Bottom — progress + controls */}
+        <div style={{ padding:"0 28px 24px", background:"linear-gradient(to top,rgba(0,0,0,.78),transparent)" }}>
+          {/* progress bar */}
+          <div style={{ height:3, background:"rgba(255,255,255,.15)", borderRadius:2, marginBottom:18, overflow:"hidden" }}>
+            <div style={{
+              height:"100%", borderRadius:2, background:product.accent,
+              width:`${progress*100}%`, transition: playing ? "none" : "width .1s"
+            }}/>
+          </div>
+          <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+            {/* play / pause */}
+            <button onClick={togglePlay} style={{
+              border:"none", background:"rgba(255,255,255,.12)", color:"#fff",
+              width:44, height:44, borderRadius:22, cursor:"pointer",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              backdropFilter:"blur(6px)", flexShrink:0, transition:"background .15s"
+            }}
+            onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.22)"}
+            onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.12)"}>
+              {playing
+                ? <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12" rx="1"/><rect x="9" y="2" width="4" height="12" rx="1"/></svg>
+                : <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2l10 6-10 6V2z"/></svg>
+              }
+            </button>
+
+            {/* scene dots */}
+            <div style={{ display:"flex", gap:10, alignItems:"center" }}>
+              {[1,2,3,4].map(n => (
+                <button key={n} onClick={() => goScene(n)}
+                  style={{ border:"none", cursor:"pointer", padding:0, background:"transparent", display:"flex", alignItems:"center" }}>
+                  <div style={{
+                    width: n===scene ? 32 : 8, height:8, borderRadius:4,
+                    background: n===scene ? product.accent : "rgba(255,255,255,.3)",
+                    transition:"all .25s ease"
+                  }}/>
+                </button>
+              ))}
+            </div>
+
+            <div style={{ flex:1 }}/>
+
+            {/* scene label */}
+            <div style={{ fontFamily:"Montserrat,sans-serif", fontSize:12, fontWeight:600, color:"rgba(255,255,255,.55)", letterSpacing:".06em" }}>
+              {["Hook","Demo","Proof","CTA"][scene-1]}
+              <span style={{ opacity:.5, marginLeft:8, fontFamily:"monospace", fontSize:11 }}>
+                {(SCENE_TIMINGS[scene-1]/1000).toFixed(0)}s
+              </span>
+            </div>
+
+            {/* fullscreen */}
+            <button
+              onClick={() => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()}
+              style={{
+                border:"none", background:"rgba(255,255,255,.12)", color:"#fff",
+                width:44, height:44, borderRadius:22, cursor:"pointer",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                backdropFilter:"blur(6px)", transition:"background .15s"
+              }}
+              onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.22)"}
+              onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.12)"}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <path d="M1 5V1h4M11 1h4v4M15 11v4h-4M5 15H1v-4"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<BoothPlayer/>);
+</script>
+</body>
+</html>
