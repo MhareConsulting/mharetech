@@ -45,6 +45,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:"Mo
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 
+<script>
+window.MHARE_ASSETS = {
+  logo: "{% static 'Assets/Digital logos/SVG/Mhare Consulting_Secondary Logo.svg' %}",
+  qr:   "{% static 'Assets/Expo QR/expo-qr-general.png' %}"
+};
+</script>
+{% verbatim %}
 <!-- ============================================================
      BLOCK 1 · Brand tokens + shared widgets
      ============================================================ -->
@@ -148,7 +155,7 @@ window.MH = { COLORS, MhareLogo, MhareMark, MhareLogoLockup, CheckRow, Icons };
   function MhareLogo({ height = 36 }) {
     return (
       <img
-        src="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Secondary Logo.svg' %}"
+        src={window.MHARE_ASSETS.logo}
         alt="Mhare Consulting"
         style={{ height, width:"auto", display:"block", objectFit:"contain" }}
       />
@@ -180,7 +187,7 @@ window.MH = { COLORS, MhareLogo, MhareMark, MhareLogoLockup, CheckRow, Icons };
 function RealQR({ size = 120 }) {
   return (
     <img
-      src="{% static 'Assets/Expo QR/expo-qr-general.png' %}"
+      src={window.MHARE_ASSETS.qr}
       alt="Scan to learn more"
       style={{ width:size, height:size, borderRadius:10, display:"block", objectFit:"contain" }}
     />
@@ -1376,5 +1383,6 @@ function BoothPlayer() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(<BoothPlayer/>);
 </script>
+{% endverbatim %}
 </body>
 </html>
