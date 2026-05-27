@@ -744,37 +744,109 @@ const RT_ORANGE   = "#FF9D00";
 const RT_ORANGE_2 = "#FFB840";
 const RT_PURPLE   = "#4827CC";
 
-function PaperPile() {
-  const papers = [
-    { rot: -8, x: 10, y: 30, w: 220, h: 280, tint: "#f7eed8" },
-    { rot:  6, x: 70, y: 60, w: 230, h: 290, tint: "#f3e7c5" },
-    { rot: -2, x: 40, y:110, w: 240, h: 300, tint: "#fff7e4" },
-    { rot: 12, x:120, y:140, w: 220, h: 290, tint: "#efe2b8" },
+function JHBRouteMap() {
+  return (
+    <svg viewBox="0 0 480 360" style={{ width:"100%", height:"100%", display:"block" }} preserveAspectRatio="xMidYMid slice">
+      <rect width="480" height="360" fill="#e8ecf0"/>
+      <path d="M0 185 Q120 175 240 188 T480 202" stroke="#fff" strokeWidth="14" fill="none"/>
+      <path d="M0 185 Q120 175 240 188 T480 202" stroke="#c9d2dc" strokeWidth="10" fill="none"/>
+      <path d="M360 360 Q370 290 395 215 T435 0" stroke="#fff" strokeWidth="10" fill="none"/>
+      <path d="M360 360 Q370 290 395 215 T435 0" stroke="#c9d2dc" strokeWidth="7" fill="none"/>
+      <path d="M0 100 Q80 110 160 120 T305 140" stroke="#fff" strokeWidth="8" fill="none"/>
+      <path d="M0 100 Q80 110 160 120 T305 140" stroke="#c9d2dc" strokeWidth="6" fill="none"/>
+      <g stroke="#d4d9e2" strokeWidth="1.5" opacity=".8">
+        {[55,110,165,220,275,330,385,440].map(x=>(<line key={"v"+x} x1={x} y1="0" x2={x} y2="360"/>))}
+        {[40,80,120,160,200,240,280,320].map(y=>(<line key={"h"+y} x1="0" y1={y} x2="480" y2={y}/>))}
+      </g>
+      {[[170,50,85,48],[285,68,78,42],[62,112,76,38],[205,138,68,44],
+        [118,198,78,38],[308,218,88,48],[50,258,88,44],[248,278,76,44],[385,168,72,38]
+      ].map(([x,y,w,h],i)=>(<rect key={i} x={x} y={y} width={w} height={h} fill="#dde3ea" rx="2"/>))}
+      <path d="M30 320 Q65 265 105 228 T205 158 Q285 118 365 88 T465 28" stroke="#3B82F6" strokeWidth="5" fill="none" strokeLinecap="round"/>
+      <path d="M30 320 Q65 265 105 228 T205 158 Q285 118 365 88 T465 28" stroke="#3B82F6" strokeWidth="10" fill="none" strokeLinecap="round" opacity=".18"/>
+      <path d="M30 320 Q72 292 118 282 T232 278 Q282 272 342 302 T445 332" stroke="#EF4444" strokeWidth="5" fill="none" strokeLinecap="round"/>
+      <path d="M30 320 Q72 292 118 282 T232 278 Q282 272 342 302 T445 332" stroke="#EF4444" strokeWidth="10" fill="none" strokeLinecap="round" opacity=".18"/>
+      <path d="M30 320 Q55 308 82 298 T152 278 Q202 268 242 258 T295 242" stroke="#22C55E" strokeWidth="5" fill="none" strokeLinecap="round"/>
+      <path d="M30 320 Q55 308 82 298 T152 278 Q202 268 242 258 T295 242" stroke="#22C55E" strokeWidth="10" fill="none" strokeLinecap="round" opacity=".18"/>
+      <circle cx="30" cy="320" r="10" fill="#4F46E5"/><circle cx="30" cy="320" r="6" fill="#fff"/>
+      {[[122,222],[202,160],[282,120],[362,90],[445,38]].map(([x,y],i)=>(
+        <g key={"b"+i}><circle cx={x} cy={y} r="8" fill="#fff" stroke="#3B82F6" strokeWidth="2.5"/><circle cx={x} cy={y} r="3.5" fill="#3B82F6"/></g>
+      ))}
+      {[[152,282],[262,278],[350,305]].map(([x,y],i)=>(
+        <g key={"r"+i}><circle cx={x} cy={y} r="8" fill="#fff" stroke="#EF4444" strokeWidth="2.5"/><circle cx={x} cy={y} r="3.5" fill="#EF4444"/></g>
+      ))}
+      {[[142,278],[242,260]].map(([x,y],i)=>(
+        <g key={"g"+i}><circle cx={x} cy={y} r="8" fill="#fff" stroke="#22C55E" strokeWidth="2.5"/><circle cx={x} cy={y} r="3.5" fill="#22C55E"/></g>
+      ))}
+    </svg>
+  );
+}
+
+function PlanningUIMockup({ optimizing = false }) {
+  const orderRows = [
+    { ref:"SAN-001", customer:"Spar Sandton City",    area:"Sandton",       kg:472 },
+    { ref:"SAN-002", customer:"Pick n Pay Sandton",   area:"Sandton",       kg:287 },
+    { ref:"SAN-003", customer:"Woolworths Food S...", area:"Sandton",       kg:491 },
+    { ref:"SAN-004", customer:"Checkers Rosebank",    area:"Rosebank",      kg:42  },
+    { ref:"SAN-005", customer:"Spar Melrose Arch",    area:"Melrose North", kg:670 },
+    { ref:"SAN-006", customer:"Pick n Pay Hyde Park", area:"Hyde Park",     kg:727 },
+    { ref:"SAN-007", customer:"Woolworths Illovo",    area:"Illovo",        kg:377 },
   ];
   return (
-    <svg viewBox="0 0 380 460" style={{ width:"100%", height:"100%", display:"block" }}>
-      <defs>
-        <filter id="paperShadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="6" stdDeviation="6" floodOpacity=".35"/>
-        </filter>
-        <pattern id="lines" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
-          <line x1="0" y1="14" x2="20" y2="14" stroke="#a08960" strokeWidth=".6" opacity=".5"/>
-        </pattern>
-      </defs>
-      {papers.map((p, i) => (
-        <g key={i} transform={`rotate(${p.rot} ${p.x + p.w/2} ${p.y + p.h/2})`} filter="url(#paperShadow)">
-          <rect x={p.x} y={p.y} width={p.w} height={p.h} fill={p.tint} rx="2"/>
-          <rect x={p.x} y={p.y} width={p.w} height={p.h} fill="url(#lines)" rx="2"/>
-          <rect x={p.x+14} y={p.y+16} width={p.w*0.5} height={6} fill="#806840" opacity=".5"/>
-          <rect x={p.x+14} y={p.y+32} width={p.w*0.7} height={4} fill="#806840" opacity=".35"/>
-          <rect x={p.x+14} y={p.y+60} width={p.w*0.4} height={4} fill="#806840" opacity=".35"/>
-          <rect x={p.x+14} y={p.y+72} width={p.w*0.55} height={4} fill="#806840" opacity=".3"/>
-          <rect x={p.x+14} y={p.y+84} width={p.w*0.3} height={4} fill="#806840" opacity=".3"/>
-        </g>
-      ))}
-      <circle cx="120" cy="380" r="40" fill="none" stroke="#5a3c1a" strokeWidth="3" opacity=".25"/>
-      <circle cx="120" cy="380" r="35" fill="none" stroke="#5a3c1a" strokeWidth="1.5" opacity=".15"/>
-    </svg>
+    <div style={{ position:"absolute", inset:0, borderRadius:18, overflow:"hidden", boxShadow:`0 0 70px -10px ${RT_ORANGE}88, 0 0 0 1px rgba(255,255,255,.08)`, display:"flex", flexDirection:"column", background:"#f1f4f8" }}>
+      <div style={{ background:"#fff", borderBottom:"1px solid #e0e6ef", padding:"9px 14px", display:"flex", alignItems:"center", gap:10, flexShrink:0 }}>
+        <div>
+          <div style={{ fontSize:7, color:"#999", textTransform:"uppercase", letterSpacing:".12em", fontFamily:"monospace" }}>OPERATIONS</div>
+          <div style={{ fontSize:13, fontWeight:800, color:"#151B29" }}>Optimized Planning</div>
+        </div>
+        <div style={{ marginLeft:"auto", display:"flex", gap:6, alignItems:"center" }}>
+          <div style={{ padding:"4px 10px", borderRadius:999, background:"#4F46E5", color:"#fff", fontSize:9, fontWeight:800 }}>&#9654; Optimize</div>
+          <div style={{ fontSize:9, color:"#22C55E", fontWeight:700 }}>&#10003; Plan locked &#8212; drivers can receive routes.</div>
+        </div>
+      </div>
+      <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
+        <div style={{ width:165, borderRight:"1px solid #e0e6ef", background:"#fff", overflow:"hidden", flexShrink:0, display:"flex", flexDirection:"column" }}>
+          <div style={{ padding:"6px 10px", borderBottom:"1px solid #f0f4f8", flexShrink:0 }}>
+            <div style={{ fontSize:8, fontWeight:800, color:"#333", letterSpacing:".06em", textTransform:"uppercase" }}>ORDERS <span style={{ color:RT_ORANGE }}>60</span></div>
+          </div>
+          {orderRows.map((o,i)=>(
+            <div key={i} style={{ padding:"5px 8px 5px 10px", borderBottom:"1px solid #f0f4f8", display:"flex", alignItems:"center", gap:5 }}>
+              <div style={{ width:6, height:6, borderRadius:2, background:"#E1266B", flexShrink:0 }}/>
+              <div style={{ overflow:"hidden" }}>
+                <div style={{ fontSize:7, fontWeight:800, color:"#E1266B", letterSpacing:".04em" }}>{o.ref}</div>
+                <div style={{ fontSize:7, fontWeight:600, color:"#222", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", maxWidth:110 }}>{o.customer}</div>
+                <div style={{ fontSize:6, color:"#999" }}>{o.area} &middot; {o.kg}kg</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ flex:1, position:"relative" }}>
+          <JHBRouteMap/>
+          {optimizing && (
+            <div style={{ position:"absolute", top:10, right:10, background:"rgba(21,27,41,.92)", borderRadius:10, padding:"12px 14px", border:`1px solid ${RT_ORANGE}44`, backdropFilter:"blur(8px)", minWidth:168 }}>
+              <div style={{ fontSize:7, color:"#aaa", textTransform:"uppercase", letterSpacing:".12em" }}>Optimising</div>
+              <div style={{ display:"flex", alignItems:"baseline", gap:4, marginTop:4 }}>
+                <span style={{ fontWeight:900, fontSize:24, color:RT_ORANGE }}>98</span>
+                <span style={{ fontSize:10, color:"#999" }}>km &middot; was 142</span>
+              </div>
+              <div style={{ height:4, background:"rgba(255,255,255,.1)", borderRadius:2, marginTop:8, overflow:"hidden" }}>
+                <div style={{ width:"69%", height:"100%", background:RT_ORANGE, borderRadius:2, boxShadow:`0 0 8px ${RT_ORANGE}` }}/>
+              </div>
+              <div style={{ display:"flex", justifyContent:"space-between", marginTop:5, fontSize:8 }}>
+                <span style={{ color:"#aaa" }}>&#8722;44 km</span><span style={{ color:RT_ORANGE, fontWeight:700 }}>1.8 s</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div style={{ background:"#fff", borderTop:"1px solid #e0e6ef", padding:"5px 10px", display:"flex", alignItems:"center", gap:10, flexShrink:0 }}>
+        <div style={{ width:7, height:7, borderRadius:"50%", background:"#3B82F6" }}/>
+        <div style={{ fontSize:8, fontWeight:700, color:"#151B29" }}>KX98NBGP</div>
+        <div style={{ fontSize:8, color:"#888" }}>4 stops &middot; 4.8km &middot; 179min</div>
+        <div style={{ marginLeft:"auto", display:"flex", gap:6 }}>
+          {[["#3B82F6",50],["#EF4444",70],["#22C55E",50]].map(([c,w],i)=>(<div key={i} style={{ width:w, height:6, borderRadius:2, background:c, opacity:.8 }}/>))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -843,7 +915,7 @@ function MyRoutesBoothFrame({ scene = 1 }) {
       <div className="mh-noise"/>
 
       <div style={{ position:"absolute", top:28, left:32, zIndex:5, display:"flex", gap:8, alignItems:"center" }}>
-        {[1,2,3,4].map(n => (
+        {[1,2,3,4,5,6].map(n => (
           <div key={n} style={{
             width: n===scene ? 36 : 8, height:8, borderRadius:4,
             background: n===scene ? RT_ORANGE : "rgba(255,255,255,.2)",
@@ -851,7 +923,7 @@ function MyRoutesBoothFrame({ scene = 1 }) {
           }}/>
         ))}
         <div style={{ fontFamily:"monospace", fontSize:11, opacity:.5, marginLeft:10, letterSpacing:".15em" }}>
-          SCENE 0{scene} / 04 · MyROUTES
+          SCENE 0{scene} / 06 · MyROUTES
         </div>
       </div>
 
@@ -863,7 +935,9 @@ function MyRoutesBoothFrame({ scene = 1 }) {
         {scene === 1 && <RoutesSceneHook/>}
         {scene === 2 && <RoutesScenePlanLive/>}
         {scene === 3 && <RoutesSceneSavings/>}
-        {scene === 4 && <RoutesSceneCTA/>}
+        {scene === 4 && <RoutesSceneAutoPlan/>}
+        {scene === 5 && <RoutesSceneFleetBoard/>}
+        {scene === 6 && <RoutesSceneCTA/>}
       </div>
     </div>
   );
@@ -884,13 +958,7 @@ function RoutesSceneHook() {
         </div>
       </div>
       <div style={{ position:"relative", height:"100%" }}>
-        <div style={{
-          position:"absolute", inset:0, borderRadius:24, overflow:"hidden",
-          background:"#0a0f1a", border:"1px solid rgba(255,255,255,.08)",
-          boxShadow:`0 0 80px -10px ${RT_ORANGE}aa`
-        }}>
-          <CityRouteMap/>
-        </div>
+        <PlanningUIMockup/>
       </div>
     </div>
   );
@@ -911,30 +979,7 @@ function RoutesScenePlanLive() {
         </div>
       </div>
       <div style={{ position:"relative", height:"100%" }}>
-        <div style={{
-          position:"absolute", inset:0, background:"#0a0f1a", borderRadius:20,
-          overflow:"hidden", border:"1px solid rgba(255,255,255,.08)",
-          boxShadow:`0 40px 80px -20px ${RT_ORANGE}66`
-        }}>
-          <CityRouteMap/>
-          <div style={{
-            position:"absolute", top:20, right:20,
-            background:"rgba(0,0,0,.7)", border:`1px solid ${RT_ORANGE}55`,
-            borderRadius:12, padding:"14px 18px", backdropFilter:"blur(8px)", minWidth:220
-          }}>
-            <div style={{ fontSize:10, opacity:.55, textTransform:"uppercase", letterSpacing:".15em" }}>Optimising</div>
-            <div style={{ display:"flex", alignItems:"baseline", gap:6, marginTop:4 }}>
-              <span style={{ fontWeight:900, fontSize:28, color:RT_ORANGE }}>98</span>
-              <span style={{ fontWeight:600, fontSize:14, opacity:.7 }}>km · was 142 km</span>
-            </div>
-            <div style={{ height:6, background:"rgba(255,255,255,.1)", borderRadius:3, marginTop:10, overflow:"hidden" }}>
-              <div style={{ width:"78%", height:"100%", background:RT_ORANGE, boxShadow:`0 0 8px ${RT_ORANGE}` }}/>
-            </div>
-            <div style={{ display:"flex", justifyContent:"space-between", marginTop:8, fontSize:11, opacity:.6 }}>
-              <span>Saved 44 km</span><span>1.8 s</span>
-            </div>
-          </div>
-        </div>
+        <PlanningUIMockup optimizing={true}/>
       </div>
     </div>
   );
@@ -968,6 +1013,180 @@ function RoutesSceneSavings() {
             <div style={{ fontSize:12, opacity:.6, marginTop:4 }}>{s.note}</div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function RoutesSceneAutoPlan() {
+  const rows = [
+    { reg:"GP 123-456", stops:6,  km:"10.3", color:"#22C55E", left:"46%", width:"27%" },
+    { reg:"CA 111-002", stops:10, km:"15.4", color:"#3B82F6", left:"20%", width:"63%" },
+    { reg:"CA 111-007", stops:24, km:"51.9", color:"#A855F7", left:"20%", width:"63%" },
+    { reg:"CA 111-018", stops:20, km:"33.6", color:"#EF4444", left:"20%", width:"73%" },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1.2fr", gap:56, width:"100%", alignItems:"center" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${RT_ORANGE}55`, color:RT_ORANGE }}>
+          <span className="mh-dot orange"/> Auto-Plan &middot; AI Scheduling
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:92, letterSpacing:"-0.035em", lineHeight:.92, margin:"20px 0 0" }}>
+          Plan<br/>overnight.<br/><span style={{ color:RT_ORANGE }}>Ship at dawn.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:19, opacity:.8, maxWidth:500, marginTop:22 }}>
+          Set your delivery windows once. MyRoutes auto-builds optimal routes for every vehicle, every night &#8212; dispatched before your drivers clock in.
+        </div>
+        <div style={{ marginTop:28, display:"flex", gap:24 }}>
+          {[{val:"4",label:"Trips planned"},{val:"60",label:"Stops covered"},{val:"< 30s",label:"Planning time"}].map((s,i)=>(
+            <div key={i}>
+              <div style={{ fontWeight:900, fontSize:42, color:RT_ORANGE, letterSpacing:"-.03em" }}>{s.val}</div>
+              <div style={{ fontSize:12, opacity:.5, marginTop:2 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background:"#fff", borderRadius:16, overflow:"hidden", boxShadow:"0 40px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.08)" }}>
+        <div style={{ padding:"12px 16px", borderBottom:"1px solid #e8edf4", display:"flex", alignItems:"center", gap:10 }}>
+          <div>
+            <div style={{ fontSize:7, color:"#999", textTransform:"uppercase", letterSpacing:".12em", fontFamily:"monospace" }}>OPERATIONS &middot; PLANS</div>
+            <div style={{ fontSize:14, fontWeight:800, color:"#151B29" }}>Auto-plan 2026-04-28</div>
+          </div>
+          <div style={{ marginLeft:"auto", display:"flex", gap:5 }}>
+            <div style={{ padding:"4px 10px", borderRadius:999, background:"#4F46E5", color:"#fff", fontSize:8, fontWeight:800 }}>&#9654; Re-optimise selected</div>
+            <div style={{ padding:"4px 10px", borderRadius:999, border:"1px solid #22C55E55", color:"#22C55E", fontSize:8, fontWeight:700 }}>Executing</div>
+            <div style={{ padding:"4px 10px", borderRadius:999, border:"1px solid #EF444455", color:"#EF4444", fontSize:8, fontWeight:700 }}>Delete</div>
+          </div>
+        </div>
+        <div style={{ padding:"4px 16px", background:"#f8faff", borderBottom:"1px solid #e8edf4", display:"flex", gap:12 }}>
+          <div style={{ fontSize:9, color:"#4F46E5", fontWeight:800 }}>4 trips</div>
+          <div style={{ fontSize:9, color:"#555", fontWeight:600 }}>60 stops</div>
+          <div style={{ fontSize:9, color:"#F59E0B", fontWeight:700 }}>3 near capacity</div>
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"130px 1fr" }}>
+          <div style={{ borderRight:"1px solid #e8edf4" }}>
+            <div style={{ padding:"5px 10px 3px", height:26, display:"flex", alignItems:"flex-end" }}>
+              <div style={{ fontSize:7, color:"#bbb", fontWeight:600, textTransform:"uppercase", letterSpacing:".08em" }}>VEHICLE</div>
+            </div>
+            {rows.map((r,i)=>(
+              <div key={i} style={{ padding:"10px", height:54, display:"flex", alignItems:"center" }}>
+                <div>
+                  <div style={{ display:"flex", alignItems:"center", gap:5 }}>
+                    <div style={{ width:8, height:8, borderRadius:"50%", background:r.color, boxShadow:`0 0 6px ${r.color}` }}/>
+                    <div style={{ fontSize:10, fontWeight:800, color:"#151B29" }}>{r.reg}</div>
+                  </div>
+                  <div style={{ fontSize:7, color:"#aaa", marginTop:2 }}>{r.stops} stops &middot; {r.km}km</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding:"0 8px" }}>
+            <div style={{ height:26, display:"flex", alignItems:"flex-end", paddingBottom:3, borderBottom:"1px solid #f0f0f0" }}>
+              <div style={{ width:"100%", display:"flex", justifyContent:"space-between" }}>
+                {["06:00","09:00","12:00","15:00","18:00","21:00"].map(t=>(<div key={t} style={{ fontSize:7, color:"#ccc", fontFamily:"monospace" }}>{t}</div>))}
+              </div>
+            </div>
+            {rows.map((r,i)=>(
+              <div key={i} style={{ height:54, position:"relative", display:"flex", alignItems:"center" }}>
+                <div style={{ position:"absolute", left:r.left, width:r.width, height:30, borderRadius:8, background:r.color, display:"flex", alignItems:"center", padding:"0 10px", boxShadow:`0 4px 14px ${r.color}44` }}>
+                  <span style={{ fontSize:8, color:"#fff", fontWeight:700, whiteSpace:"nowrap" }}>{r.reg} &middot; {r.stops}+ &middot; {r.km}km</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RoutesSceneFleetBoard() {
+  const vehicles = [
+    { reg:"GP 123-456", model:"Actos 2645",     fuel:"36.0", kg:"0.967" },
+    { reg:"CA 111-001", model:"Actos 2645",     fuel:"36.3", kg:"1.025" },
+    { reg:"CA 111-002", model:"Atego 1523",     fuel:"35.9", kg:"0.917" },
+    { reg:"CA 111-003", model:"Isuzu FTR 850",  fuel:"36.7", kg:"0.870" },
+    { reg:"CA 111-005", model:"Hino 500 1626",  fuel:"37.9", kg:"0.969" },
+    { reg:"CA 111-007", model:"MAN TGS 26.440", fuel:"37.2", kg:"1.006" },
+    { reg:"CA 111-008", model:"Volvo FH 440",   fuel:"38.5", kg:"1.005" },
+    { reg:"CA 111-010", model:"Ford Cargo 1723",fuel:"36.6", kg:"1.040" },
+    { reg:"GP 789-012", model:"Isuzu NQR 500",  fuel:"36.3", kg:"0.883" },
+    { reg:"GP 201-001", model:"Dyna 6-105",     fuel:"37.3", kg:"0.843" },
+  ];
+  const drivers = [
+    { name:"Sipho Nkosi",    score:89, trips:43, bars:[87,97,86] },
+    { name:"Thabo Mokoena",  score:94, trips:56, bars:[97,85,90] },
+    { name:"Lerato Dlamini", score:91, trips:16, bars:[96,90,88] },
+    { name:"Mandla Khumalo", score:89, trips:54, bars:[91,80,93] },
+    { name:"Busi Zulu",      score:83, trips:25, bars:[73,99,90] },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1.5fr", gap:48, width:"100%", alignItems:"center" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${RT_ORANGE}55`, color:RT_ORANGE }}>
+          <span className="mh-dot orange"/> Fleet Board &middot; Live View
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:88, letterSpacing:"-0.035em", lineHeight:.92, margin:"20px 0 0" }}>
+          33 vehicles.<br/>30 drivers.<br/><span style={{ color:RT_ORANGE }}>One screen.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:18, opacity:.75, maxWidth:470, marginTop:20 }}>
+          Real-time status, fuel efficiency, and driver scorecards &#8212; live dashboard refreshing every 30 seconds.
+        </div>
+        <div style={{ marginTop:28, display:"flex", flexDirection:"column", gap:12 }}>
+          {[
+            { label:"Live vehicle status", sub:"Available · On Trip · Offline", color:RT_ORANGE },
+            { label:"Fuel efficiency per truck", sub:"Litres/100km and kg/km", color:"#EF4444" },
+            { label:"Driver scorecards", sub:"Safety + compliance + performance", color:"#22C55E" },
+          ].map((item,i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:12 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", background:item.color, boxShadow:`0 0 8px ${item.color}`, flexShrink:0 }}/>
+              <div>
+                <div style={{ fontSize:15, fontWeight:700 }}>{item.label}</div>
+                <div style={{ fontSize:12, opacity:.5, marginTop:1 }}>{item.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background:"#fff", borderRadius:16, overflow:"hidden", boxShadow:"0 40px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.08)", display:"flex", flexDirection:"column" }}>
+        <div style={{ padding:"10px 14px", borderBottom:"1px solid #e8edf4" }}>
+          <div style={{ fontSize:7, color:"#999", textTransform:"uppercase", letterSpacing:".12em", fontFamily:"monospace" }}>FLEET</div>
+          <div style={{ fontSize:14, fontWeight:800, color:"#151B29" }}>Fleet Board &#8212; April 27, 2026</div>
+          <div style={{ fontSize:7, color:"#bbb", marginTop:2 }}>Live view of vehicles and drivers. Refreshes every 30 seconds.</div>
+        </div>
+        <div style={{ padding:"8px 10px", borderBottom:"1px solid #e8edf4" }}>
+          <div style={{ fontSize:7, fontWeight:800, color:"#333", letterSpacing:".06em", textTransform:"uppercase", marginBottom:6 }}>VEHICLES (33)</div>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:5 }}>
+            {vehicles.map((v,i)=>(
+              <div key={i} style={{ borderRadius:7, padding:"6px 8px", background:"#f8faff", border:"1px solid #e8edf4" }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                  <div style={{ fontSize:7, fontWeight:800, color:"#151B29", lineHeight:1.2 }}>{v.reg}</div>
+                  <div style={{ fontSize:6, fontWeight:800, color:"#22C55E", letterSpacing:".05em", flexShrink:0, marginLeft:2 }}>AVL</div>
+                </div>
+                <div style={{ fontSize:6, color:"#aaa", marginTop:2, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{v.model}</div>
+                <div style={{ marginTop:4, display:"flex", gap:5 }}>
+                  <span style={{ fontSize:6, fontWeight:700, color:"#EF4444" }}>{v.fuel}L</span>
+                  <span style={{ fontSize:6, fontWeight:700, color:"#22C55E" }}>{v.kg}kg</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ padding:"8px 10px 10px" }}>
+          <div style={{ fontSize:7, fontWeight:800, color:"#333", letterSpacing:".06em", textTransform:"uppercase", marginBottom:6 }}>DRIVERS (30)</div>
+          <div style={{ display:"flex", gap:5 }}>
+            {drivers.map((d,i)=>(
+              <div key={i} style={{ flex:1, borderRadius:7, padding:"8px 8px", background:"#f8faff", border:"1px solid #e8edf4" }}>
+                <div style={{ fontSize:7, fontWeight:700, color:"#151B29", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{d.name}</div>
+                <div style={{ fontWeight:900, fontSize:20, color:"#151B29", marginTop:3 }}>{d.score}</div>
+                <div style={{ display:"flex", gap:3, marginTop:6 }}>
+                  {d.bars.map((b,j)=>(<div key={j} style={{ flex:1, height:3, borderRadius:2, background:b>=90?"#22C55E":b>=80?"#F59E0B":"#EF4444" }}/>))}
+                </div>
+                <div style={{ fontSize:6, color:"#bbb", marginTop:4 }}>{d.trips} trips</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -1268,10 +1487,10 @@ const { MyTrackBoothFrame }   = window.MyTrack;
 const { MyRoutesBoothFrame }  = window.MyRoutes;
 const { KasiStockBoothFrame } = window.KasiStock;
 
-const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 4000];
+const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 4000];
 const PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:5 },
-  { id:"myroutes",  name:"MyRoutes",  label:"Routing",       accent:"#FF9D00", Frame:MyRoutesBoothFrame,  sceneCount:4 },
+  { id:"myroutes",  name:"MyRoutes",  label:"Routing",       accent:"#FF9D00", Frame:MyRoutesBoothFrame,  sceneCount:6 },
   { id:"kasistock", name:"KasiStock", label:"Community POS", accent:"#FFB840", Frame:KasiStockBoothFrame, sceneCount:4 },
 ];
 
