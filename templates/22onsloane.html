@@ -1589,6 +1589,7 @@ function BoothPlayer() {
   const [playing,    setPlaying]    = React.useState(true);
   const [progress,   setProgress]   = React.useState(0);
   const [showCtrl,   setShowCtrl]   = React.useState(true);
+  const [loopAll,    setLoopAll]    = React.useState(true);
   const timerRef = React.useRef(null);
   const progRef  = React.useRef(null);
   const startRef = React.useRef(Date.now());
@@ -1624,15 +1625,19 @@ function BoothPlayer() {
     setProgress(0);
     if (!playing) return;
     startProgress();
-    timerRef.current = setTimeout(
-      () => setScene(s => s === product.sceneCount ? 1 : s + 1),
-      SCENE_TIMINGS[scene - 1]
-    );
+    timerRef.current = setTimeout(() => {
+      if (loopAll && scene === product.sceneCount) {
+        setProductIdx(p => (p + 1) % PRODUCTS.length);
+        setScene(1);
+      } else {
+        setScene(s => s === product.sceneCount ? 1 : s + 1);
+      }
+    }, SCENE_TIMINGS[scene - 1]);
     return () => {
       clearTimeout(timerRef.current);
       cancelAnimationFrame(progRef.current);
     };
-  }, [scene, playing, productIdx]);
+  }, [scene, playing, productIdx, loopAll]);
 
   const goScene    = n  => { setScene(n); setProgress(0); };
   const togglePlay = () => setPlaying(p => !p);
@@ -1717,6 +1722,26 @@ function BoothPlayer() {
               ? <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12" rx="1"/><rect x="9" y="2" width="4" height="12" rx="1"/></svg>
               : <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2l10 6-10 6V2z"/></svg>
             }
+          </button>
+
+          {/* loop-all toggle */}
+          <button onClick={() => setLoopAll(l => !l)} title={loopAll ? "Now looping all products — click for single" : "Now looping single product — click for all"} style={{
+            border: loopAll ? `1px solid ${product.accent}55` : "1px solid transparent",
+            background: loopAll ? `${product.accent}18` : "rgba(255,255,255,.08)",
+            color: loopAll ? product.accent : "rgba(255,255,255,.35)",
+            height:34, borderRadius:17, cursor:"pointer",
+            display:"flex", alignItems:"center", justifyContent:"center", gap:5,
+            padding:"0 11px", flexShrink:0, transition:"all .2s"
+          }}
+          onMouseEnter={e => e.currentTarget.style.background=loopAll?`${product.accent}28`:"rgba(255,255,255,.15)"}
+          onMouseLeave={e => e.currentTarget.style.background=loopAll?`${product.accent}18`:"rgba(255,255,255,.08)"}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="17 1 21 5 17 9"/>
+              <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+              <polyline points="7 23 3 19 7 15"/>
+              <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+            </svg>
+            <span style={{ fontSize:9, fontWeight:800, letterSpacing:".1em" }}>{loopAll ? "ALL" : "ONE"}</span>
           </button>
 
           <div style={{ width:1, height:18, background:"rgba(255,255,255,.1)", flexShrink:0 }}/>
