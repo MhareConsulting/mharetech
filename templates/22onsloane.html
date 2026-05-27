@@ -1603,7 +1603,7 @@ function MhareSplashFrame() {
           {[
             { name:"myTrack",   accent:"#E1266B", label:"Telematics"     },
             { name:"MyRoutes",  accent:"#FF9D00", label:"Route Planning"  },
-            { name:"KasiStock", accent:"#FFB840", label:"Community POS"   },
+            { name:"KasiStock", accent:"#4827CC", label:"Community POS"   },
           ].map((p,i)=>(
             <div key={i} style={{ padding:"10px 24px", border:`1px solid ${p.accent}44`, background:`${p.accent}0e`, display:"flex", alignItems:"center", gap:10 }}>
               <div style={{ width:8, height:8, borderRadius:"50%", background:p.accent, boxShadow:`0 0 10px ${p.accent}` }}/>
@@ -1626,12 +1626,12 @@ const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 7000, 4000];
 const PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:5 },
   { id:"myroutes",  name:"MyRoutes",  label:"Routing",       accent:"#FF9D00", Frame:MyRoutesBoothFrame,  sceneCount:7 },
-  { id:"kasistock", name:"KasiStock", label:"Community POS", accent:"#FFB840", Frame:KasiStockBoothFrame, sceneCount:4 },
+  { id:"kasistock", name:"KasiStock", label:"Community POS", accent:"#4827CC", Frame:KasiStockBoothFrame, sceneCount:4 },
   { id:"splash",    name:"Mhare",     label:"",              accent:"#FF9D00", Frame:MhareSplashFrame,    sceneCount:1, splash:true },
 ];
 
 function BoothPlayer() {
-  const [productIdx, setProductIdx] = React.useState(0);
+  const [productIdx, setProductIdx] = React.useState(3); // start on splash
   const [scene,      setScene]      = React.useState(1);
   const [playing,    setPlaying]    = React.useState(true);
   const [progress,   setProgress]   = React.useState(0);
