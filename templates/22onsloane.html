@@ -1575,12 +1575,59 @@ window.KasiStock = { KasiStockBoothFrame };
 const { MyTrackBoothFrame }   = window.MyTrack;
 const { MyRoutesBoothFrame }  = window.MyRoutes;
 const { KasiStockBoothFrame } = window.KasiStock;
+const { MhareLogo: SplashLogo } = window.MH;
+
+function MhareSplashFrame() {
+  return (
+    <div className="mh-artboard mh-grain" style={{ width:1600, height:900, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
+      {/* Background glow */}
+      <div style={{ position:"absolute", inset:0, background:"radial-gradient(55% 55% at 50% 52%, rgba(72,39,204,.38) 0%, rgba(255,157,0,.07) 60%, transparent 100%)" }}/>
+      <div className="mh-noise"/>
+      {/* Subtle grid */}
+      <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", opacity:.035 }} viewBox="0 0 1600 900" preserveAspectRatio="none">
+        {Array.from({length:20}).map((_,i)=>(<line key={"v"+i} x1={i*84} y1="0" x2={i*84} y2="900" stroke="white" strokeWidth="1"/>))}
+        {Array.from({length:13}).map((_,i)=>(<line key={"h"+i} x1="0" y1={i*75} x2="1600" y2={i*75} stroke="white" strokeWidth="1"/>))}
+      </svg>
+      {/* Content */}
+      <div style={{ position:"relative", zIndex:3, display:"flex", flexDirection:"column", alignItems:"center", gap:28 }}>
+        <SplashLogo height={72}/>
+        <div style={{ width:220, height:1, background:"linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent)" }}/>
+        <div style={{ textAlign:"center" }}>
+          <div style={{ fontSize:13, letterSpacing:".38em", textTransform:"uppercase", color:"rgba(255,255,255,.4)", fontWeight:700 }}>Powered by</div>
+          <div style={{ fontWeight:900, fontSize:68, letterSpacing:"-0.025em", marginTop:14, lineHeight:1 }}>
+            Mhare <span style={{ color:"#FF9D00" }}>Intelligence</span>
+          </div>
+        </div>
+        <div style={{ width:56, height:1, background:"rgba(255,255,255,.1)" }}/>
+        <div style={{ display:"flex", gap:18 }}>
+          {[
+            { name:"myTrack",   accent:"#E1266B", label:"Telematics"     },
+            { name:"MyRoutes",  accent:"#FF9D00", label:"Route Planning"  },
+            { name:"KasiStock", accent:"#FFB840", label:"Community POS"   },
+          ].map((p,i)=>(
+            <div key={i} style={{ padding:"10px 24px", border:`1px solid ${p.accent}44`, background:`${p.accent}0e`, display:"flex", alignItems:"center", gap:10 }}>
+              <div style={{ width:8, height:8, borderRadius:"50%", background:p.accent, boxShadow:`0 0 10px ${p.accent}` }}/>
+              <div>
+                <div style={{ fontWeight:800, fontSize:15, color:p.accent }}>{p.name}</div>
+                <div style={{ fontSize:9, opacity:.5, letterSpacing:".1em", textTransform:"uppercase", marginTop:2 }}>{p.label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ position:"absolute", bottom:34, fontSize:11, opacity:.25, letterSpacing:".15em", textTransform:"uppercase", zIndex:3, fontWeight:600 }}>
+        &#169; 2026 Mhare Consulting &nbsp;&middot;&nbsp; mharetech.co.za
+      </div>
+    </div>
+  );
+}
 
 const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 7000, 4000];
 const PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:5 },
   { id:"myroutes",  name:"MyRoutes",  label:"Routing",       accent:"#FF9D00", Frame:MyRoutesBoothFrame,  sceneCount:7 },
   { id:"kasistock", name:"KasiStock", label:"Community POS", accent:"#FFB840", Frame:KasiStockBoothFrame, sceneCount:4 },
+  { id:"splash",    name:"Mhare",     label:"",              accent:"#FF9D00", Frame:MhareSplashFrame,    sceneCount:1, splash:true },
 ];
 
 function BoothPlayer() {
@@ -1747,7 +1794,7 @@ function BoothPlayer() {
           <div style={{ width:1, height:18, background:"rgba(255,255,255,.1)", flexShrink:0 }}/>
 
           {/* product tabs */}
-          {PRODUCTS.map((p, i) => (
+          {PRODUCTS.map((p, i) => !p.splash && (
             <button key={p.id} onClick={() => { setProductIdx(i); setScene(1); }}
               style={{
                 padding:"5px 16px", borderRadius:999, border:"none", cursor:"pointer",
@@ -1763,8 +1810,8 @@ function BoothPlayer() {
 
           <div style={{ flex:1 }}/>
 
-          {/* scene dots */}
-          <div style={{ display:"flex", gap:6, alignItems:"center" }}>
+          {/* scene dots — hidden on splash */}
+          <div style={{ display:"flex", gap:6, alignItems:"center", opacity: product.splash ? 0 : 1, pointerEvents: product.splash ? "none" : "auto" }}>
             {Array.from({length: product.sceneCount}, (_, i) => i+1).map(n => (
               <button key={n} onClick={() => goScene(n)}
                 style={{ border:"none", cursor:"pointer", padding:0, background:"transparent", display:"flex", alignItems:"center" }}>
