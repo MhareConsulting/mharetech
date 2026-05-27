@@ -420,12 +420,15 @@ function FuelDrainWidget() {
 
         {/* Gauge SVG */}
         <svg width="152" height="152" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,.03)" strokeWidth="1"/>
+          {/* Static ambient glow ring — separate so it doesn't blur the crisp arc */}
+          <circle cx="50" cy="50" r="38" fill="none" stroke={gaugeColor} strokeWidth="18" opacity=".08"/>
+          {/* Track */}
           <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,.07)" strokeWidth="9"/>
+          {/* Crisp animated arc — no CSS filter or transition to prevent blurring */}
           <circle cx="50" cy="50" r="38" fill="none" stroke={gaugeColor} strokeWidth="9"
             strokeDasharray={C} strokeDashoffset={offset}
             strokeLinecap="round" transform="rotate(-90 50 50)"
-            style={{ transition:"stroke .3s", filter:`drop-shadow(0 0 8px ${gaugeColor}cc)` }}
+            shapeRendering="geometricPrecision"
           />
           <text x="50" y="44" textAnchor="middle" fontFamily="Montserrat" fontWeight="900" fontSize="20"
             fill={gaugeColor} style={{ transition:"fill .3s" }}>{pct}%</text>
@@ -478,7 +481,7 @@ function FuelDrainWidget() {
 
 function TrackSceneHook() {
   return (
-    <div style={{ display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:64, width:"100%" }}>
+    <div style={{ display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:64, width:"100%", alignItems:"center" }}>
       <div style={{ display:"flex", flexDirection:"column", justifyContent:"center" }}>
         <div className="mh-chip" style={{ borderColor:`${TRACK_MAGENTA}55`, color:TRACK_MAGENTA, alignSelf:"flex-start" }}>
           <span className="mh-dot magenta"/> myTrack · Live fuel intelligence
@@ -491,7 +494,7 @@ function TrackSceneHook() {
           <span style={{ fontWeight:900, color:TRACK_MAGENTA }}>myTrack.</span>
         </div>
       </div>
-      <div style={{ position:"relative" }}>
+      <div style={{ position:"relative", height:"100%" }}>
         <FuelDrainWidget/>
       </div>
     </div>
@@ -518,11 +521,12 @@ function FuelGauge() {
   const color = pct > 50 ? "#27D17F" : pct > 28 ? "#FF9D00" : TRACK_MAGENTA;
   return (
     <svg width="92" height="92" viewBox="0 0 100 100" style={{ flexShrink:0 }}>
+      <circle cx="50" cy="50" r="38" fill="none" stroke={color} strokeWidth="18" opacity=".08"/>
       <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,.07)" strokeWidth="9"/>
       <circle cx="50" cy="50" r="38" fill="none" stroke={color} strokeWidth="9"
         strokeDasharray={C} strokeDashoffset={offset}
         strokeLinecap="round" transform="rotate(-90 50 50)"
-        style={{ transition:"stroke 0.3s", filter:`drop-shadow(0 0 6px ${color}99)` }}
+        shapeRendering="geometricPrecision"
       />
       <text x="50" y="46" textAnchor="middle" fontFamily="Montserrat" fontWeight="900" fontSize="19" fill={color}>{pct}%</text>
       <text x="50" y="62" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="rgba(255,255,255,.38)" letterSpacing=".06em">FUEL LEVEL</text>
