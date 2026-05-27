@@ -734,7 +734,7 @@ window.MyTrack = { MyTrackBoothFrame };
 </script>
 
 <!-- ============================================================
-     BLOCK 5 · MyRoutes component
+     BLOCK 5 · myRoutes component
      ============================================================ -->
 <script type="text/babel" data-presets="env,react">
 /* global React, MH, RealQR */
@@ -938,7 +938,7 @@ function CityRouteMap({ accent = RT_ORANGE }) {
   );
 }
 
-function MyRoutesBoothFrame({ scene = 1 }) {
+function myRoutesBoothFrame({ scene = 1 }) {
   return (
     <div className="mh-artboard mh-grain" style={{ width:1600, height:900 }}>
       <div className="mh-grad-routes" style={{ position:"absolute", inset:0 }}/>
@@ -979,7 +979,7 @@ function RoutesSceneHook() {
     <div style={{ display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:48, width:"100%", alignItems:"center" }}>
       <div>
         <div className="mh-chip" style={{ borderColor:`${RT_ORANGE}55`, color:RT_ORANGE }}>
-          <span className="mh-dot orange"/> MyRoutes
+          <span className="mh-dot orange"/> myRoutes
         </div>
         <h1 style={{ fontWeight:900, fontSize:160, lineHeight:.85, letterSpacing:"-0.045em", margin:"24px 0 0" }}>
           Plan less.<br/><span style={{ color:RT_ORANGE }}>Deliver more.</span>
@@ -1006,7 +1006,7 @@ function RoutesScenePlanLive() {
           22 stops.<br/>3 trucks.<br/><span style={{ color:RT_ORANGE }}>1.8 seconds.</span>
         </h2>
         <div style={{ fontWeight:500, fontSize:20, opacity:.8, maxWidth:520 }}>
-          MyRoutes plans the whole morning faster than your dispatcher pours coffee. Live traffic. Load-shedding aware. Re-routes when reality changes.
+          myRoutes plans the whole morning faster than your dispatcher pours coffee. Live traffic. Load-shedding aware. Re-routes when reality changes.
         </div>
       </div>
       <div style={{ position:"relative", height:"100%" }}>
@@ -1124,7 +1124,7 @@ function RoutesSceneAutoPlan() {
           Plan<br/>overnight.<br/><span style={{ color:RT_ORANGE }}>Ship at dawn.</span>
         </h2>
         <div style={{ fontWeight:500, fontSize:19, opacity:.8, maxWidth:500, marginTop:22 }}>
-          Set your delivery windows once. MyRoutes auto-builds optimal routes for every vehicle, every night &#8212; dispatched before your drivers clock in.
+          Set your delivery windows once. myRoutes auto-builds optimal routes for every vehicle, every night &#8212; dispatched before your drivers clock in.
         </div>
         <div style={{ marginTop:28, display:"flex", gap:24 }}>
           {[{val:"4",label:"Trips planned"},{val:"60",label:"Stops covered"},{val:"< 30s",label:"Planning time"}].map((s,i)=>(
@@ -1309,7 +1309,7 @@ function RoutesSceneCTA() {
   );
 }
 
-window.MyRoutes = { MyRoutesBoothFrame };
+window.myRoutes = { myRoutesBoothFrame };
 </script>
 
 <!-- ============================================================
@@ -1573,7 +1573,7 @@ window.KasiStock = { KasiStockBoothFrame };
      ============================================================ -->
 <script type="text/babel" data-presets="env,react">
 const { MyTrackBoothFrame }   = window.MyTrack;
-const { MyRoutesBoothFrame }  = window.MyRoutes;
+const { myRoutesBoothFrame }  = window.myRoutes;
 const { KasiStockBoothFrame } = window.KasiStock;
 const { MhareLogo: SplashLogo } = window.MH;
 
@@ -1602,7 +1602,7 @@ function MhareSplashFrame() {
         <div style={{ display:"flex", gap:18 }}>
           {[
             { name:"myTrack",   accent:"#E1266B", label:"Telematics"     },
-            { name:"MyRoutes",  accent:"#FF9D00", label:"Route Planning"  },
+            { name:"myRoutes",  accent:"#FF9D00", label:"Route Planning"  },
             { name:"KasiStock", accent:"#4827CC", label:"Community POS"   },
           ].map((p,i)=>(
             <div key={i} style={{ padding:"10px 24px", border:`1px solid ${p.accent}44`, background:`${p.accent}0e`, display:"flex", alignItems:"center", gap:10 }}>
@@ -1625,7 +1625,7 @@ function MhareSplashFrame() {
 const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 7000, 4000];
 const PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:5 },
-  { id:"myroutes",  name:"MyRoutes",  label:"Routing",       accent:"#FF9D00", Frame:MyRoutesBoothFrame,  sceneCount:7 },
+  { id:"myroutes",  name:"myRoutes",  label:"Routing",       accent:"#FF9D00", Frame:myRoutesBoothFrame,  sceneCount:7 },
   { id:"kasistock", name:"KasiStock", label:"Community POS", accent:"#4827CC", Frame:KasiStockBoothFrame, sceneCount:4 },
   { id:"splash",    name:"Mhare",     label:"",              accent:"#FF9D00", Frame:MhareSplashFrame,    sceneCount:1, splash:true },
 ];
