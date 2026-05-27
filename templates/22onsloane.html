@@ -383,6 +383,38 @@ function TrackSceneHook() {
   );
 }
 
+// Animated fuel gauge — drops 75% → 20% over ~3.2 s on mount
+function FuelGauge() {
+  const [pct, setPct] = React.useState(75);
+  React.useEffect(() => {
+    const START = 75, END = 20, DUR = 3200;
+    const t0 = Date.now();
+    const tick = () => {
+      const p = Math.min((Date.now() - t0) / DUR, 1);
+      const ease = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2, 3)/2;
+      setPct(Math.round(START + (END - START) * ease));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    const id = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(id);
+  }, []);
+  const C = 238.76; // 2π × 38
+  const offset = C * (1 - pct / 100);
+  const color = pct > 50 ? "#27D17F" : pct > 28 ? "#FF9D00" : TRACK_MAGENTA;
+  return (
+    <svg width="92" height="92" viewBox="0 0 100 100" style={{ flexShrink:0 }}>
+      <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,.07)" strokeWidth="9"/>
+      <circle cx="50" cy="50" r="38" fill="none" stroke={color} strokeWidth="9"
+        strokeDasharray={C} strokeDashoffset={offset}
+        strokeLinecap="round" transform="rotate(-90 50 50)"
+        style={{ transition:"stroke 0.3s", filter:`drop-shadow(0 0 6px ${color}99)` }}
+      />
+      <text x="50" y="46" textAnchor="middle" fontFamily="Montserrat" fontWeight="900" fontSize="19" fill={color}>{pct}%</text>
+      <text x="50" y="62" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="rgba(255,255,255,.38)" letterSpacing=".06em">FUEL LEVEL</text>
+    </svg>
+  );
+}
+
 // Scene 2 — Live fuel theft alert
 function TrackSceneAlert() {
   return (
@@ -417,17 +449,7 @@ function TrackSceneAlert() {
         <div style={{ padding:"20px 22px" }}>
           {/* Circle gauge + info */}
           <div style={{ display:"flex", gap:18, alignItems:"center", marginBottom:18 }}>
-            <svg width="92" height="92" viewBox="0 0 100 100" style={{ flexShrink:0 }}>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,.07)" strokeWidth="9"/>
-              {/* 20% fill: circumference=238.76, offset=238.76*(1-0.2)=191.0 */}
-              <circle cx="50" cy="50" r="38" fill="none" stroke={TRACK_MAGENTA} strokeWidth="9"
-                strokeDasharray="238.76" strokeDashoffset="191.0"
-                strokeLinecap="round" transform="rotate(-90 50 50)"
-                style={{ filter:`drop-shadow(0 0 5px ${TRACK_MAGENTA}99)` }}
-              />
-              <text x="50" y="47" textAnchor="middle" fontFamily="Montserrat" fontWeight="900" fontSize="19" fill={TRACK_MAGENTA}>20%</text>
-              <text x="50" y="63" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="rgba(255,255,255,.38)" letterSpacing=".06em">FUEL LEVEL</text>
-            </svg>
+            <FuelGauge/>
             <div>
               <div style={{ fontWeight:800, fontSize:17, color:"#fff" }}>Truck NDP-44 GP</div>
               <div style={{ fontSize:13, color:TRACK_MAGENTA, fontWeight:700, marginTop:5 }}>62 litres drained in 9 min</div>
@@ -1483,15 +1505,19 @@ function KasiSceneHook() {
           The POS built for township shops.{" "}
           <span style={{ color:KS_MAGENTA, fontWeight:800 }}>Offline-first.</span>
         </div>
-        <div style={{ marginTop:28, display:"flex", gap:16 }}>
+        <div style={{ marginTop:28, display:"flex", gap:12 }}>
           {[
-            { val:"2.4k+",  label:"Active shops" },
-            { val:"15M+",   label:"Monthly transactions" },
-            { val:"99.9%",  label:"Uptime SLA" },
+            { val:"2.4k+",  label:"Active shops",         color:KS_WARM    },
+            { val:"15M+",   label:"Monthly transactions",  color:"#fff"     },
+            { val:"99.9%",  label:"Uptime SLA",            color:KS_PURPLE  },
           ].map((s,i)=>(
-            <div key={i} style={{ textAlign:"center" }}>
-              <div style={{ fontWeight:900, fontSize:32, color:i===0?KS_PURPLE:i===1?KS_MAGENTA:KS_WARM, letterSpacing:"-.02em" }}>{s.val}</div>
-              <div style={{ fontSize:10, opacity:.55, marginTop:2, letterSpacing:".08em", textTransform:"uppercase" }}>{s.label}</div>
+            <div key={i} style={{
+              textAlign:"center", padding:"10px 18px",
+              background:"rgba(0,0,0,.5)", borderRadius:10,
+              backdropFilter:"blur(8px)", border:"1px solid rgba(255,255,255,.1)"
+            }}>
+              <div style={{ fontWeight:900, fontSize:28, color:s.color, letterSpacing:"-.02em", textShadow:`0 0 18px ${s.color}99` }}>{s.val}</div>
+              <div style={{ fontSize:9, opacity:.75, marginTop:2, letterSpacing:".1em", textTransform:"uppercase", color:"#ccc" }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -1515,32 +1541,34 @@ function KasiSceneScan() {
   ];
   return (
     <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:48, alignItems:"center", color:"#fff" }}>
-      <div>
+      <div style={{
+        background:"rgba(8,4,22,.72)", borderRadius:18, padding:"28px 32px",
+        backdropFilter:"blur(14px)", border:"1px solid rgba(255,255,255,.07)"
+      }}>
         <div className="mh-chip" style={{ borderColor:`${KS_PURPLE}88`, color:"#fff", background:"rgba(72,39,204,.2)" }}>
           <span className="mh-dot purple"/> Everything you need
         </div>
         <h2 style={{
-          fontWeight:900, fontSize:82, letterSpacing:"-0.035em", lineHeight:.92, margin:"18px 0 26px",
-          textShadow:"0 4px 20px rgba(0,0,0,.5)"
+          fontWeight:900, fontSize:76, letterSpacing:"-0.035em", lineHeight:.92, margin:"16px 0 22px"
         }}>
           Built for<br/><span style={{ color:KS_WARM }}>your shop.</span>
         </h2>
         <div style={{ display:"flex", flexDirection:"column" }}>
           {features.map((f,i) => (
             <div key={i} style={{
-              display:"flex", alignItems:"center", gap:12, padding:"9px 0",
-              borderBottom: i < features.length-1 ? "1px solid rgba(255,255,255,.07)" : "none"
+              display:"flex", alignItems:"center", gap:12, padding:"8px 0",
+              borderBottom: i < features.length-1 ? "1px solid rgba(255,255,255,.1)" : "none"
             }}>
               <div style={{
-                width:32, height:32, borderRadius:7, flexShrink:0,
-                background:`${KS_PURPLE}28`, border:`1px solid ${KS_PURPLE}44`,
+                width:30, height:30, borderRadius:7, flexShrink:0,
+                background:`${KS_PURPLE}44`, border:`1px solid ${KS_PURPLE}66`,
                 display:"grid", placeItems:"center", color:KS_WARM
               }}>
                 {f.icon}
               </div>
               <div style={{ flex:1, minWidth:0 }}>
-                <div style={{ fontWeight:700, fontSize:15, lineHeight:1.2 }}>{f.label}</div>
-                <div style={{ fontSize:11, opacity:.5, marginTop:1 }}>{f.sub}</div>
+                <div style={{ fontWeight:700, fontSize:15, lineHeight:1.2, color:"#fff" }}>{f.label}</div>
+                <div style={{ fontSize:11, opacity:.65, marginTop:1, color:"#ddd" }}>{f.sub}</div>
               </div>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink:0 }}>
                 <path d="M5 12.5l4 4 10-10" stroke={KS_WARM} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
