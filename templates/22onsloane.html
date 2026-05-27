@@ -355,12 +355,133 @@ function MyTrackBoothFrame({ scene = 1 }) {
   );
 }
 
+// Full fuel-drain monitoring widget — matches myTrack app reference
+function FuelDrainWidget() {
+  const [pct,     setPct]     = React.useState(82);
+  const [drained, setDrained] = React.useState(0.0);
+
+  React.useEffect(() => {
+    const S_P = 82, E_P = 20, S_L = 0, E_L = 42.5, DUR = 3600;
+    const t0 = Date.now();
+    const tick = () => {
+      const p = Math.min((Date.now() - t0) / DUR, 1);
+      const ease = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2, 3)/2;
+      setPct(Math.round(S_P + (E_P - S_P) * ease));
+      setDrained(Math.round((S_L + (E_L - S_L) * ease) * 10) / 10);
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    const id = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  const C = 238.76; // 2π × 38
+  const offset = C * (1 - pct / 100);
+  const gaugeColor = pct > 50 ? "#27D17F" : pct > 28 ? "#FF9D00" : TRACK_MAGENTA;
+  const isCritical = pct <= 28;
+  // bars fill left-to-right as fuel drains
+  const activeBars = Math.ceil((1 - pct / 100) * 7);
+
+  return (
+    <div style={{
+      position:"absolute", inset:0, borderRadius:24, overflow:"hidden",
+      background:"#0a0518", border:`1px solid ${isCritical ? TRACK_MAGENTA+"44" : "rgba(255,255,255,.08)"}`,
+      boxShadow:`0 0 80px -10px ${TRACK_PURPLE}aa`,
+      display:"flex", flexDirection:"column", padding:22, gap:14,
+      transition:"border-color .4s"
+    }}>
+      {/* Header */}
+      <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+        <div style={{
+          width:8, height:8, borderRadius:"50%",
+          background: isCritical ? TRACK_MAGENTA : "#27D17F",
+          boxShadow: `0 0 10px ${isCritical ? TRACK_MAGENTA : "#27D17F"}`,
+          transition:"all .4s"
+        }}/>
+        <span style={{
+          fontSize:10, fontWeight:800, letterSpacing:".2em", textTransform:"uppercase",
+          color: isCritical ? TRACK_MAGENTA : "#27D17F", transition:"color .4s"
+        }}>
+          {isCritical ? "CRITICAL ALERT" : "LIVE MONITORING"}
+        </span>
+        <span style={{ marginLeft:"auto", fontFamily:"monospace", fontSize:10, opacity:.35 }}>NDP-44-GP</span>
+      </div>
+
+      {/* Main gauge card */}
+      <div style={{
+        flex:1, background:"rgba(255,255,255,.04)", borderRadius:16,
+        border:`1px solid ${isCritical ? TRACK_MAGENTA+"33" : "rgba(255,255,255,.07)"}`,
+        display:"flex", flexDirection:"column", alignItems:"center",
+        justifyContent:"center", padding:"14px 20px", gap:12,
+        transition:"border-color .4s"
+      }}>
+        <div style={{ fontSize:8, letterSpacing:".22em", textTransform:"uppercase", opacity:.45, fontWeight:700 }}>
+          REAL-TIME FUEL LEVEL
+        </div>
+
+        {/* Gauge SVG */}
+        <svg width="152" height="152" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,.03)" strokeWidth="1"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,.07)" strokeWidth="9"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke={gaugeColor} strokeWidth="9"
+            strokeDasharray={C} strokeDashoffset={offset}
+            strokeLinecap="round" transform="rotate(-90 50 50)"
+            style={{ transition:"stroke .3s", filter:`drop-shadow(0 0 8px ${gaugeColor}cc)` }}
+          />
+          <text x="50" y="44" textAnchor="middle" fontFamily="Montserrat" fontWeight="900" fontSize="20"
+            fill={gaugeColor} style={{ transition:"fill .3s" }}>{pct}%</text>
+          {/* Fuel pump icon */}
+          <g transform="translate(37,50)" fill="none" stroke="rgba(255,255,255,.4)" strokeWidth="1.4" strokeLinecap="round">
+            <rect x="0" y="0" width="9" height="15" rx="1"/>
+            <path d="M9 4h3a1.5 1.5 0 011.5 1.5v6a1.5 1.5 0 001.5 1.5"/>
+            <path d="M3 5h3"/>
+          </g>
+        </svg>
+
+        {/* Consumption rate bars */}
+        <div style={{ width:"100%", display:"flex", alignItems:"center", gap:12 }}>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:7.5, opacity:.4, letterSpacing:".14em", textTransform:"uppercase", marginBottom:5 }}>
+              CONSUMPTION RATE
+            </div>
+            <div style={{ display:"flex", gap:3 }}>
+              {Array.from({length:7}).map((_,i)=>(
+                <div key={i} style={{
+                  flex:1, height:5, borderRadius:2,
+                  background: i < activeBars ? TRACK_MAGENTA : "rgba(255,255,255,.12)",
+                  transition:"background .15s"
+                }}/>
+              ))}
+            </div>
+          </div>
+          {isCritical && (
+            <div style={{ fontSize:7, color:TRACK_MAGENTA, fontWeight:900, letterSpacing:".1em", textTransform:"uppercase", textAlign:"right", lineHeight:1.4, flexShrink:0 }}>
+              CRITICAL<br/>DROP<br/>DETECTED
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Stat tiles */}
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+        <div style={{ background:"rgba(255,255,255,.04)", borderRadius:12, padding:"14px 16px", border:`1px solid ${TRACK_MAGENTA}22` }}>
+          <div style={{ fontSize:7.5, opacity:.4, letterSpacing:".14em", textTransform:"uppercase" }}>DRAIN VOLUME</div>
+          <div style={{ fontWeight:900, fontSize:26, color:TRACK_MAGENTA, marginTop:6, letterSpacing:"-.01em" }}>−{drained} L</div>
+        </div>
+        <div style={{ background:"rgba(255,255,255,.04)", borderRadius:12, padding:"14px 16px", border:"1px solid rgba(255,255,255,.07)" }}>
+          <div style={{ fontSize:7.5, opacity:.4, letterSpacing:".14em", textTransform:"uppercase" }}>DRAIN DURATION</div>
+          <div style={{ fontWeight:900, fontSize:26, color:"#fff", marginTop:6, letterSpacing:"-.01em" }}>02:45 Min</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TrackSceneHook() {
   return (
     <div style={{ display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:64, width:"100%" }}>
       <div style={{ display:"flex", flexDirection:"column", justifyContent:"center" }}>
         <div className="mh-chip" style={{ borderColor:`${TRACK_MAGENTA}55`, color:TRACK_MAGENTA, alignSelf:"flex-start" }}>
-          <span className="mh-dot magenta"/> myTrack · Command Center
+          <span className="mh-dot magenta"/> myTrack · Live fuel intelligence
         </div>
         <h1 style={{ fontWeight:900, fontSize:140, lineHeight:.9, letterSpacing:"-0.04em", margin:"24px 0 0" }}>
           Stop fuel<br/>theft.
@@ -371,13 +492,7 @@ function TrackSceneHook() {
         </div>
       </div>
       <div style={{ position:"relative" }}>
-        <div style={{
-          position:"absolute", inset:0, borderRadius:24, overflow:"hidden",
-          background:"#060b12", border:"1px solid rgba(255,255,255,.08)",
-          boxShadow:`0 0 80px -10px ${TRACK_PURPLE}aa`
-        }}>
-          <JHBTacticalMap/>
-        </div>
+        <FuelDrainWidget/>
       </div>
     </div>
   );
