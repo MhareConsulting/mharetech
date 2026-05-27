@@ -767,16 +767,46 @@ function JHBRouteMap() {
       <path d="M30 320 Q72 292 118 282 T232 278 Q282 272 342 302 T445 332" stroke="#EF4444" strokeWidth="10" fill="none" strokeLinecap="round" opacity=".18"/>
       <path d="M30 320 Q55 308 82 298 T152 278 Q202 268 242 258 T295 242" stroke="#22C55E" strokeWidth="5" fill="none" strokeLinecap="round"/>
       <path d="M30 320 Q55 308 82 298 T152 278 Q202 268 242 258 T295 242" stroke="#22C55E" strokeWidth="10" fill="none" strokeLinecap="round" opacity=".18"/>
-      <circle cx="30" cy="320" r="10" fill="#4F46E5"/><circle cx="30" cy="320" r="6" fill="#fff"/>
-      {[[122,222],[202,160],[282,120],[362,90],[445,38]].map(([x,y],i)=>(
-        <g key={"b"+i}><circle cx={x} cy={y} r="8" fill="#fff" stroke="#3B82F6" strokeWidth="2.5"/><circle cx={x} cy={y} r="3.5" fill="#3B82F6"/></g>
+      {/* Parks */}
+      <rect x="76" y="66" width="52" height="34" fill="#cfe8cf" rx="3" opacity=".9"/>
+      <text x="102" y="87" fontFamily="Montserrat" fontSize="6" fontWeight="600" fill="#6a9e6a" textAnchor="middle" letterSpacing=".04em">PARK</text>
+      <rect x="248" y="178" width="42" height="28" fill="#cfe8cf" rx="3" opacity=".85"/>
+      {/* Extra blocks — Sandton CBD */}
+      {[[222,44,54,30],[236,78,50,28],[252,110,48,26],[194,44,24,28],[196,76,22,24]].map(([x,y,w,h],i)=>(<rect key={"sA"+i} x={x} y={y} width={w} height={h} fill="#c8cfda" rx="1"/>))}
+      {/* Rosebank */}
+      {[[86,106,44,30],[88,140,42,26],[132,106,40,28]].map(([x,y,w,h],i)=>(<rect key={"rB"+i} x={x} y={y} width={w} height={h} fill="#cdd4dd" rx="1"/>))}
+      {/* William Nicol / Rivonia overlay roads */}
+      <path d="M0 94 Q88 106 162 116 T312 138" stroke="#fff" strokeWidth="4" fill="none" opacity=".7"/>
+      <path d="M312 0 Q310 62 307 122 T302 244 T296 360" stroke="#fff" strokeWidth="4" fill="none" opacity=".6"/>
+      {/* Oxford Road */}
+      <path d="M168 0 Q170 50 172 105 T175 200 T176 360" stroke="#fff" strokeWidth="3" fill="none" opacity=".5"/>
+      {/* Depot */}
+      <circle cx="30" cy="320" r="12" fill="#fff" stroke="#4827CC" strokeWidth="3"/>
+      <circle cx="30" cy="320" r="6" fill="#4827CC"/>
+      {/* Route 1 stops */}
+      {[[112,236],[188,172],[260,134],[314,110],[418,52]].map(([x,y],i)=>(
+        <g key={"bs"+i}><circle cx={x} cy={y} r="9" fill="#fff" stroke="#3B82F6" strokeWidth="2.5"/><circle cx={x} cy={y} r="4" fill="#3B82F6"/></g>
       ))}
-      {[[152,282],[262,278],[350,305]].map(([x,y],i)=>(
-        <g key={"r"+i}><circle cx={x} cy={y} r="8" fill="#fff" stroke="#EF4444" strokeWidth="2.5"/><circle cx={x} cy={y} r="3.5" fill="#EF4444"/></g>
+      {/* Route 2 stops */}
+      {[[150,284],[234,280],[330,306]].map(([x,y],i)=>(
+        <g key={"rs"+i}><circle cx={x} cy={y} r="9" fill="#fff" stroke="#EF4444" strokeWidth="2.5"/><circle cx={x} cy={y} r="4" fill="#EF4444"/></g>
       ))}
-      {[[142,278],[242,260]].map(([x,y],i)=>(
-        <g key={"g"+i}><circle cx={x} cy={y} r="8" fill="#fff" stroke="#22C55E" strokeWidth="2.5"/><circle cx={x} cy={y} r="3.5" fill="#22C55E"/></g>
+      {/* Route 3 stops */}
+      {[[144,280],[238,262]].map(([x,y],i)=>(
+        <g key={"gs"+i}><circle cx={x} cy={y} r="9" fill="#fff" stroke="#22C55E" strokeWidth="2.5"/><circle cx={x} cy={y} r="4" fill="#22C55E"/></g>
       ))}
+      {/* Area labels */}
+      <text x="252" y="40" fontFamily="Montserrat" fontSize="8" fontWeight="800" fill="#7a8898" textAnchor="middle" letterSpacing=".1em">SANDTON</text>
+      <text x="108" y="102" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".08em">ROSEBANK</text>
+      <text x="355" y="54" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".08em">RIVONIA</text>
+      <text x="70" y="246" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".06em">RANDBURG</text>
+      <text x="355" y="256" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".06em">WOODMEAD</text>
+      <text x="168" y="276" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".06em">HYDE PARK</text>
+      {/* Highway badges */}
+      <rect x="455" y="182" width="22" height="14" fill="#d0caf0" rx="2"/>
+      <text x="466" y="193" fontFamily="Montserrat" fontSize="7" fontWeight="900" fill="#4827CC" textAnchor="middle">N1</text>
+      <rect x="432" y="12" width="22" height="14" fill="#d0caf0" rx="2"/>
+      <text x="443" y="23" fontFamily="Montserrat" fontSize="7" fontWeight="900" fill="#4827CC" textAnchor="middle">N3</text>
     </svg>
   );
 }
@@ -915,7 +945,7 @@ function MyRoutesBoothFrame({ scene = 1 }) {
       <div className="mh-noise"/>
 
       <div style={{ position:"absolute", top:28, left:32, zIndex:5, display:"flex", gap:8, alignItems:"center" }}>
-        {[1,2,3,4,5,6].map(n => (
+        {[1,2,3,4,5,6,7].map(n => (
           <div key={n} style={{
             width: n===scene ? 36 : 8, height:8, borderRadius:4,
             background: n===scene ? RT_ORANGE : "rgba(255,255,255,.2)",
@@ -923,7 +953,7 @@ function MyRoutesBoothFrame({ scene = 1 }) {
           }}/>
         ))}
         <div style={{ fontFamily:"monospace", fontSize:11, opacity:.5, marginLeft:10, letterSpacing:".15em" }}>
-          SCENE 0{scene} / 06 · MyROUTES
+          SCENE 0{scene} / 07 · MyROUTES
         </div>
       </div>
 
@@ -935,9 +965,10 @@ function MyRoutesBoothFrame({ scene = 1 }) {
         {scene === 1 && <RoutesSceneHook/>}
         {scene === 2 && <RoutesScenePlanLive/>}
         {scene === 3 && <RoutesSceneSavings/>}
-        {scene === 4 && <RoutesSceneAutoPlan/>}
-        {scene === 5 && <RoutesSceneFleetBoard/>}
-        {scene === 6 && <RoutesSceneCTA/>}
+        {scene === 4 && <RoutesSceneMarketing/>}
+        {scene === 5 && <RoutesSceneAutoPlan/>}
+        {scene === 6 && <RoutesSceneFleetBoard/>}
+        {scene === 7 && <RoutesSceneCTA/>}
       </div>
     </div>
   );
@@ -1013,6 +1044,64 @@ function RoutesSceneSavings() {
             <div style={{ fontSize:12, opacity:.6, marginTop:4 }}>{s.note}</div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function RoutesSceneMarketing() {
+  const INDIGO = "#5041D9";
+  const features = [
+    { title:"REAL-TIME ROUTING",   desc:"Live traffic. Load-shedding aware. Re-routes when reality changes.",         accent:RT_ORANGE },
+    { title:"ENTERPRISE READY",    desc:"API integration with SAP, Oracle, and custom WMS platforms.",                 accent:INDIGO    },
+    { title:"ASSET TRACKING",      desc:"Every vehicle, parcel, and driver. Sub-meter precision.",                     accent:"#E1266B" },
+    { title:"FLEET HEALTH",        desc:"Predictive maintenance alerts. Reduce downtime by 22% annually.",             accent:RT_ORANGE },
+    { title:"COMPLIANCE",          desc:"Automated trip logbooks and ELD synchronisation. Zero paperwork.",            accent:INDIGO    },
+    { title:"DRIVER COACHING",     desc:"Real-time behaviour monitoring and automated scoring reports.",               accent:"#22C55E" },
+  ];
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1fr 1.1fr", gap:44, alignItems:"stretch" }}>
+      {/* LEFT */}
+      <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+        {/* Hero block — brutalist card */}
+        <div style={{ background:"rgba(10,1,70,.85)", border:`1px solid ${INDIGO}`, boxShadow:`6px 6px 0 0 ${INDIGO}`, padding:"36px 40px" }}>
+          <div style={{ fontSize:9, letterSpacing:".28em", textTransform:"uppercase", color:INDIGO, fontWeight:800, marginBottom:18 }}>
+            Logistics Optimisation
+          </div>
+          <div style={{ fontWeight:900, fontSize:72, lineHeight:.88, letterSpacing:"-0.04em" }}>
+            PLAN<br/>LESS.<br/><span style={{ color:RT_ORANGE }}>DELIVER<br/>MORE.</span>
+          </div>
+          <div style={{ marginTop:20, fontSize:15, opacity:.6, fontWeight:500, maxWidth:380, lineHeight:1.5 }}>
+            AI-optimised routing built for South African fleets. Cut kilometres, protect margins, dispatch in seconds.
+          </div>
+        </div>
+        {/* Stats row */}
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:10 }}>
+          {[
+            { val:"&#8722;31%", label:"KILOMETRES",  color:RT_ORANGE },
+            { val:"&#8722;15%", label:"FUEL SPEND",  color:INDIGO    },
+            { val:"+18%",       label:"DROPS / DAY", color:"#22C55E" },
+          ].map((s,i)=>(
+            <div key={i} style={{ background:"rgba(255,255,255,.03)", border:`1px solid ${s.color}44`, boxShadow:`3px 3px 0 0 ${s.color}22`, padding:"18px 16px" }}>
+              <div style={{ fontWeight:900, fontSize:40, color:s.color, letterSpacing:"-0.04em", lineHeight:1 }} dangerouslySetInnerHTML={{ __html:s.val }}/>
+              <div style={{ fontSize:8, letterSpacing:".18em", textTransform:"uppercase", opacity:.5, marginTop:7, fontWeight:700 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* RIGHT — feature grid */}
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, alignContent:"start" }}>
+        {features.map((f,i)=>(
+          <div key={i} style={{ background:"rgba(255,255,255,.03)", border:`1px solid ${f.accent}33`, boxShadow:`3px 3px 0 0 ${f.accent}22`, padding:"20px 18px" }}>
+            <div style={{ fontSize:8, letterSpacing:".2em", textTransform:"uppercase", color:f.accent, fontWeight:800, marginBottom:10 }}>{f.title}</div>
+            <div style={{ fontSize:13, opacity:.7, lineHeight:1.5, fontWeight:500 }}>{f.desc}</div>
+          </div>
+        ))}
+        {/* CTA bar */}
+        <div style={{ gridColumn:"1 / -1", background:RT_ORANGE, color:"#151B29", padding:"16px 22px", boxShadow:"5px 5px 0 0 #0a0146", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          <div style={{ fontWeight:900, fontSize:18, letterSpacing:".04em", textTransform:"uppercase" }}>PLAN YOUR ROUTE AT THE BOOTH. FREE.</div>
+          <div style={{ fontWeight:800, fontSize:11, letterSpacing:".16em", textTransform:"uppercase" }}>BRING YOUR ROUTE SHEET &#8594;</div>
+        </div>
       </div>
     </div>
   );
@@ -1124,10 +1213,10 @@ function RoutesSceneFleetBoard() {
     <div style={{ display:"grid", gridTemplateColumns:"1fr 1.5fr", gap:48, width:"100%", alignItems:"center" }}>
       <div>
         <div className="mh-chip" style={{ borderColor:`${RT_ORANGE}55`, color:RT_ORANGE }}>
-          <span className="mh-dot orange"/> Fleet Board &middot; Live View
+          <span className="mh-dot orange"/> Fleet Board &middot; Total Visibility
         </div>
         <h2 style={{ fontWeight:900, fontSize:88, letterSpacing:"-0.035em", lineHeight:.92, margin:"20px 0 0" }}>
-          33 vehicles.<br/>30 drivers.<br/><span style={{ color:RT_ORANGE }}>One screen.</span>
+          Your whole<br/>fleet.<br/><span style={{ color:RT_ORANGE }}>Right now.</span>
         </h2>
         <div style={{ fontWeight:500, fontSize:18, opacity:.75, maxWidth:470, marginTop:20 }}>
           Real-time status, fuel efficiency, and driver scorecards &#8212; live dashboard refreshing every 30 seconds.
@@ -1487,10 +1576,10 @@ const { MyTrackBoothFrame }   = window.MyTrack;
 const { MyRoutesBoothFrame }  = window.MyRoutes;
 const { KasiStockBoothFrame } = window.KasiStock;
 
-const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 4000];
+const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 7000, 4000];
 const PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:5 },
-  { id:"myroutes",  name:"MyRoutes",  label:"Routing",       accent:"#FF9D00", Frame:MyRoutesBoothFrame,  sceneCount:6 },
+  { id:"myroutes",  name:"MyRoutes",  label:"Routing",       accent:"#FF9D00", Frame:MyRoutesBoothFrame,  sceneCount:7 },
   { id:"kasistock", name:"KasiStock", label:"Community POS", accent:"#FFB840", Frame:KasiStockBoothFrame, sceneCount:4 },
 ];
 
