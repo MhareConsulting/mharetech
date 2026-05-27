@@ -206,131 +206,94 @@ const TRACK_PURPLE   = "#4827CC";
 const TRACK_PURPLE_2 = "#6B3FE0";
 const TRACK_MAGENTA  = "#E1266B";
 
-/*
-  SAMap — geographically accurate South Africa outline
-  Coordinate system (viewBox 700 × 560):
-    X = (lon − 16.5) / 16.4 × 660 + 20   lon range 16.5°E → 32.9°E
-    Y = (|lat| − 22.1) / 12.7 × 520 + 24  lat range 22.1°S → 34.8°S (N=top)
-  Key anchors:
-    Orange River mouth  32,294  | NW corner (Namibia) 163,24
-    JHB/PTA            488,188  | Durban              601,339
-    Port Elizabeth     386,503  | Cape Agulhas        162,542
-    Cape Town           96,503  | Beit Bridge         648,24
-    Kosi Bay           680,219
-*/
-function SAMap({ pins = [] }) {
+function JHBTacticalMap() {
   return (
-    <svg viewBox="0 0 700 560" style={{ width:"100%", height:"100%", display:"block" }} preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 600 500" style={{ width:"100%", height:"100%", display:"block" }} preserveAspectRatio="xMidYMid slice">
       <defs>
-        <radialGradient id="mtGlow" cx="42%" cy="58%" r="48%">
-          <stop offset="0%" stopColor="#4827CC" stopOpacity="0.38"/>
+        <radialGradient id="mapGlowT" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#E1266B" stopOpacity="0.1"/>
           <stop offset="100%" stopColor="#4827CC" stopOpacity="0"/>
         </radialGradient>
-        <linearGradient id="mapFill" x1="0" y1="0" x2="0.6" y2="1">
-          <stop offset="0%" stopColor="#1a2133"/>
-          <stop offset="100%" stopColor="#0d1018"/>
-        </linearGradient>
-        <filter id="pinGlow" x="-80%" y="-80%" width="260%" height="260%">
+        <filter id="pinGlowT" x="-120%" y="-120%" width="340%" height="340%">
           <feGaussianBlur stdDeviation="5"/>
         </filter>
+        <filter id="lineGlowT" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2.2"/>
+        </filter>
       </defs>
-
-      {/* ambient glow */}
-      <ellipse cx="350" cy="310" rx="290" ry="230" fill="url(#mtGlow)"/>
-
-      {/* ── SA border path ──
-          Tracing clockwise: Orange River mouth → Orange River east →
-          Namibia corner → northern border (straight) → Beit Bridge →
-          Mozambique border → Kosi Bay → KZN coast → Cape Agulhas →
-          Cape Town → Atlantic coast → back to Orange River mouth       */}
-      <path
-        d="M 32 294
-           C 75 291 130 285 163 283
-           L 163 24
-           L 402 24
-           L 648 24
-           C 657 29 665 62 672 115
-           C 678 160 681 190 681 219
-           C 682 242 670 264 651 289
-           C 633 311 613 326 601 339
-           C 585 360 573 373 565 387
-           C 545 422 516 448 488 468
-           C 465 482 453 495 416 505
-           C 396 511 374 515 350 517
-           C 322 517 294 519 266 521
-           C 240 523 215 529 194 535
-           C 178 540 167 543 162 542
-           C 148 541 128 536 114 530
-           C 101 523 91 518 85 515
-           C 76 509 71 494 70 460
-           C 62 423 53 389 49 357
-           C 41 329 34 314 32 294 Z"
-        fill="url(#mapFill)"
-        stroke="rgba(225,38,107,0.6)"
-        strokeWidth="1.6"
-      />
-
-      {/* Lesotho — 28.5°E 29.7°S → (503,331) */}
-      <path d="M 491 323 L 515 316 L 523 334 L 511 349 L 488 343 Z"
-        fill="#0a0f1a" stroke="rgba(255,255,255,.22)" strokeWidth="1"/>
-
-      {/* eSwatini — 31.5°E 26.5°S → (623,200) */}
-      <path d="M 617 193 L 630 188 L 637 201 L 628 212 L 614 207 Z"
-        fill="#0a0f1a" stroke="rgba(255,255,255,.18)" strokeWidth="1"/>
-
-      {/* Geo grid */}
-      <g opacity="0.09">
-        {Array.from({ length: 13 }).map((_, i) => (
-          <line key={"v"+i} x1={i*58} y1="0" x2={i*58} y2="560" stroke="white" strokeWidth=".5"/>
-        ))}
-        {Array.from({ length: 11 }).map((_, i) => (
-          <line key={"h"+i} x1="0" y1={i*56} x2="700" y2={i*56} stroke="white" strokeWidth=".5"/>
-        ))}
+      <rect width="600" height="500" fill="#060b12"/>
+      <ellipse cx="300" cy="250" rx="280" ry="220" fill="url(#mapGlowT)"/>
+      {/* Fine street grid */}
+      <g opacity="0.065" stroke="#4B6EA8" strokeWidth="0.5">
+        {Array.from({length:24}).map((_,i) => <line key={"sg"+i} x1={i*26} y1="0" x2={i*26} y2="500"/>)}
+        {Array.from({length:20}).map((_,i) => <line key={"sh"+i} x1="0" y1={i*26} x2="600" y2={i*26}/>)}
       </g>
-
-      {/* N1 highway: Cape Town → Bloemfontein → JHB */}
-      <path d="M 96 503 C 148 478 200 430 252 388 C 300 350 356 322 412 305 C 452 294 470 242 488 188"
-        fill="none" stroke={TRACK_MAGENTA} strokeWidth="2" strokeLinecap="round" opacity="0.65"/>
-      {/* N3 highway: Durban → JHB */}
-      <path d="M 601 339 C 566 296 530 250 488 188"
-        fill="none" stroke={TRACK_PURPLE_2} strokeWidth="2" strokeLinecap="round" opacity="0.6"/>
-      {/* N4: JHB → Mozambique border */}
-      <path d="M 488 188 C 545 172 594 184 651 213"
-        fill="none" stroke={TRACK_MAGENTA} strokeWidth="1.5" strokeLinecap="round"
-        opacity="0.38" strokeDasharray="4 5"/>
-
-      {/* City markers */}
-      {/* JHB / PTA — 28.1°E 26.2°S */}
-      <circle cx="488" cy="188" r="7" fill={TRACK_PURPLE_2} opacity="0.9"/>
-      <circle cx="488" cy="188" r="15" fill={TRACK_PURPLE_2} opacity="0.16"/>
-      <text x="504" y="193" fontFamily="Montserrat" fontWeight="700" fontSize="12"
-        fill="rgba(255,255,255,.82)" letterSpacing="0.04em">JHB · PTA</text>
-
-      {/* Durban — 31.0°E 29.9°S */}
-      <circle cx="601" cy="339" r="5.5" fill={TRACK_MAGENTA} opacity="0.9"/>
-      <circle cx="601" cy="339" r="12" fill={TRACK_MAGENTA} opacity="0.18"/>
-      <text x="614" y="344" fontFamily="Montserrat" fontWeight="700" fontSize="11"
-        fill="rgba(255,255,255,.78)">DURBAN</text>
-
-      {/* Cape Town — 18.4°E 33.9°S */}
-      <circle cx="96" cy="503" r="5.5" fill={TRACK_PURPLE_2} opacity="0.9"/>
-      <circle cx="96" cy="503" r="12" fill={TRACK_PURPLE_2} opacity="0.18"/>
-      <text x="110" y="508" fontFamily="Montserrat" fontWeight="700" fontSize="11"
-        fill="rgba(255,255,255,.78)">CAPE TOWN</text>
-
-      {/* Port Elizabeth — 25.6°E 33.9°S */}
-      <circle cx="386" cy="503" r="4" fill={TRACK_MAGENTA} opacity="0.75"/>
-      <text x="397" y="508" fontFamily="Montserrat" fontWeight="600" fontSize="10"
-        fill="rgba(255,255,255,.55)">PORT ELIZABETH</text>
-
-      {/* Vehicle pins */}
-      {pins.map((p, i) => (
-        <g key={i}>
-          <circle cx={p.x} cy={p.y} r="16" fill={p.color || TRACK_MAGENTA} opacity=".2" filter="url(#pinGlow)"/>
-          <circle cx={p.x} cy={p.y} r="6" fill={p.color || TRACK_MAGENTA}/>
-          <circle cx={p.x} cy={p.y} r="2.5" fill="white"/>
+      {/* Major arterials — outer gutter */}
+      <g stroke="#162236" strokeWidth="12" fill="none">
+        <path d="M280 0 Q285 120 290 250 Q295 380 300 500"/>
+        <path d="M0 380 Q150 300 300 250 Q420 210 600 180"/>
+        <path d="M600 350 Q500 290 400 260 Q330 242 300 250"/>
+        <path d="M0 200 Q200 215 300 250 Q400 280 500 250"/>
+      </g>
+      {/* Major arterials — inner lane */}
+      <g stroke="#1e3050" strokeWidth="6" fill="none">
+        <path d="M280 0 Q285 120 290 250 Q295 380 300 500"/>
+        <path d="M0 380 Q150 300 300 250 Q420 210 600 180"/>
+        <path d="M600 350 Q500 290 400 260 Q330 242 300 250"/>
+        <path d="M0 200 Q200 215 300 250 Q400 280 500 250"/>
+        <path d="M220 0 Q225 100 230 250 Q235 400 240 500" strokeWidth="3" opacity=".7"/>
+        <path d="M360 0 Q358 120 355 250 Q352 380 350 500" strokeWidth="3" opacity=".7"/>
+        <path d="M0 120 Q300 125 600 140" strokeWidth="3" opacity=".7"/>
+        <path d="M0 300 Q300 310 600 290" strokeWidth="3" opacity=".7"/>
+      </g>
+      {/* Building cluster — Sandton CBD */}
+      {[[240,130,45,35],[248,170,42,30],[290,128,38,32],[232,100,30,28],[285,100,32,24]].map(([x,y,w,h],i)=>(
+        <rect key={"sc"+i} x={x} y={y} width={w} height={h} fill="#0e1825" rx="2" stroke="#1a2840" strokeWidth="0.5"/>
+      ))}
+      {/* Rosebank */}
+      {[[170,210,35,28],[168,242,32,22],[206,210,28,26]].map(([x,y,w,h],i)=>(
+        <rect key={"rb"+i} x={x} y={y} width={w} height={h} fill="#0e1825" rx="2" stroke="#1a2840" strokeWidth="0.5"/>
+      ))}
+      {/* Active route lines */}
+      <path d="M110 390 Q180 330 250 280 Q295 252 340 215 Q378 178 440 155" stroke={TRACK_MAGENTA} strokeWidth="7" fill="none" strokeLinecap="round" opacity=".14" filter="url(#lineGlowT)"/>
+      <path d="M110 390 Q180 330 250 280 Q295 252 340 215 Q378 178 440 155" stroke={TRACK_MAGENTA} strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".88"/>
+      <path d="M490 330 Q430 285 370 262 Q335 250 300 252 Q258 254 215 264" stroke={TRACK_PURPLE_2} strokeWidth="7" fill="none" strokeLinecap="round" opacity=".14" filter="url(#lineGlowT)"/>
+      <path d="M490 330 Q430 285 370 262 Q335 250 300 252 Q258 254 215 264" stroke={TRACK_PURPLE_2} strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".88"/>
+      {/* JOHANNESBURG watermark */}
+      <text x="300" y="258" fontFamily="Montserrat" fontSize="44" fontWeight="900" fill="rgba(255,255,255,.022)" textAnchor="middle" letterSpacing=".22em">JOHANNESBURG</text>
+      {/* Vehicle pings */}
+      {[
+        { x:302, y:252, color:TRACK_MAGENTA, pulse:true  },
+        { x:270, y:270, color:"#FF9D00"                  },
+        { x:340, y:215, color:TRACK_MAGENTA              },
+        { x:440, y:155, color:TRACK_PURPLE_2             },
+        { x:215, y:264, color:"#27D17F"                  },
+        { x:490, y:330, color:"#FF9D00", pulse:true      },
+        { x:110, y:390, color:TRACK_MAGENTA              },
+      ].map((v,i)=>(
+        <g key={"vp"+i}>
+          <circle cx={v.x} cy={v.y} r="20" fill={v.color} opacity=".1" filter="url(#pinGlowT)"/>
+          <circle cx={v.x} cy={v.y} r="7" fill={v.color} opacity=".95"/>
+          <circle cx={v.x} cy={v.y} r="2.8" fill="#fff"/>
+          {v.pulse && (
+            <circle cx={v.x} cy={v.y} r="7" fill="none" stroke={v.color} strokeWidth="1.5">
+              <animate attributeName="r" values="7;24;7" dur="2.4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values=".7;0;.7" dur="2.4s" repeatCount="indefinite"/>
+            </circle>
+          )}
         </g>
       ))}
+      {/* Area labels */}
+      <text x="263" y="124" fontFamily="Montserrat" fontSize="8" fontWeight="800" fill="rgba(255,255,255,.38)" textAnchor="middle" letterSpacing=".12em">SANDTON</text>
+      <text x="185" y="206" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="rgba(255,255,255,.28)" textAnchor="middle" letterSpacing=".08em">ROSEBANK</text>
+      <text x="142" y="346" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="rgba(255,255,255,.28)" textAnchor="middle" letterSpacing=".06em">SOWETO</text>
+      <text x="455" y="272" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="rgba(255,255,255,.28)" textAnchor="middle" letterSpacing=".06em">EDENVALE</text>
+      {/* Coordinates + scale */}
+      <text x="14" y="490" fontFamily="monospace" fontSize="7" fill="rgba(255,255,255,.18)" letterSpacing=".04em">26.2041° S · 28.0473° E</text>
+      <line x1="492" y1="478" x2="572" y2="478" stroke="rgba(255,255,255,.22)" strokeWidth="1"/>
+      <line x1="492" y1="474" x2="492" y2="482" stroke="rgba(255,255,255,.22)" strokeWidth="1"/>
+      <line x1="572" y1="474" x2="572" y2="482" stroke="rgba(255,255,255,.22)" strokeWidth="1"/>
+      <text x="532" y="472" fontFamily="monospace" fontSize="6" fill="rgba(255,255,255,.25)" textAnchor="middle">5 km</text>
     </svg>
   );
 }
@@ -397,7 +360,7 @@ function TrackSceneHook() {
     <div style={{ display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:64, width:"100%" }}>
       <div style={{ display:"flex", flexDirection:"column", justifyContent:"center" }}>
         <div className="mh-chip" style={{ borderColor:`${TRACK_MAGENTA}55`, color:TRACK_MAGENTA, alignSelf:"flex-start" }}>
-          <span className="mh-dot magenta"/> myTrack · Live across SA
+          <span className="mh-dot magenta"/> myTrack · Command Center
         </div>
         <h1 style={{ fontWeight:900, fontSize:140, lineHeight:.9, letterSpacing:"-0.04em", margin:"24px 0 0" }}>
           Stop fuel<br/>theft.
@@ -410,19 +373,10 @@ function TrackSceneHook() {
       <div style={{ position:"relative" }}>
         <div style={{
           position:"absolute", inset:0, borderRadius:24, overflow:"hidden",
-          background:"#0a0f1a", border:"1px solid rgba(255,255,255,.08)",
+          background:"#060b12", border:"1px solid rgba(255,255,255,.08)",
           boxShadow:`0 0 80px -10px ${TRACK_PURPLE}aa`
         }}>
-          <SAMap pins={[
-            { x:488, y:188 },                         // JHB/PTA
-            { x:601, y:339, color:TRACK_PURPLE_2 },   // Durban
-            { x:544, y:94  },                         // Polokwane
-            { x:608, y:162, color:TRACK_PURPLE_2 },   // Nelspruit
-            { x:412, y:305 },                         // Bloemfontein
-            { x:386, y:503, color:TRACK_PURPLE_2 },   // Port Elizabeth
-            { x: 96, y:503 },                         // Cape Town
-            { x:240, y:388, color:TRACK_PURPLE_2 },   // Beaufort West
-          ]}/>
+          <JHBTacticalMap/>
         </div>
       </div>
     </div>
@@ -446,41 +400,71 @@ function TrackSceneAlert() {
         </div>
       </div>
       <div style={{
-        background:"#0a0f1a", borderRadius:20, border:"1px solid rgba(255,255,255,.08)",
-        boxShadow:`0 40px 80px -20px ${TRACK_MAGENTA}66`, padding:24
+        background:"#0a0f1a", borderRadius:20, border:`1px solid ${TRACK_MAGENTA}33`,
+        boxShadow:`0 40px 80px -20px ${TRACK_MAGENTA}55`, overflow:"hidden"
       }}>
-        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-          <span className="mh-dot magenta"/>
-          <span style={{ fontSize:13, fontWeight:700, color:TRACK_MAGENTA, letterSpacing:".15em", textTransform:"uppercase" }}>Critical alert</span>
-          <span style={{ marginLeft:"auto", fontFamily:"monospace", fontSize:11, opacity:.55 }}>02:34:12</span>
-        </div>
-        <div style={{ fontSize:18, fontWeight:600, marginTop:16 }}>Truck NDP-44 GP</div>
-        <div style={{ fontSize:13, opacity:.6, marginTop:2 }}>Driver: Sipho M. · Route 12</div>
-        <div style={{ marginTop:20, padding:16, background:"rgba(255,255,255,.03)", borderRadius:12 }}>
-          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-            <span style={{ fontSize:11, opacity:.55, textTransform:"uppercase", letterSpacing:".15em" }}>Fuel level</span>
-            <span style={{ fontSize:11, color:TRACK_MAGENTA, fontWeight:700 }}>−62 L</span>
-          </div>
-          <svg viewBox="0 0 300 80" style={{ width:"100%", height:80 }}>
-            <defs>
-              <linearGradient id="fuelFall" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={TRACK_MAGENTA} stopOpacity=".4"/>
-                <stop offset="100%" stopColor={TRACK_MAGENTA} stopOpacity="0"/>
-              </linearGradient>
-            </defs>
-            <path d="M0 20 L80 20 L100 22 L160 22 L180 60 L240 65 L300 65" fill="none" stroke={TRACK_MAGENTA} strokeWidth="2.5" strokeLinecap="round"/>
-            <path d="M0 20 L80 20 L100 22 L160 22 L180 60 L240 65 L300 65 L300 80 L0 80 Z" fill="url(#fuelFall)"/>
-            <circle cx="180" cy="60" r="5" fill={TRACK_MAGENTA}/>
-            <line x1="180" y1="0" x2="180" y2="80" stroke={TRACK_MAGENTA} strokeWidth="1" strokeDasharray="3 3" opacity=".6"/>
-          </svg>
-        </div>
+        {/* STOLEN FUEL ALERT banner — parallelogram clip */}
         <div style={{
-          marginTop:16, padding:"12px 14px",
-          background:`${TRACK_PURPLE_2}22`, border:`1px solid ${TRACK_PURPLE_2}55`,
-          borderRadius:10, display:"flex", alignItems:"center", gap:10
+          background:TRACK_MAGENTA, padding:"11px 22px",
+          display:"flex", alignItems:"center", gap:12,
+          clipPath:"polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%)"
         }}>
-          <span className="mh-dot purple"/>
-          <span style={{ fontSize:13, fontWeight:600 }}>WhatsApp sent to manager · 02:34:14</span>
+          <div style={{ width:8, height:8, borderRadius:"50%", background:"#fff", boxShadow:"0 0 8px #fff", flexShrink:0 }}/>
+          <span style={{ fontWeight:900, fontSize:12, letterSpacing:".2em", textTransform:"uppercase", color:"#fff" }}>STOLEN FUEL ALERT</span>
+          <span style={{ marginLeft:"auto", fontFamily:"monospace", fontSize:10, color:"rgba(255,255,255,.8)" }}>02:34:12</span>
+        </div>
+
+        <div style={{ padding:"20px 22px" }}>
+          {/* Circle gauge + info */}
+          <div style={{ display:"flex", gap:18, alignItems:"center", marginBottom:18 }}>
+            <svg width="92" height="92" viewBox="0 0 100 100" style={{ flexShrink:0 }}>
+              <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,.07)" strokeWidth="9"/>
+              {/* 20% fill: circumference=238.76, offset=238.76*(1-0.2)=191.0 */}
+              <circle cx="50" cy="50" r="38" fill="none" stroke={TRACK_MAGENTA} strokeWidth="9"
+                strokeDasharray="238.76" strokeDashoffset="191.0"
+                strokeLinecap="round" transform="rotate(-90 50 50)"
+                style={{ filter:`drop-shadow(0 0 5px ${TRACK_MAGENTA}99)` }}
+              />
+              <text x="50" y="47" textAnchor="middle" fontFamily="Montserrat" fontWeight="900" fontSize="19" fill={TRACK_MAGENTA}>20%</text>
+              <text x="50" y="63" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="rgba(255,255,255,.38)" letterSpacing=".06em">FUEL LEVEL</text>
+            </svg>
+            <div>
+              <div style={{ fontWeight:800, fontSize:17, color:"#fff" }}>Truck NDP-44 GP</div>
+              <div style={{ fontSize:13, color:TRACK_MAGENTA, fontWeight:700, marginTop:5 }}>62 litres drained in 9 min</div>
+              <div style={{ fontSize:11, opacity:.5, marginTop:4, lineHeight:1.4 }}>Driver: Sipho M. · Route 12<br/>N3 Heidelberg off-ramp</div>
+            </div>
+          </div>
+
+          {/* Fuel drop line chart */}
+          <div style={{ padding:"12px 14px", background:"rgba(255,255,255,.03)", borderRadius:10 }}>
+            <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
+              <span style={{ fontSize:10, opacity:.45, textTransform:"uppercase", letterSpacing:".12em" }}>Fuel reading · last 15 min</span>
+              <span style={{ fontSize:10, color:TRACK_MAGENTA, fontWeight:700 }}>−62 L detected</span>
+            </div>
+            <svg viewBox="0 0 260 58" style={{ width:"100%", height:58 }}>
+              <defs>
+                <linearGradient id="fuelFallA" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={TRACK_MAGENTA} stopOpacity=".32"/>
+                  <stop offset="100%" stopColor={TRACK_MAGENTA} stopOpacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 13 L65 13 L80 15 L122 16 L142 46 L195 51 L260 53" fill="none" stroke={TRACK_MAGENTA} strokeWidth="2.2" strokeLinecap="round"/>
+              <path d="M0 13 L65 13 L80 15 L122 16 L142 46 L195 51 L260 53 L260 58 L0 58 Z" fill="url(#fuelFallA)"/>
+              <circle cx="142" cy="46" r="4" fill={TRACK_MAGENTA}/>
+              <line x1="142" y1="0" x2="142" y2="58" stroke={TRACK_MAGENTA} strokeWidth="1" strokeDasharray="2 2" opacity=".5"/>
+              <text x="146" y="10" fontFamily="monospace" fontSize="6.5" fill={TRACK_MAGENTA} opacity=".8">THEFT</text>
+            </svg>
+          </div>
+
+          {/* WA confirmation */}
+          <div style={{
+            marginTop:14, padding:"10px 14px",
+            background:`${TRACK_PURPLE_2}18`, border:`1px solid ${TRACK_PURPLE_2}44`,
+            borderRadius:8, display:"flex", alignItems:"center", gap:10
+          }}>
+            <span className="mh-dot purple"/>
+            <span style={{ fontSize:12, fontWeight:600 }}>WhatsApp sent to manager · 02:34:14</span>
+          </div>
         </div>
       </div>
     </div>
@@ -747,66 +731,93 @@ const RT_PURPLE   = "#4827CC";
 function JHBRouteMap() {
   return (
     <svg viewBox="0 0 480 360" style={{ width:"100%", height:"100%", display:"block" }} preserveAspectRatio="xMidYMid slice">
-      <rect width="480" height="360" fill="#e8ecf0"/>
-      <path d="M0 185 Q120 175 240 188 T480 202" stroke="#fff" strokeWidth="14" fill="none"/>
-      <path d="M0 185 Q120 175 240 188 T480 202" stroke="#c9d2dc" strokeWidth="10" fill="none"/>
-      <path d="M360 360 Q370 290 395 215 T435 0" stroke="#fff" strokeWidth="10" fill="none"/>
-      <path d="M360 360 Q370 290 395 215 T435 0" stroke="#c9d2dc" strokeWidth="7" fill="none"/>
-      <path d="M0 100 Q80 110 160 120 T305 140" stroke="#fff" strokeWidth="8" fill="none"/>
-      <path d="M0 100 Q80 110 160 120 T305 140" stroke="#c9d2dc" strokeWidth="6" fill="none"/>
-      <g stroke="#d4d9e2" strokeWidth="1.5" opacity=".8">
+      <defs>
+        <filter id="rteGlow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="2.5"/>
+        </filter>
+        <filter id="pinGlowR" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="3.5"/>
+        </filter>
+      </defs>
+      {/* Dark map base */}
+      <rect width="480" height="360" fill="#0d1117"/>
+      {/* Fine grid */}
+      <g opacity="0.055" stroke="#4B6EA8" strokeWidth="0.5">
         {[55,110,165,220,275,330,385,440].map(x=>(<line key={"v"+x} x1={x} y1="0" x2={x} y2="360"/>))}
         {[40,80,120,160,200,240,280,320].map(y=>(<line key={"h"+y} x1="0" y1={y} x2="480" y2={y}/>))}
       </g>
+      {/* Major roads */}
+      <path d="M0 185 Q120 175 240 188 T480 202" stroke="#1a2b40" strokeWidth="14" fill="none"/>
+      <path d="M0 185 Q120 175 240 188 T480 202" stroke="#223450" strokeWidth="10" fill="none"/>
+      <path d="M360 360 Q370 290 395 215 T435 0" stroke="#1a2b40" strokeWidth="10" fill="none"/>
+      <path d="M360 360 Q370 290 395 215 T435 0" stroke="#223450" strokeWidth="7" fill="none"/>
+      <path d="M0 100 Q80 110 160 120 T305 140" stroke="#1a2b40" strokeWidth="8" fill="none"/>
+      <path d="M0 100 Q80 110 160 120 T305 140" stroke="#223450" strokeWidth="6" fill="none"/>
+      {/* Secondary overlay roads */}
+      <path d="M0 94 Q88 106 162 116 T312 138" stroke="#1e2e45" strokeWidth="4" fill="none" opacity=".8"/>
+      <path d="M312 0 Q310 62 307 122 T302 244 T296 360" stroke="#1e2e45" strokeWidth="4" fill="none" opacity=".7"/>
+      <path d="M168 0 Q170 50 172 105 T175 200 T176 360" stroke="#1e2e45" strokeWidth="3" fill="none" opacity=".6"/>
+      {/* Buildings */}
       {[[170,50,85,48],[285,68,78,42],[62,112,76,38],[205,138,68,44],
         [118,198,78,38],[308,218,88,48],[50,258,88,44],[248,278,76,44],[385,168,72,38]
-      ].map(([x,y,w,h],i)=>(<rect key={i} x={x} y={y} width={w} height={h} fill="#dde3ea" rx="2"/>))}
-      <path d="M30 320 Q65 265 105 228 T205 158 Q285 118 365 88 T465 28" stroke="#3B82F6" strokeWidth="5" fill="none" strokeLinecap="round"/>
-      <path d="M30 320 Q65 265 105 228 T205 158 Q285 118 365 88 T465 28" stroke="#3B82F6" strokeWidth="10" fill="none" strokeLinecap="round" opacity=".18"/>
-      <path d="M30 320 Q72 292 118 282 T232 278 Q282 272 342 302 T445 332" stroke="#EF4444" strokeWidth="5" fill="none" strokeLinecap="round"/>
-      <path d="M30 320 Q72 292 118 282 T232 278 Q282 272 342 302 T445 332" stroke="#EF4444" strokeWidth="10" fill="none" strokeLinecap="round" opacity=".18"/>
-      <path d="M30 320 Q55 308 82 298 T152 278 Q202 268 242 258 T295 242" stroke="#22C55E" strokeWidth="5" fill="none" strokeLinecap="round"/>
-      <path d="M30 320 Q55 308 82 298 T152 278 Q202 268 242 258 T295 242" stroke="#22C55E" strokeWidth="10" fill="none" strokeLinecap="round" opacity=".18"/>
-      {/* Parks */}
-      <rect x="76" y="66" width="52" height="34" fill="#cfe8cf" rx="3" opacity=".9"/>
-      <text x="102" y="87" fontFamily="Montserrat" fontSize="6" fontWeight="600" fill="#6a9e6a" textAnchor="middle" letterSpacing=".04em">PARK</text>
-      <rect x="248" y="178" width="42" height="28" fill="#cfe8cf" rx="3" opacity=".85"/>
-      {/* Extra blocks — Sandton CBD */}
-      {[[222,44,54,30],[236,78,50,28],[252,110,48,26],[194,44,24,28],[196,76,22,24]].map(([x,y,w,h],i)=>(<rect key={"sA"+i} x={x} y={y} width={w} height={h} fill="#c8cfda" rx="1"/>))}
+      ].map(([x,y,w,h],i)=>(<rect key={i} x={x} y={y} width={w} height={h} fill="#111827" rx="2" stroke="#1e2d45" strokeWidth="0.5"/>))}
+      {/* Sandton CBD denser blocks */}
+      {[[222,44,54,30],[236,78,50,28],[252,110,48,26],[194,44,24,28],[196,76,22,24]].map(([x,y,w,h],i)=>(<rect key={"sA"+i} x={x} y={y} width={w} height={h} fill="#131c2e" rx="1" stroke="#1e2d45" strokeWidth="0.5"/>))}
       {/* Rosebank */}
-      {[[86,106,44,30],[88,140,42,26],[132,106,40,28]].map(([x,y,w,h],i)=>(<rect key={"rB"+i} x={x} y={y} width={w} height={h} fill="#cdd4dd" rx="1"/>))}
-      {/* William Nicol / Rivonia overlay roads */}
-      <path d="M0 94 Q88 106 162 116 T312 138" stroke="#fff" strokeWidth="4" fill="none" opacity=".7"/>
-      <path d="M312 0 Q310 62 307 122 T302 244 T296 360" stroke="#fff" strokeWidth="4" fill="none" opacity=".6"/>
-      {/* Oxford Road */}
-      <path d="M168 0 Q170 50 172 105 T175 200 T176 360" stroke="#fff" strokeWidth="3" fill="none" opacity=".5"/>
+      {[[86,106,44,30],[88,140,42,26],[132,106,40,28]].map(([x,y,w,h],i)=>(<rect key={"rB"+i} x={x} y={y} width={w} height={h} fill="#131c2e" rx="1" stroke="#1e2d45" strokeWidth="0.5"/>))}
+      {/* Parks */}
+      <rect x="76" y="66" width="52" height="34" fill="#0d1f0d" rx="3" opacity=".9"/>
+      <rect x="248" y="178" width="42" height="28" fill="#0d1f0d" rx="3" opacity=".85"/>
+      {/* Route glow halos */}
+      <path d="M30 320 Q65 265 105 228 T205 158 Q285 118 365 88 T465 28" stroke="#3B82F6" strokeWidth="9" fill="none" strokeLinecap="round" opacity=".16" filter="url(#rteGlow)"/>
+      <path d="M30 320 Q72 292 118 282 T232 278 Q282 272 342 302 T445 332" stroke="#FF9D00" strokeWidth="9" fill="none" strokeLinecap="round" opacity=".16" filter="url(#rteGlow)"/>
+      <path d="M30 320 Q55 308 82 298 T152 278 Q202 268 242 258 T295 242" stroke="#22C55E" strokeWidth="9" fill="none" strokeLinecap="round" opacity=".16" filter="url(#rteGlow)"/>
+      {/* Route lines */}
+      <path d="M30 320 Q65 265 105 228 T205 158 Q285 118 365 88 T465 28" stroke="#3B82F6" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".92"/>
+      <path d="M30 320 Q72 292 118 282 T232 278 Q282 272 342 302 T445 332" stroke="#FF9D00" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".92"/>
+      <path d="M30 320 Q55 308 82 298 T152 278 Q202 268 242 258 T295 242" stroke="#22C55E" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".92"/>
       {/* Depot */}
-      <circle cx="30" cy="320" r="12" fill="#fff" stroke="#4827CC" strokeWidth="3"/>
-      <circle cx="30" cy="320" r="6" fill="#4827CC"/>
-      {/* Route 1 stops */}
+      <circle cx="30" cy="320" r="16" fill="#4827CC" opacity=".2" filter="url(#pinGlowR)"/>
+      <circle cx="30" cy="320" r="10" fill="#0d1117" stroke="#4827CC" strokeWidth="3"/>
+      <circle cx="30" cy="320" r="5" fill="#4827CC"/>
+      {/* Route 1 stops — blue */}
       {[[112,236],[188,172],[260,134],[314,110],[418,52]].map(([x,y],i)=>(
-        <g key={"bs"+i}><circle cx={x} cy={y} r="9" fill="#fff" stroke="#3B82F6" strokeWidth="2.5"/><circle cx={x} cy={y} r="4" fill="#3B82F6"/></g>
+        <g key={"bs"+i}>
+          <circle cx={x} cy={y} r="12" fill="#3B82F6" opacity=".15" filter="url(#pinGlowR)"/>
+          <circle cx={x} cy={y} r="7" fill="#0d1117" stroke="#3B82F6" strokeWidth="2.2"/>
+          <circle cx={x} cy={y} r="3" fill="#3B82F6"/>
+        </g>
       ))}
-      {/* Route 2 stops */}
+      {/* Route 2 stops — orange */}
       {[[150,284],[234,280],[330,306]].map(([x,y],i)=>(
-        <g key={"rs"+i}><circle cx={x} cy={y} r="9" fill="#fff" stroke="#EF4444" strokeWidth="2.5"/><circle cx={x} cy={y} r="4" fill="#EF4444"/></g>
+        <g key={"rs"+i}>
+          <circle cx={x} cy={y} r="12" fill="#FF9D00" opacity=".15" filter="url(#pinGlowR)"/>
+          <circle cx={x} cy={y} r="7" fill="#0d1117" stroke="#FF9D00" strokeWidth="2.2"/>
+          <circle cx={x} cy={y} r="3" fill="#FF9D00"/>
+        </g>
       ))}
-      {/* Route 3 stops */}
+      {/* Route 3 stops — green */}
       {[[144,280],[238,262]].map(([x,y],i)=>(
-        <g key={"gs"+i}><circle cx={x} cy={y} r="9" fill="#fff" stroke="#22C55E" strokeWidth="2.5"/><circle cx={x} cy={y} r="4" fill="#22C55E"/></g>
+        <g key={"gs"+i}>
+          <circle cx={x} cy={y} r="12" fill="#22C55E" opacity=".15" filter="url(#pinGlowR)"/>
+          <circle cx={x} cy={y} r="7" fill="#0d1117" stroke="#22C55E" strokeWidth="2.2"/>
+          <circle cx={x} cy={y} r="3" fill="#22C55E"/>
+        </g>
       ))}
+      {/* JOHANNESBURG watermark */}
+      <text x="240" y="196" fontFamily="Montserrat" fontSize="16" fontWeight="900" fill="rgba(255,255,255,.025)" textAnchor="middle" letterSpacing=".28em">JOHANNESBURG</text>
       {/* Area labels */}
-      <text x="252" y="40" fontFamily="Montserrat" fontSize="8" fontWeight="800" fill="#7a8898" textAnchor="middle" letterSpacing=".1em">SANDTON</text>
-      <text x="108" y="102" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".08em">ROSEBANK</text>
-      <text x="355" y="54" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".08em">RIVONIA</text>
-      <text x="70" y="246" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".06em">RANDBURG</text>
-      <text x="355" y="256" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".06em">WOODMEAD</text>
-      <text x="168" y="276" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="#8a97a5" textAnchor="middle" letterSpacing=".06em">HYDE PARK</text>
+      <text x="252" y="40" fontFamily="Montserrat" fontSize="8" fontWeight="800" fill="rgba(255,255,255,.42)" textAnchor="middle" letterSpacing=".1em">SANDTON</text>
+      <text x="108" y="102" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="rgba(255,255,255,.32)" textAnchor="middle" letterSpacing=".08em">ROSEBANK</text>
+      <text x="355" y="54" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="rgba(255,255,255,.32)" textAnchor="middle" letterSpacing=".08em">RIVONIA</text>
+      <text x="70" y="246" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="rgba(255,255,255,.32)" textAnchor="middle" letterSpacing=".06em">RANDBURG</text>
+      <text x="355" y="256" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="rgba(255,255,255,.32)" textAnchor="middle" letterSpacing=".06em">WOODMEAD</text>
+      <text x="168" y="276" fontFamily="Montserrat" fontSize="7" fontWeight="700" fill="rgba(255,255,255,.32)" textAnchor="middle" letterSpacing=".06em">HYDE PARK</text>
       {/* Highway badges */}
-      <rect x="455" y="182" width="22" height="14" fill="#d0caf0" rx="2"/>
-      <text x="466" y="193" fontFamily="Montserrat" fontSize="7" fontWeight="900" fill="#4827CC" textAnchor="middle">N1</text>
-      <rect x="432" y="12" width="22" height="14" fill="#d0caf0" rx="2"/>
-      <text x="443" y="23" fontFamily="Montserrat" fontSize="7" fontWeight="900" fill="#4827CC" textAnchor="middle">N3</text>
+      <rect x="455" y="182" width="22" height="14" fill="#1c1060" rx="2"/>
+      <text x="466" y="193" fontFamily="Montserrat" fontSize="7" fontWeight="900" fill="#8B7FFF" textAnchor="middle">N1</text>
+      <rect x="432" y="12" width="22" height="14" fill="#1c1060" rx="2"/>
+      <text x="443" y="23" fontFamily="Montserrat" fontSize="7" fontWeight="900" fill="#8B7FFF" textAnchor="middle">N3</text>
     </svg>
   );
 }
@@ -1459,17 +1470,30 @@ function KasiSceneHook() {
   return (
     <div style={{ display:"grid", gridTemplateColumns:"1.3fr 1fr", gap:48, width:"100%", alignItems:"center", color:"#fff" }}>
       <div>
-        <div className="mh-chip" style={{ borderColor:"rgba(255,255,255,.35)", color:"#fff", background:"rgba(0,0,0,.3)" }}>
-          <span className="mh-dot orange"/> KasiStock
+        <div className="mh-chip" style={{ borderColor:`${KS_PURPLE}99`, color:"#fff", background:"rgba(72,39,204,.25)" }}>
+          <span className="mh-dot purple"/> KasiStock · Community POS
         </div>
         <h1 style={{
-          fontWeight:900, fontSize:140, lineHeight:.85, letterSpacing:"-0.045em", margin:"24px 0 0",
-          textShadow:"0 6px 30px rgba(0,0,0,.45)"
+          fontWeight:900, fontSize:118, lineHeight:.86, letterSpacing:"-0.045em", margin:"24px 0 0",
+          textShadow:"0 6px 30px rgba(0,0,0,.5)"
         }}>
-          Know your<br/><span style={{ color:KS_WARM }}>stock.</span><br/>Grow your store.
+          Stop<br/>guessing.<br/><span style={{ color:KS_WARM }}>Start knowing.</span>
         </h1>
-        <div style={{ fontWeight:600, fontSize:30, marginTop:24, letterSpacing:"-0.01em", textShadow:"0 2px 14px rgba(0,0,0,.4)" }}>
-          No internet? <span style={{ color:KS_WARM, fontWeight:800 }}>No problem.</span>
+        <div style={{ fontWeight:600, fontSize:28, marginTop:24, letterSpacing:"-0.01em", textShadow:"0 2px 14px rgba(0,0,0,.4)", opacity:.9 }}>
+          The POS built for township shops.{" "}
+          <span style={{ color:KS_MAGENTA, fontWeight:800 }}>Offline-first.</span>
+        </div>
+        <div style={{ marginTop:28, display:"flex", gap:16 }}>
+          {[
+            { val:"2.4k+",  label:"Active shops" },
+            { val:"15M+",   label:"Monthly transactions" },
+            { val:"99.9%",  label:"Uptime SLA" },
+          ].map((s,i)=>(
+            <div key={i} style={{ textAlign:"center" }}>
+              <div style={{ fontWeight:900, fontSize:32, color:i===0?KS_PURPLE:i===1?KS_MAGENTA:KS_WARM, letterSpacing:"-.02em" }}>{s.val}</div>
+              <div style={{ fontSize:10, opacity:.55, marginTop:2, letterSpacing:".08em", textTransform:"uppercase" }}>{s.label}</div>
+            </div>
+          ))}
         </div>
       </div>
       <div style={{ display:"flex", justifyContent:"center", transform:"rotate(-5deg)" }}>
@@ -1480,24 +1504,53 @@ function KasiSceneHook() {
 }
 
 function KasiSceneScan() {
+  const features = [
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><path d="M7 12h10"/></svg>, label:"Offline-First POS",        sub:"Sell without internet. Syncs when back online."      },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8z"/><path d="M10 21a2 2 0 004 0"/></svg>, label:"Live Stock & Low Alerts",  sub:"Know what's running out before it runs out."          },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/></svg>, label:"Automatic Deal Pricing",   sub:"Right price every time. No calculator needed."        },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 2h4v3l2 3v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V8l2-3V2z"/><path d="M8 12h8"/></svg>, label:"Bottle Return Tracking",    sub:"Track deposits. No shortfall surprises."              },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>, label:"Quick Pay",                sub:"Cash, tap, or swipe — all on one screen."            },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>, label:"Growth Analytics",        sub:"Top sellers and dead stock. Every day."               },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 9a16 16 0 0120 0"/><path d="M5 13a11 11 0 0114 0"/><path d="M8.5 16.5a6 6 0 017 0"/><circle cx="12" cy="20" r="1.2" fill="currentColor"/></svg>, label:"Offline Mode",              sub:"Full POS functionality. No signal required."          },
+  ];
   return (
-    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"center", color:"#fff" }}>
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:48, alignItems:"center", color:"#fff" }}>
       <div>
-        <div style={{ fontFamily:"monospace", fontSize:14, color:KS_WARM, letterSpacing:".15em", textShadow:"0 2px 10px rgba(0,0,0,.4)" }}>
-          09:42:11 · SPAZA MART · SOWETO
+        <div className="mh-chip" style={{ borderColor:`${KS_PURPLE}88`, color:"#fff", background:"rgba(72,39,204,.2)" }}>
+          <span className="mh-dot purple"/> Everything you need
         </div>
         <h2 style={{
-          fontWeight:900, fontSize:88, letterSpacing:"-0.035em", lineHeight:.95, margin:"16px 0 24px",
+          fontWeight:900, fontSize:82, letterSpacing:"-0.035em", lineHeight:.92, margin:"18px 0 26px",
           textShadow:"0 4px 20px rgba(0,0,0,.5)"
         }}>
-          Scan.<br/>Sell.<br/>Sorted.
+          Built for<br/><span style={{ color:KS_WARM }}>your shop.</span>
         </h2>
-        <div style={{ fontWeight:500, fontSize:22, opacity:.92, maxWidth:520, textShadow:"0 2px 10px rgba(0,0,0,.4)" }}>
-          One tap and the price is right, the stock is counted and the special is applied. No more sticky notes. No more "ag, ek dink so".
+        <div style={{ display:"flex", flexDirection:"column" }}>
+          {features.map((f,i) => (
+            <div key={i} style={{
+              display:"flex", alignItems:"center", gap:12, padding:"9px 0",
+              borderBottom: i < features.length-1 ? "1px solid rgba(255,255,255,.07)" : "none"
+            }}>
+              <div style={{
+                width:32, height:32, borderRadius:7, flexShrink:0,
+                background:`${KS_PURPLE}28`, border:`1px solid ${KS_PURPLE}44`,
+                display:"grid", placeItems:"center", color:KS_WARM
+              }}>
+                {f.icon}
+              </div>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontWeight:700, fontSize:15, lineHeight:1.2 }}>{f.label}</div>
+                <div style={{ fontSize:11, opacity:.5, marginTop:1 }}>{f.sub}</div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink:0 }}>
+                <path d="M5 12.5l4 4 10-10" stroke={KS_WARM} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          ))}
         </div>
       </div>
       <div style={{ display:"flex", justifyContent:"center", transform:"rotate(4deg)" }}>
-        <KasiPhoneScreen scale={1.5}/>
+        <KasiPhoneScreen scale={1.35}/>
       </div>
     </div>
   );
@@ -1505,30 +1558,42 @@ function KasiSceneScan() {
 
 function KasiSceneNumbers() {
   const stats = [
-    { val:"R 312", label:"Avg daily upside",   note:"Catch deals that walked out the door" },
-    { val:"0 sec", label:"Lights out, sales on",note:"Offline-first by design" },
-    { val:"−47%",  label:"Stock-outs",          note:"Stayers always in stock" },
-    { val:"1 min", label:"To onboard",          note:"Scan your shelf, you're in" },
+    { val:"2.4k+",   label:"Active shops",           note:"Township & spaza stores running KasiStock today",  accent:KS_PURPLE  },
+    { val:"99.9%",   label:"Uptime SLA",              note:"Offline-first means load-shedding can't stop you", accent:KS_MAGENTA },
+    { val:"15M+",    label:"Monthly transactions",    note:"Processed across the network every single month",  accent:KS_WARM    },
   ];
   return (
     <div style={{ width:"100%", display:"flex", flexDirection:"column", justifyContent:"center", color:"#fff" }}>
-      <div className="mh-chip" style={{ borderColor:"rgba(255,255,255,.35)", color:"#fff", background:"rgba(0,0,0,.25)", alignSelf:"flex-start" }}>
-        <span className="mh-dot orange"/> Pilot · 12 stores · 60 days
+      <div className="mh-chip" style={{ borderColor:`${KS_PURPLE}88`, color:"#fff", background:"rgba(72,39,204,.2)", alignSelf:"flex-start" }}>
+        <span className="mh-dot purple"/> Live network stats
       </div>
-      <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.04em", lineHeight:.92, margin:"16px 0 36px" }}>
-        Small shop. <span style={{ color:KS_WARM }}>Big margin.</span>
+      <h2 style={{ fontWeight:900, fontSize:100, letterSpacing:"-0.04em", lineHeight:.92, margin:"16px 0 40px" }}>
+        Trusted by<br/><span style={{ color:KS_WARM }}>thousands.</span>
       </h2>
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:18 }}>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:22 }}>
         {stats.map((s,i) => (
           <div key={i} style={{
-            background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.18)",
-            borderRadius:18, padding:"28px 24px", backdropFilter:"blur(6px)"
+            background:"rgba(255,255,255,.06)", border:`1px solid ${s.accent}44`,
+            borderRadius:20, padding:"36px 28px", backdropFilter:"blur(6px)",
+            boxShadow:`0 0 60px -20px ${s.accent}44`
           }}>
-            <div style={{ fontWeight:900, fontSize:60, letterSpacing:"-0.03em", lineHeight:.95, color: i%2===0 ? KS_WARM : "#fff" }}>{s.val}</div>
-            <div style={{ fontSize:14, fontWeight:700, marginTop:14 }}>{s.label}</div>
-            <div style={{ fontSize:12, opacity:.7, marginTop:4 }}>{s.note}</div>
+            <div style={{ fontWeight:900, fontSize:78, letterSpacing:"-0.03em", lineHeight:.9, color:s.accent }}>{s.val}</div>
+            <div style={{ fontSize:17, fontWeight:800, marginTop:16 }}>{s.label}</div>
+            <div style={{ fontSize:13, opacity:.6, marginTop:6, lineHeight:1.45 }}>{s.note}</div>
           </div>
         ))}
+      </div>
+      <div style={{
+        marginTop:26, padding:"15px 22px",
+        background:"rgba(72,39,204,.15)", border:"1px solid rgba(72,39,204,.3)",
+        borderRadius:12, display:"flex", alignItems:"center", justifyContent:"space-between"
+      }}>
+        <div style={{ fontSize:14, fontWeight:500, opacity:.75 }}>
+          Join the network. Start free at the booth today.
+        </div>
+        <div style={{ fontWeight:900, fontSize:13, color:KS_WARM, letterSpacing:".1em" }}>
+          FREE 30-DAY TRIAL &#8594;
+        </div>
       </div>
     </div>
   );
