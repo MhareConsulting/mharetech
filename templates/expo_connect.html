@@ -25,6 +25,7 @@
       <h1>Thank you</h1>
       <p>We have your details and will follow up after {{ event_name }}.</p>
       <div class="expo-btn-row">
+        <a class="btn-gradient" href="{% url 'sloane_loop' %}">Watch the demos</a>
         <a class="btn-gradient btn-solid-dark" href="{% url 'expo_vcard' %}">Save Mhare to your phone</a>
       </div>
       <p class="expo-hint expo-hint--center">{{ event_name }} · {{ event_date }}</p>
@@ -118,9 +119,10 @@
     </div>
 
     <div class="expo-btn-row">
+      <a class="btn-gradient" href="{% url 'sloane_loop' %}">Watch the demos</a>
       <a class="btn-gradient btn-solid-dark expo-vcard-link" href="{% url 'expo_vcard' %}">Save Mhare to your phone</a>
     </div>
-    <p class="expo-hint expo-hint--center">Download our contact card — no form required.</p>
+    <p class="expo-hint expo-hint--center">See myTrack, myRoutes &amp; KasiStock in action — or download our contact card, no form required.</p>
     {% endif %}
 
     <p class="expo-footer-note">Mhare Tech · mharetech.co.za</p>
