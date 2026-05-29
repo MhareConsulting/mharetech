@@ -869,24 +869,39 @@ function TrackSceneRecovery() {
   return (
     <div style={{ display:"grid", gridTemplateColumns:"1fr 1.5fr", gap:56, width:"100%", alignItems:"center" }}>
       <div style={{ color:"#fff" }}>
-        <div style={{ fontFamily:"monospace", fontSize:13, color:TRACK_MAGENTA, letterSpacing:".15em", marginBottom:16 }}>
-          ACTIVE TRACKING · UNIT-442
+        <div className="mh-chip" style={{ borderColor:`${TRACK_MAGENTA}55`, color:TRACK_MAGENTA, display:"inline-flex", marginBottom:18 }}>
+          <span className="mh-dot magenta"/> Live Dispatch Console
         </div>
         <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.04em", lineHeight:.9, margin:"0 0 24px" }}>
-          Recovery<br/><span style={{ color:TRACK_MAGENTA }}>in progress.</span>
+          Your fleet.<br/><span style={{ color:TRACK_MAGENTA }}>Live right now.</span>
         </h2>
         <div style={{ fontWeight:500, fontSize:19, opacity:.8, maxWidth:460, lineHeight:1.5 }}>
-          The moment theft is detected, live tracking locks on. Dispatch knows where the vehicle is. Every second counts.
+          Every vehicle on one map. Real-time positions, ETA updates, and exception alerts — so your team can act the moment anything changes.
         </div>
-        <div style={{ marginTop:28, background:"rgba(255,255,255,.04)", borderRadius:14, padding:"20px 22px", border:`1px solid ${TRACK_MAGENTA}33` }}>
+        <div style={{ marginTop:28, display:"flex", flexDirection:"column", gap:12 }}>
           {[
-            { label:"SIGNAL STRENGTH", val:"98%",    color:"#27D17F"    },
-            { label:"VEHICLE SPEED",   val:"82 km/h", color:TRACK_MAGENTA },
-            { label:"RECOVERY ETA",    val:"12 min",  color:"#FF9D00"    },
+            { dot:"#27D17F",    label:"SSE-powered live positions",    sub:"Sub-second updates — no page refresh"          },
+            { dot:TRACK_MAGENTA, label:"Exception alerts in real time", sub:"Fuel drop, off-route, idle — instant flags"   },
+            { dot:"#FF9D00",    label:"Shareable delivery tracking",   sub:"Live ETA link for customers — no app needed"   },
+          ].map((item,i) => (
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", flexShrink:0, background:item.dot, boxShadow:`0 0 8px ${item.dot}` }}/>
+              <div>
+                <div style={{ fontWeight:700, fontSize:16 }}>{item.label}</div>
+                <div style={{ fontSize:12, opacity:.55 }}>{item.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop:24, background:"rgba(255,255,255,.04)", borderRadius:12, padding:"14px 18px", border:`1px solid ${TRACK_MAGENTA}22`, display:"flex", gap:24 }}>
+          {[
+            { label:"VEHICLES LIVE",    val:"12 / 18", color:"#27D17F"    },
+            { label:"TRIPS ACTIVE",     val:"7",        color:TRACK_MAGENTA },
+            { label:"OPEN EXCEPTIONS",  val:"2",        color:"#FF9D00"    },
           ].map((s,i) => (
-            <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom: i < 2 ? "1px solid rgba(255,255,255,.07)" : "none" }}>
-              <span style={{ fontSize:10, opacity:.5, letterSpacing:".16em", textTransform:"uppercase", fontWeight:700 }}>{s.label}</span>
-              <span style={{ fontWeight:900, fontSize:20, color:s.color }}>{s.val}</span>
+            <div key={i}>
+              <div style={{ fontSize:9, opacity:.45, letterSpacing:".16em", textTransform:"uppercase", fontWeight:700 }}>{s.label}</div>
+              <div style={{ fontWeight:900, fontSize:22, color:s.color, marginTop:4 }}>{s.val}</div>
             </div>
           ))}
         </div>
@@ -1044,6 +1059,45 @@ function JHBRouteMap() {
   );
 }
 
+function PlanningLeafletMap() {
+  const mapRef = React.useRef(null);
+  const leafletRef = React.useRef(null);
+  React.useEffect(() => {
+    if (!mapRef.current || leafletRef.current) return;
+    const L = window.L;
+    if (!L) return;
+    const map = L.map(mapRef.current, {
+      center: [-26.115, 28.038],
+      zoom: 12,
+      zoomControl: false,
+      attributionControl: false,
+      scrollWheelZoom: false,
+      dragging: false,
+      keyboard: false
+    });
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { subdomains:"abcd", maxZoom:19 }).addTo(map);
+    const blue   = [[-26.160,27.982],[-26.145,28.002],[-26.130,28.022],[-26.112,28.038],[-26.095,28.053],[-26.072,28.064]];
+    const orange = [[-26.160,27.982],[-26.155,28.010],[-26.145,28.042],[-26.130,28.062],[-26.108,28.087]];
+    const green  = [[-26.160,27.982],[-26.152,28.012],[-26.148,28.028]];
+    [[blue,"#3B82F6"],[orange,"#FF9D00"],[green,"#22C55E"]].forEach(([pts,col]) => {
+      L.polyline(pts, {color:col, weight:3, opacity:.92}).addTo(map);
+    });
+    const mk = (latlng, col, filled) => {
+      L.marker(latlng, { icon: L.divIcon({
+        html:`<div style="width:10px;height:10px;border-radius:50%;background:${filled?col:"transparent"};border:2.5px solid ${col};box-shadow:${filled?"0 0 8px "+col:"none"};"></div>`,
+        iconSize:[10,10], iconAnchor:[5,5], className:""
+      })}).addTo(map);
+    };
+    mk([-26.160,27.982],"#4827CC",true);
+    blue.slice(1).forEach(p => mk(p,"#3B82F6",false));
+    orange.slice(1).forEach(p => mk(p,"#FF9D00",false));
+    green.slice(1).forEach(p => mk(p,"#22C55E",false));
+    leafletRef.current = map;
+    return () => { if (leafletRef.current) { leafletRef.current.remove(); leafletRef.current = null; } };
+  }, []);
+  return <div ref={mapRef} style={{ width:"100%", height:"100%" }}/>;
+}
+
 function PlanningUIMockup({ optimizing = false }) {
   const orderRows = [
     { ref:"SAN-001", customer:"Spar Sandton City",    area:"Sandton",       kg:472 },
@@ -1083,7 +1137,7 @@ function PlanningUIMockup({ optimizing = false }) {
           ))}
         </div>
         <div style={{ flex:1, position:"relative" }}>
-          <JHBRouteMap/>
+          <PlanningLeafletMap/>
           {optimizing && (
             <div style={{ position:"absolute", top:10, right:10, background:"rgba(21,27,41,.92)", borderRadius:10, padding:"12px 14px", border:`1px solid ${RT_ORANGE}44`, backdropFilter:"blur(8px)", minWidth:168 }}>
               <div style={{ fontSize:7, color:"#aaa", textTransform:"uppercase", letterSpacing:".12em" }}>Optimising</div>
@@ -1562,19 +1616,19 @@ function RoutesSceneWhatsAppPOD() {
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
             <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.99.574 3.842 1.563 5.4L2 22l4.744-1.543A9.956 9.956 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
           </svg>
-          WhatsApp POD · No app required
+          Proof of Delivery · App &amp; WhatsApp
         </div>
         <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.04em", lineHeight:.9, margin:"22px 0 0" }}>
-          Delivery confirmed.<br/><span style={{ color:WA_GREEN }}>No app required.</span>
+          Every delivery.<br/><span style={{ color:WA_GREEN }}>Confirmed.</span>
         </h2>
         <div style={{ fontWeight:500, fontSize:20, opacity:.8, maxWidth:520, marginTop:22 }}>
-          Drivers capture photo and signature at the door. Customer gets confirmation via WhatsApp. Shortages are flagged instantly — before the truck is back at the depot.
+          Drivers capture photo and signature in the app at every stop. Customers receive confirmation on WhatsApp or via a web link — no download needed. Shortages are logged before the truck leaves the premises.
         </div>
         <div style={{ marginTop:28, display:"flex", flexDirection:"column", gap:12 }}>
           {[
-            { dot:WA_GREEN,    label:"Photo + signature at every stop",     sub:"Captured in the driver app — offline-capable"    },
-            { dot:RT_ORANGE,   label:"Instant customer confirmation",        sub:"Via WhatsApp — no login, no download"             },
-            { dot:"#EF4444",   label:"Shortage flagged in real time",        sub:"Loaded vs delivered per SKU — auto-detected"      },
+            { dot:WA_GREEN,    label:"Photo + signature in the driver app",  sub:"Offline-capable — works without data"             },
+            { dot:RT_ORANGE,   label:"Customer notified via WhatsApp or app", sub:"Choose your channel — or both"                   },
+            { dot:"#EF4444",   label:"Shortage logged automatically",         sub:"Loaded vs delivered per SKU — instant detection" },
           ].map((item,i) => (
             <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
               <div style={{ width:10, height:10, borderRadius:"50%", flexShrink:0, background:item.dot, boxShadow:`0 0 8px ${item.dot}` }}/>
@@ -1713,31 +1767,30 @@ function RoutesSceneLiveReplan() {
 }
 
 function RoutesSceneLoadShedding() {
-  const eskomSlots = [
-    { time:"06:00–08:30", status:"clear",   label:"✓ Clear"   },
-    { time:"08:30–11:00", status:"clear",   label:"✓ Clear"   },
-    { time:"11:00–13:30", status:"shed",    label:"⚡ Stage 4"  },
-    { time:"13:30–16:00", status:"clear",   label:"✓ Clear"   },
-    { time:"16:00–18:30", status:"shed",    label:"⚡ Stage 4"  },
-    { time:"18:30–21:00", status:"clear",   label:"✓ Clear"   },
+  const incidents = [
+    { icon:"⚠", road:"N1 Northbound",     detail:"Lane closure · Marlboro Int.",   status:"warn",  action:"Routes adjusted",   actionColor:"#F59E0B" },
+    { icon:"🔴", road:"Bree St · CBD",      detail:"Protest action · Since 08:30",   status:"red",   action:"Avoided",           actionColor:"#EF4444" },
+    { icon:"⚠", road:"William Nicol · Sandton", detail:"Pothole warning — slow approach", status:"warn", action:"Drivers alerted",  actionColor:"#F59E0B" },
+    { icon:"⚠", road:"M2 Eastbound · CBD", detail:"Accident · 2 lanes blocked",     status:"warn",  action:"3 routes rerouted", actionColor:"#F59E0B" },
+    { icon:"✓", road:"N3 Heidelberg",       detail:"Clear · No incidents",           status:"ok",    action:"As planned",        actionColor:"#22C55E" },
   ];
   const compliance = [
-    { label:"DVIR",  sub:"Digital pre/post-trip checklist · odometer capture", color:"#22C55E"  },
-    { label:"HoS",   sub:"Hours of service — auto from ignition data",          color:RT_ORANGE  },
-    { label:"AARTO", sub:"Infringement tracking · fine &amp; demerit logging",  color:"#3B82F6"  },
+    { label:"DVIR",  sub:"Digital pre/post-trip checklist · odometer capture", color:"#22C55E" },
+    { label:"HoS",   sub:"Hours of service — auto from ignition data",          color:RT_ORANGE },
+    { label:"AARTO", sub:"Infringement tracking · fine &amp; demerit logging",  color:"#3B82F6" },
     { label:"Mass",  sub:"GVM + axle load checks before dispatch",              color:RT_PURPLE  },
   ];
   return (
     <div style={{ display:"grid", gridTemplateColumns:"1fr 1.15fr", gap:56, width:"100%", alignItems:"center" }}>
       <div>
         <div className="mh-chip" style={{ borderColor:`${RT_ORANGE}55`, color:RT_ORANGE }}>
-          <span className="mh-dot orange"/> Built for SA · Compliance
+          <span className="mh-dot orange"/> Built for SA · Road Intelligence
         </div>
         <h2 style={{ fontWeight:900, fontSize:88, letterSpacing:"-0.04em", lineHeight:.9, margin:"22px 0 0" }}>
           Planned around SA.<br/><span style={{ color:RT_ORANGE }}>Not despite it.</span>
         </h2>
         <div style={{ fontWeight:500, fontSize:19, opacity:.8, maxWidth:500, marginTop:22 }}>
-          Load-shedding schedules, AARTO compliance, and HoS tracking built in — not bolted on. myRoutes knows the constraints South African fleets actually face.
+          Road closures, protests, accidents, potholes — myRoutes adapts in real time so your drivers never arrive to find a blocked route.
         </div>
         <div style={{ marginTop:24, display:"flex", flexDirection:"column", gap:10 }}>
           {compliance.map((c,i) => (
@@ -1751,33 +1804,36 @@ function RoutesSceneLoadShedding() {
         </div>
       </div>
 
-      {/* Load-shedding schedule card */}
+      {/* Road intelligence card */}
       <div style={{ background:"#fff", borderRadius:14, overflow:"hidden", boxShadow:"0 40px 80px rgba(0,0,0,.65)" }}>
         <div style={{ background:"#151B29", padding:"10px 16px" }}>
-          <div style={{ fontSize:8, color:"rgba(255,255,255,.4)", textTransform:"uppercase", letterSpacing:".12em", fontFamily:"monospace" }}>LOADSHEDDING · ESKOM SE PUSH</div>
-          <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>Today's Schedule · Sandton Area 7</div>
+          <div style={{ fontSize:8, color:"rgba(255,255,255,.4)", textTransform:"uppercase", letterSpacing:".12em", fontFamily:"monospace" }}>ROAD INTELLIGENCE · VALHALLA LIVE</div>
+          <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>Today's Incidents · Gauteng</div>
         </div>
-        <div style={{ padding:"4px 12px 2px", background:"#FFF3CD", borderBottom:"1px solid #fde68a", display:"flex", gap:8, alignItems:"center" }}>
-          <span style={{ fontSize:9, fontWeight:800, color:"#92400E" }}>⚡ Stage 4 active — 2 slots today</span>
-          <span style={{ marginLeft:"auto", fontSize:9, color:"#92400E" }}>Routes adjusted</span>
+        <div style={{ padding:"4px 12px 2px", background:"#FEF3C7", borderBottom:"1px solid #FDE68A", display:"flex", gap:8, alignItems:"center" }}>
+          <span style={{ fontSize:9, fontWeight:800, color:"#92400E" }}>⚠ 4 incidents active — routes adjusted</span>
+          <span style={{ marginLeft:"auto", fontSize:9, color:"#92400E", fontWeight:700 }}>myRoutes adapting</span>
         </div>
         <div style={{ display:"flex", flexDirection:"column", padding:"6px 12px", gap:4 }}>
-          {eskomSlots.map((s,i) => (
-            <div key={i} style={{
-              display:"flex", alignItems:"center", gap:12, padding:"8px 10px", borderRadius:8,
-              background: s.status === "shed" ? "#FEF3C7" : "#F0FDF4",
-              border: `1px solid ${s.status === "shed" ? "#FDE68A" : "#BBF7D0"}`
-            }}>
-              <div style={{ fontFamily:"monospace", fontSize:11, fontWeight:700, color:"#555", width:110, flexShrink:0 }}>{s.time}</div>
-              <div style={{ flex:1, height:8, borderRadius:4, background: s.status === "shed" ? "#FCD34D" : "#86EFAC" }}/>
-              <div style={{ fontSize:11, fontWeight:800, color: s.status === "shed" ? "#92400E" : "#166534", width:70, textAlign:"right", flexShrink:0 }}>{s.label}</div>
-            </div>
-          ))}
+          {incidents.map((s,i) => {
+            const bg = s.status === "red" ? "#FEF2F2" : s.status === "warn" ? "#FFFBEB" : "#F0FDF4";
+            const bd = s.status === "red" ? "#FECACA" : s.status === "warn" ? "#FDE68A" : "#BBF7D0";
+            return (
+              <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 10px", borderRadius:8, background:bg, border:`1px solid ${bd}` }}>
+                <span style={{ fontSize:14, flexShrink:0 }}>{s.icon}</span>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ fontSize:11, fontWeight:800, color:"#111", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{s.road}</div>
+                  <div style={{ fontSize:10, color:"#666", marginTop:1 }}>{s.detail}</div>
+                </div>
+                <div style={{ fontSize:10, fontWeight:800, color:s.actionColor, flexShrink:0 }}>{s.action}</div>
+              </div>
+            );
+          })}
         </div>
         <div style={{ padding:"8px 14px 12px", borderTop:"1px solid #e8edf4" }}>
           <div style={{ fontSize:10, color:"#555", fontWeight:600, marginBottom:4 }}>myRoutes action taken:</div>
           <div style={{ fontSize:10, color:"#166534", background:"#F0FDF4", border:"1px solid #BBF7D0", borderRadius:8, padding:"7px 10px" }}>
-            ✓ Stops in Sandton rescheduled to 08:30–11:00 and 13:30–16:00 windows · Depots in affected suburbs excluded during blackout periods
+            ✓ CBD stops rerouted via Nelson Mandela · N1 affected routes via Grayston · Drivers notified via push notification
           </div>
         </div>
       </div>
