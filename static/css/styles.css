@@ -2676,9 +2676,13 @@ footer::before {
 .partner-item img {
   height: 40px;
   width: auto;
-  max-width: 200px;
+  max-width: 220px;
   display: block;
   object-fit: contain;
+}
+
+/* African Bank uses a coloured SVG — invert to white for dark background */
+.partner-item img[alt="African Bank"] {
   filter: brightness(0) invert(1);
 }
 
