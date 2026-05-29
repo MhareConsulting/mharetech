@@ -60,7 +60,8 @@
       <div class="partner-item">
         <img src="{% static 'img/partners/innovator-trust.png' %}" alt="Innovator Trust" height="34" />
       </div>
-      <!-- Set 2 — duplicate for seamless infinite loop -->
+      <!-- Sets 2 – 4 — duplicates for seamless infinite loop across all screen widths -->
+      {% for _ in "xxx" %}
       <div class="partner-item" aria-hidden="true">
         <img src="{% static 'img/partners/african-bank.svg' %}" alt="" height="34" />
       </div>
@@ -70,6 +71,7 @@
       <div class="partner-item" aria-hidden="true">
         <img src="{% static 'img/partners/innovator-trust.png' %}" alt="" height="34" />
       </div>
+      {% endfor %}
     </div>
   </div>
 </section>
