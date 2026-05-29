@@ -2691,3 +2691,61 @@ footer::before {
   .partner-item { padding: 0 36px; }
   .partner-item img { height: 30px; max-width: 130px; }
 }
+
+/* ══════════════════════════════════════════════════════
+   Mobile responsive
+   All rules are inside max-width queries — zero effect
+   on desktop or tablet viewports above these breakpoints
+   ══════════════════════════════════════════════════════ */
+
+/* ── Tablet (≤768px): stack products grid ──────────── */
+@media (max-width: 768px) {
+  .products-landing-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ── Phone (≤600px) ────────────────────────────────── */
+@media (max-width: 600px) {
+
+  /* Nav: swap links out, contact button in.
+     Results in: [logo]  ···  [Contact] — clean & simple */
+  .nav-links { display: none; }
+  .nav-cta   { display: flex; }
+
+  /* Tighter horizontal gutters */
+  .container { padding: 0 16px; }
+
+  /* Section vertical rhythm */
+  section { padding: 52px 0; }
+  .hero   { padding: 60px 0 48px; }
+
+  /* Product cards: cap the browser-frame mockup height so it
+     doesn't dwarf the text content on a small screen */
+  .product-landing-mockup {
+    max-height: 200px;
+    overflow: hidden;
+    padding: 16px 16px 0;
+  }
+  .product-landing-body   { padding: 20px 20px 24px; }
+  .products-landing-grid  { gap: 20px; }
+
+  /* CTA button full-width on narrow screens */
+  .cta-btn {
+    width: 100%;
+    max-width: 380px;
+    justify-content: center;
+  }
+
+  /* Product page header title scales down */
+  .product-page-title {
+    font-size: clamp(1.8rem, 7vw, 2.6rem);
+  }
+}
+
+/* ── Very small (≤400px) ───────────────────────────── */
+@media (max-width: 400px) {
+  .container    { padding: 0 12px; }
+  .nav-logo-img { height: 24px; }
+}
