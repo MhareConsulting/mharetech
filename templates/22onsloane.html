@@ -713,14 +713,14 @@ function TrackSceneWhatsApp() {
 // Scene 4 — Automated reporting: daily / weekly / monthly digest
 function TrackSceneReports() {
   const rows = [
-    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"Value 0 / threshold 0", time:"10:40" },
-    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"Value 0 / threshold 0", time:"10:38" },
-    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"Value 0 / threshold 0", time:"10:35" },
+    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"0.41g / limit 0.30g", time:"10:40" },
+    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"0.47g / limit 0.35g", time:"10:38" },
+    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"0.35g / limit 0.30g", time:"10:35" },
     { vehicle:"DEF 456 GP", type:"Idle",               detail:"16 min idle (threshold 10)", time:"10:34" },
-    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"Value 0 / threshold 0", time:"10:17" },
-    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"Value 0 / threshold 0", time:"10:15" },
-    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"Value 0 / threshold 0", time:"10:02" },
-    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"Value 0 / threshold 0", time:"09:36" },
+    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"0.38g / limit 0.30g", time:"10:17" },
+    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"0.43g / limit 0.35g", time:"10:15" },
+    { vehicle:"DEF 456 GP", type:"Harsh Acceleration", detail:"0.51g / limit 0.35g", time:"10:02" },
+    { vehicle:"DEF 456 GP", type:"Harsh Cornering",    detail:"0.44g / limit 0.30g", time:"09:36" },
   ];
   return (
     <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:56, width:"100%", alignItems:"center" }}>
@@ -1170,7 +1170,7 @@ function RoutesScenePlanLive() {
 
 function RoutesSceneSavings() {
   const stats = [
-    { val:"−31%",   label:"Kilometres",       note:"Avg across 28 fleets" },
+    { val:"−31%",   label:"Kilometres",       note:"Avg across pilot fleets" },
     { val:"−3h 08m",label:"Daily idle time",   note:"Per truck" },
     { val:"R 7 200",label:"Fuel saved /mo",    note:"Per vehicle" },
     { val:"+18%",   label:"Drops per day",     note:"Same head-count" },
@@ -1480,26 +1480,27 @@ function ShopPhotoPlaceholder() {
     <div style={{
       position:"absolute", inset:0,
       background:`
-        linear-gradient(180deg, rgba(20,15,30,.1) 0%, rgba(72,39,204,.55) 60%, rgba(225,38,107,.65) 100%),
+        linear-gradient(180deg, rgba(20,15,30,.15) 0%, rgba(72,39,204,.55) 65%, rgba(225,38,107,.6) 100%),
         repeating-linear-gradient(95deg,
-          #c4853a 0 60px, #b06d3c 60px 110px, #d09548 110px 160px,
-          #9c5a3a 160px 200px, #c4853a 200px 270px
+          #1a0a04 0 60px, #120608 60px 110px, #1c0a06 110px 160px,
+          #0e0810 160px 200px, #1a0a04 200px 270px
         )
       `,
       overflow:"hidden"
     }}>
-      <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" style={{ position:"absolute", inset:0, width:"100%", height:"100%", mixBlendMode:"overlay", opacity:.5 }}>
-        <rect y="40"  width="600" height="60" fill="rgba(0,0,0,.3)"/>
-        <rect y="160" width="600" height="60" fill="rgba(0,0,0,.3)"/>
-        <rect y="280" width="600" height="60" fill="rgba(0,0,0,.3)"/>
-        {[...Array(30)].map((_,i) => {
-          const row = Math.floor(i/10), col = i%10;
-          const colors = ["#FF9D00","#E1266B","#4827CC","#27D17F","#fff"];
+      <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" style={{ position:"absolute", inset:0, width:"100%", height:"100%", mixBlendMode:"overlay", opacity:.45 }}>
+        <rect y="40"  width="600" height="65" fill="rgba(0,0,0,.3)"/>
+        <rect y="165" width="600" height="65" fill="rgba(0,0,0,.3)"/>
+        <rect y="290" width="600" height="65" fill="rgba(0,0,0,.3)"/>
+        {[...Array(18)].map((_,i) => {
+          const row = Math.floor(i/6), col = i%6;
+          const colors = ["#D4AF37","#8B0000","#2C5F2E","#C9832A","#D4AF37","#6B3FE0"];
           return (
-            <rect key={i}
-              x={20 + col*58} y={50 + row*120}
-              width={i%3===0 ? 30 : 36} height={42} rx="3"
-              fill={colors[i%colors.length]} opacity={0.85}/>
+            <g key={i} transform={`translate(${40 + col*95}, ${46 + row*122})`}>
+              <rect x="0" y="14" width="20" height="38" rx="4" fill={colors[i%colors.length]} opacity={0.9}/>
+              <rect x="6" y="2" width="8" height="14" rx="2" fill={colors[i%colors.length]} opacity={0.7}/>
+              <rect x="1" y="21" width="18" height="20" rx="1" fill="rgba(255,255,255,.22)"/>
+            </g>
           );
         })}
       </svg>
@@ -1526,10 +1527,10 @@ function KasiPhoneScreen({ scale = 1 }) {
         display:"flex", flexDirection:"column", color:"#fff", position:"relative"
       }}>
         <div style={{ display:"flex", justifyContent:"space-between", padding:`${10*scale}px ${20*scale}px ${8*scale}px`, fontSize:10*scale, fontWeight:600, fontFamily:"Montserrat", opacity:.85 }}>
-          <span>09:42</span><span>● ● ●</span>
+          <span>19:34</span><span>● ● ●</span>
         </div>
         <div style={{ padding:`${6*scale}px ${18*scale}px` }}>
-          <div style={{ fontSize:10*scale, fontWeight:600, letterSpacing:".15em", textTransform:"uppercase", opacity:.55 }}>Spaza Mart · Soweto</div>
+          <div style={{ fontSize:10*scale, fontWeight:600, letterSpacing:".15em", textTransform:"uppercase", opacity:.55 }}>Tavern · Diepkloof</div>
           <div style={{ fontWeight:900, fontSize:18*scale, letterSpacing:"-.02em", marginTop:2*scale }}>Scan a product</div>
         </div>
         <div style={{
@@ -1555,13 +1556,13 @@ function KasiPhoneScreen({ scale = 1 }) {
           borderRadius:14*scale
         }}>
           <div style={{ fontSize:9*scale, fontWeight:700, letterSpacing:".15em", textTransform:"uppercase", opacity:.85 }}>Match found</div>
-          <div style={{ fontWeight:900, fontSize:16*scale, letterSpacing:"-.02em", marginTop:3*scale }}>Iwisa Maize Meal 5kg</div>
+          <div style={{ fontWeight:900, fontSize:16*scale, letterSpacing:"-.02em", marginTop:3*scale }}>Castle Lager 340ml</div>
           <div style={{ display:"flex", alignItems:"baseline", gap:6*scale, marginTop:6*scale }}>
-            <span style={{ fontWeight:900, fontSize:22*scale }}>R 84.99</span>
-            <span style={{ fontSize:10*scale, opacity:.85, textDecoration:"line-through" }}>R 94.99</span>
+            <span style={{ fontWeight:900, fontSize:22*scale }}>R 16.99</span>
+            <span style={{ fontSize:10*scale, opacity:.85, textDecoration:"line-through" }}>R 18.99</span>
             <span style={{ fontSize:9*scale, padding:"2px 6px", background:"#fff", color:KS_PURPLE, borderRadius:99, fontWeight:800, marginLeft:"auto" }}>DEAL</span>
           </div>
-          <div style={{ fontSize:10*scale, opacity:.85, marginTop:4*scale }}>Stock: 12 · Low at 8</div>
+          <div style={{ fontSize:10*scale, opacity:.85, marginTop:4*scale }}>Stock: 72 · Low at 24</div>
         </div>
         <div style={{ flex:1 }}/>
         <div style={{ padding:`${10*scale}px ${18*scale}px ${18*scale}px`, display:"flex", gap:8*scale }}>
@@ -1576,12 +1577,12 @@ function KasiPhoneScreen({ scale = 1 }) {
 function KasiStockBoothFrame({ scene = 1 }) {
   return (
     <div className="mh-artboard" style={{ width:1600, height:900, background:COLO_K.navy }}>
-      {scene !== 3 && <ShopPhotoPlaceholder/>}
-      {scene === 3 && <div className="mh-grad-kasi" style={{ position:"absolute", inset:0, opacity:.5 }}/>}
+      {(scene === 1 || scene === 2) && <ShopPhotoPlaceholder/>}
+      {scene > 2 && <div className="mh-grad-kasi" style={{ position:"absolute", inset:0, opacity:.5 }}/>}
       <div className="mh-noise"/>
 
       <div style={{ position:"absolute", top:28, left:32, zIndex:5, display:"flex", gap:8, alignItems:"center" }}>
-        {[1,2,3,4].map(n => (
+        {[1,2,3,4,5,6,7].map(n => (
           <div key={n} style={{
             width: n===scene ? 36 : 8, height:8, borderRadius:4,
             background: n===scene ? KS_WARM : "rgba(255,255,255,.25)",
@@ -1589,7 +1590,7 @@ function KasiStockBoothFrame({ scene = 1 }) {
           }}/>
         ))}
         <div style={{ fontFamily:"monospace", fontSize:11, opacity:.7, marginLeft:10, color:"#fff", letterSpacing:".15em" }}>
-          SCENE 0{scene} / 04 · KasiSTOCK
+          SCENE 0{scene} / 07 · KasiSTOCK
         </div>
       </div>
 
@@ -1600,8 +1601,11 @@ function KasiStockBoothFrame({ scene = 1 }) {
       <div style={{ position:"absolute", inset:0, padding:"96px 80px", display:"flex", zIndex:3 }}>
         {scene === 1 && <KasiSceneHook/>}
         {scene === 2 && <KasiSceneScan/>}
-        {scene === 3 && <KasiSceneNumbers/>}
-        {scene === 4 && <KasiSceneCTA/>}
+        {scene === 3 && <KasiSceneBarTab/>}
+        {scene === 4 && <KasiSceneBottleReturn/>}
+        {scene === 5 && <KasiSceneSpecials/>}
+        {scene === 6 && <KasiSceneEOD/>}
+        {scene === 7 && <KasiSceneCTA/>}
       </div>
     </div>
   );
@@ -1612,31 +1616,31 @@ function KasiSceneHook() {
     <div style={{ display:"grid", gridTemplateColumns:"1.3fr 1fr", gap:48, width:"100%", alignItems:"center", color:"#fff" }}>
       <div>
         <div className="mh-chip" style={{ borderColor:`${KS_PURPLE}99`, color:"#fff", background:"rgba(72,39,204,.25)" }}>
-          <span className="mh-dot purple"/> KasiStock · Community POS
+          <span className="mh-dot purple"/> KasiStock · Bar &amp; Bottle Store POS
         </div>
         <h1 style={{
           fontWeight:900, fontSize:118, lineHeight:.86, letterSpacing:"-0.045em", margin:"24px 0 0",
           textShadow:"0 6px 30px rgba(0,0,0,.5)"
         }}>
-          Stop<br/>guessing.<br/><span style={{ color:KS_WARM }}>Start knowing.</span>
+          Run your bar.<br/><span style={{ color:KS_WARM }}>Own your stock.</span>
         </h1>
-        <div style={{ fontWeight:600, fontSize:28, marginTop:24, letterSpacing:"-0.01em", textShadow:"0 2px 14px rgba(0,0,0,.4)", opacity:.9 }}>
-          The POS built for township shops.{" "}
+        <div style={{ fontWeight:600, fontSize:26, marginTop:24, letterSpacing:"-0.01em", textShadow:"0 2px 14px rgba(0,0,0,.4)", opacity:.9 }}>
+          Built for how South African taverns and bottle stores actually work.{" "}
           <span style={{ color:KS_MAGENTA, fontWeight:800 }}>Offline-first.</span>
         </div>
-        <div style={{ marginTop:28, display:"flex", gap:12 }}>
+        <div style={{ marginTop:28, display:"flex", gap:14 }}>
           {[
-            { val:"2.4k+",  label:"Active shops",         color:KS_WARM    },
-            { val:"15M+",   label:"Monthly transactions",  color:"#fff"     },
-            { val:"99.9%",  label:"Uptime SLA",            color:KS_PURPLE  },
+            { val:"Offline-first", label:"Works through load-shedding", color:KS_WARM    },
+            { val:"Bar Tab ready", label:"Open tabs · settle later",     color:"#fff"     },
+            { val:"30-day trial",  label:"No contract · no catch",       color:KS_PURPLE  },
           ].map((s,i)=>(
             <div key={i} style={{
-              textAlign:"center", padding:"10px 18px",
+              textAlign:"center", padding:"12px 20px",
               background:"rgba(0,0,0,.5)", borderRadius:10,
               backdropFilter:"blur(8px)", border:"1px solid rgba(255,255,255,.1)"
             }}>
-              <div style={{ fontWeight:900, fontSize:28, color:s.color, letterSpacing:"-.02em", textShadow:`0 0 18px ${s.color}99` }}>{s.val}</div>
-              <div style={{ fontSize:9, opacity:.75, marginTop:2, letterSpacing:".1em", textTransform:"uppercase", color:"#ccc" }}>{s.label}</div>
+              <div style={{ fontWeight:900, fontSize:17, color:s.color, letterSpacing:"-.01em", textShadow:`0 0 18px ${s.color}99` }}>{s.val}</div>
+              <div style={{ fontSize:9, opacity:.75, marginTop:5, letterSpacing:".1em", textTransform:"uppercase", color:"#ccc" }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -1650,13 +1654,13 @@ function KasiSceneHook() {
 
 function KasiSceneScan() {
   const features = [
-    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><path d="M7 12h10"/></svg>, label:"Offline-First POS",        sub:"Sell without internet. Syncs when back online."      },
-    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8z"/><path d="M10 21a2 2 0 004 0"/></svg>, label:"Live Stock & Low Alerts",  sub:"Know what's running out before it runs out."          },
-    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/></svg>, label:"Automatic Deal Pricing",   sub:"Right price every time. No calculator needed."        },
-    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 2h4v3l2 3v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V8l2-3V2z"/><path d="M8 12h8"/></svg>, label:"Bottle Return Tracking",    sub:"Track deposits. No shortfall surprises."              },
-    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>, label:"Quick Pay",                sub:"Cash, tap, or swipe — all on one screen."            },
-    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>, label:"Growth Analytics",        sub:"Top sellers and dead stock. Every day."               },
-    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 9a16 16 0 0120 0"/><path d="M5 13a11 11 0 0114 0"/><path d="M8.5 16.5a6 6 0 017 0"/><circle cx="12" cy="20" r="1.2" fill="currentColor"/></svg>, label:"Offline Mode",              sub:"Full POS functionality. No signal required."          },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><path d="M7 12h10"/></svg>, label:"Offline-First POS",      sub:"Sell without internet. Syncs when back online."                },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h.01M12 9h.01M15 9h.01M9 12h6M9 15h4"/></svg>, label:"Bar Tab Mode",          sub:"Open tabs per table or customer. Settle at end of night."      },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8z"/><path d="M10 21a2 2 0 004 0"/></svg>, label:"Live Stock &amp; Low Alerts", sub:"Know what's running out before it runs out."                   },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>, label:"Specials &amp; Happy Hour", sub:"Bundles, deals, time-based pricing — auto-applied at till."    },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>, label:"Quick Pay",              sub:"Cash, tap, or swipe — all on one screen."                      },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 2h4v3l2 3v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V8l2-3V2z"/><path d="M8 12h8"/></svg>, label:"Bottle Return Tracking", sub:"Track deposits. Pay incentives. No shortfalls."                },
+    { icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>, label:"End-of-Day Reports",     sub:"Cash-up, reconciliation, and top sellers — daily."             },
   ];
   return (
     <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:48, alignItems:"center", color:"#fff" }}>
@@ -1665,12 +1669,12 @@ function KasiSceneScan() {
         backdropFilter:"blur(14px)", border:"1px solid rgba(255,255,255,.07)"
       }}>
         <div className="mh-chip" style={{ borderColor:`${KS_PURPLE}88`, color:"#fff", background:"rgba(72,39,204,.2)" }}>
-          <span className="mh-dot purple"/> Everything you need
+          <span className="mh-dot purple"/> Built for your venue
         </div>
         <h2 style={{
           fontWeight:900, fontSize:76, letterSpacing:"-0.035em", lineHeight:.92, margin:"16px 0 22px"
         }}>
-          Built for<br/><span style={{ color:KS_WARM }}>your shop.</span>
+          Every tool<br/><span style={{ color:KS_WARM }}>your bar needs.</span>
         </h2>
         <div style={{ display:"flex", flexDirection:"column" }}>
           {features.map((f,i) => (
@@ -1703,44 +1707,248 @@ function KasiSceneScan() {
   );
 }
 
-function KasiSceneNumbers() {
-  const stats = [
-    { val:"2.4k+",   label:"Active shops",           note:"Township & spaza stores running KasiStock today",  accent:KS_PURPLE  },
-    { val:"99.9%",   label:"Uptime SLA",              note:"Offline-first means load-shedding can't stop you", accent:KS_MAGENTA },
-    { val:"15M+",    label:"Monthly transactions",    note:"Processed across the network every single month",  accent:KS_WARM    },
+function KasiSceneBarTab() {
+  const tabs = [
+    { name:"Table 3",     items:"Castle Lager ×3 · Savanna ×2",      total:"R 87.00",  color:"#3B82F6", settling:false },
+    { name:"Jayden M.",   items:"Black Label ×6 · Shots ×3",          total:"R 142.50", color:KS_WARM,   settling:false },
+    { name:"Counter Tab", items:"Hunter's Dry ×2 · Savanna ×1",       total:"R 54.99",  color:KS_MAGENTA, settling:true  },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1.1fr", gap:64, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${KS_WARM}55`, color:KS_WARM, background:`${KS_WARM}18` }}>
+          <span className="mh-dot orange"/> Bar Tab · Open &amp; Settle
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:100, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          Open a tab.<br/><span style={{ color:KS_WARM }}>Close the night.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:20, opacity:.8, maxWidth:520, marginTop:22 }}>
+          Keep running orders open per customer or table. Add drinks as they go. Settle at the end with cash or card — no calculator, no confusion.
+        </div>
+        <div style={{ marginTop:28, display:"flex", flexDirection:"column", gap:12 }}>
+          {[
+            { dot:KS_WARM,    label:"Multiple tabs open at once",   sub:"Per table, per customer — no limit"    },
+            { dot:"#3B82F6",  label:"Add or remove mid-tab",        sub:"Adjust anytime before settlement"       },
+            { dot:KS_MAGENTA, label:"Cash or card settlement",      sub:"Choose at close — no pre-commitment"    },
+          ].map((item,i) => (
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", flexShrink:0, background:item.dot, boxShadow:`0 0 10px ${item.dot}` }}/>
+              <div>
+                <div style={{ fontWeight:700, fontSize:16 }}>{item.label}</div>
+                <div style={{ fontSize:12, opacity:.55 }}>{item.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background:"#fff", borderRadius:16, overflow:"hidden", boxShadow:"0 40px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.08)" }}>
+        <div style={{ background:"#151B29", padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          <div>
+            <div style={{ fontSize:8, color:"rgba(255,255,255,.45)", textTransform:"uppercase", letterSpacing:".12em", fontFamily:"monospace" }}>KASISTOCK · POS</div>
+            <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>Bar Tabs — Tonight</div>
+          </div>
+          <div style={{ padding:"5px 14px", borderRadius:999, background:KS_WARM, color:"#151B29", fontSize:10, fontWeight:800 }}>+ New Tab</div>
+        </div>
+        <div style={{ padding:"6px 14px", background:"#f8faff", borderBottom:"1px solid #e8edf4", display:"flex", gap:12, alignItems:"center" }}>
+          <div style={{ width:8, height:8, borderRadius:"50%", background:"#27D17F", boxShadow:"0 0 6px #27D17F" }}/>
+          <span style={{ fontSize:9, fontWeight:800, color:"#333", letterSpacing:".06em", textTransform:"uppercase" }}>3 tabs open</span>
+          <span style={{ fontSize:9, color:"#aaa" }}>·</span>
+          <span style={{ fontSize:9, color:KS_MAGENTA, fontWeight:700 }}>1 settling now</span>
+        </div>
+        <div style={{ display:"flex", flexDirection:"column", padding:"10px 12px", gap:8 }}>
+          {tabs.map((t,i) => (
+            <div key={i} style={{
+              borderRadius:10, border:`1px solid ${t.settling ? KS_MAGENTA+"55" : "#e8edf4"}`,
+              background: t.settling ? "#FFF5F8" : "#fff",
+              padding:"12px 14px",
+              boxShadow: t.settling ? `0 0 20px ${KS_MAGENTA}22` : "none"
+            }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                  <div style={{ width:10, height:10, borderRadius:"50%", background:t.color, boxShadow:`0 0 6px ${t.color}` }}/>
+                  <span style={{ fontSize:13, fontWeight:800, color:"#151B29" }}>{t.name}</span>
+                  {t.settling && <span style={{ fontSize:8, padding:"2px 7px", borderRadius:99, background:KS_MAGENTA, color:"#fff", fontWeight:800, letterSpacing:".08em" }}>SETTLING</span>}
+                </div>
+                <span style={{ fontSize:15, fontWeight:900, color: t.settling ? KS_MAGENTA : "#151B29" }}>{t.total}</span>
+              </div>
+              <div style={{ fontSize:10, color:"#888", marginTop:5, marginLeft:18 }}>{t.items}</div>
+              <div style={{ display:"flex", gap:6, marginTop:10, marginLeft:18 }}>
+                <div style={{ padding:"4px 12px", borderRadius:99, border:"1px solid #e0e0e0", fontSize:9, fontWeight:700, color:"#555" }}>+ Add items</div>
+                <div style={{ padding:"4px 12px", borderRadius:99, background: t.settling ? KS_MAGENTA : "#151B29", fontSize:9, fontWeight:700, color:"#fff" }}>{t.settling ? "Complete →" : "Settle"}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function KasiSceneBottleReturn() {
+  const returns = [
+    { name:"Castle Lager 750ml",  qty:12, incentive:"R 24.00", color:"#D4AF37" },
+    { name:"Black Label 750ml",   qty:6,  incentive:"R 12.00", color:"#8B0000" },
+    { name:"Savanna Dry 330ml",   qty:24, incentive:"R 19.20", color:"#2C5F2E" },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1.1fr", gap:64, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${KS_MAGENTA}55`, color:KS_MAGENTA, background:`${KS_MAGENTA}18` }}>
+          <span className="mh-dot magenta"/> Bottle Returns · Automated
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          Empties in.<br/><span style={{ color:KS_WARM }}>Cash back out.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:20, opacity:.8, maxWidth:520, marginTop:22 }}>
+          Scan the empties, KasiStock calculates the incentive payout automatically. Full return history. No shortfall surprises at month-end.
+        </div>
+        <div style={{ marginTop:28, display:"flex", flexDirection:"column", gap:12 }}>
+          {[
+            { dot:KS_MAGENTA,  label:"Scan empties to process returns",   sub:"Camera or manual entry"                   },
+            { dot:KS_WARM,     label:"Auto-calculate incentive payout",   sub:"Rate set per returnable product"          },
+            { dot:"#27D17F",   label:"Full return history log",           sub:"Every transaction stored and searchable"  },
+          ].map((item,i) => (
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", flexShrink:0, background:item.dot, boxShadow:`0 0 10px ${item.dot}` }}/>
+              <div>
+                <div style={{ fontWeight:700, fontSize:16 }}>{item.label}</div>
+                <div style={{ fontSize:12, opacity:.55 }}>{item.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background:"#0a0518", borderRadius:16, overflow:"hidden", border:`1px solid ${KS_MAGENTA}33`, boxShadow:`0 40px 80px rgba(0,0,0,.65), 0 0 40px -10px ${KS_MAGENTA}44` }}>
+        <div style={{ background:KS_MAGENTA, padding:"12px 18px", display:"flex", alignItems:"center", gap:10 }}>
+          <div style={{ width:8, height:8, borderRadius:"50%", background:"#fff", flexShrink:0 }}/>
+          <span style={{ fontWeight:900, fontSize:12, letterSpacing:".2em", textTransform:"uppercase", color:"#fff" }}>BOTTLE RETURN</span>
+          <span style={{ marginLeft:"auto", fontFamily:"monospace", fontSize:10, color:"rgba(255,255,255,.8)" }}>19:48 · Thabo M.</span>
+        </div>
+        <div style={{ padding:"14px 18px" }}>
+          <div style={{ fontSize:9, color:"rgba(255,255,255,.4)", textTransform:"uppercase", letterSpacing:".14em", marginBottom:10 }}>Empties received</div>
+          <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+            {returns.map((r,i) => (
+              <div key={i} style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 14px", background:"rgba(255,255,255,.04)", borderRadius:10, border:"1px solid rgba(255,255,255,.07)" }}>
+                <div style={{ width:10, height:30, borderRadius:3, background:r.color, flexShrink:0 }}/>
+                <div style={{ flex:1 }}>
+                  <div style={{ fontSize:12, fontWeight:700, color:"#fff" }}>{r.name}</div>
+                  <div style={{ fontSize:10, opacity:.5, marginTop:2 }}>Qty: {r.qty} units</div>
+                </div>
+                <div style={{ textAlign:"right" }}>
+                  <div style={{ fontSize:14, fontWeight:900, color:KS_WARM }}>{r.incentive}</div>
+                  <div style={{ fontSize:9, opacity:.45, marginTop:1 }}>incentive</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop:14, padding:"12px 14px", background:`${KS_WARM}18`, border:`1px solid ${KS_WARM}44`, borderRadius:10, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+            <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>Total incentive payout</span>
+            <span style={{ fontSize:20, fontWeight:900, color:KS_WARM }}>R 55.20</span>
+          </div>
+          <div style={{ marginTop:10, padding:"14px", borderRadius:10, background:KS_MAGENTA, textAlign:"center", fontWeight:900, fontSize:14, color:"#fff", letterSpacing:".04em" }}>
+            Process Return &amp; Pay Out
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function KasiSceneSpecials() {
+  const deals = [
+    { type:"HAPPY HOUR", name:"Savanna Dry 330ml", desc:"17:00 – 19:00 · Every day", regular:"R 18.99", special:"R 14.99", saving:"R 4.00 off", color:"#F59E0B",
+      icon:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> },
+    { type:"BUNDLE DEAL", name:"Castle Lager 340ml", desc:"6 for R 90.00", regular:"R 107.94", special:"R 90.00", saving:"R 17.94 off", color:KS_PURPLE,
+      icon:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg> },
+    { type:"BUY 2 GET 1", name:"Hunter's Gold 330ml", desc:"Buy 2, get 1 free", regular:"R 56.97", special:"R 37.98", saving:"1 bottle free", color:KS_MAGENTA,
+      icon:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg> },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1.2fr", gap:64, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${KS_WARM}55`, color:KS_WARM, background:`${KS_WARM}18` }}>
+          <span className="mh-dot orange"/> Specials &amp; Happy Hour
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          Set deals once.<br/><span style={{ color:KS_WARM }}>Sell smarter.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:20, opacity:.8, maxWidth:520, marginTop:22 }}>
+          Bundle pricing, happy hour windows, and Buy X Get Y — all triggered automatically at the till. No manual discounting, no mistakes.
+        </div>
+        <div style={{ marginTop:28, display:"flex", flexDirection:"column", gap:12 }}>
+          {[
+            { dot:"#F59E0B",  label:"Happy Hour",          sub:"Time-based pricing — auto on and off"      },
+            { dot:KS_PURPLE,  label:"Bundle Deals",         sub:"6-pack pricing, crate deals, combos"       },
+            { dot:KS_MAGENTA, label:"Buy X Get Y",          sub:"Free units — auto-added to the sale"       },
+            { dot:"#27D17F",  label:"Percentage Discounts", sub:"Apply to any product or category"          },
+          ].map((item,i) => (
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", flexShrink:0, background:item.dot, boxShadow:`0 0 10px ${item.dot}` }}/>
+              <div>
+                <div style={{ fontWeight:700, fontSize:16 }}>{item.label}</div>
+                <div style={{ fontSize:12, opacity:.55 }}>{item.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+        {deals.map((d,i) => (
+          <div key={i} style={{ borderRadius:14, padding:"16px 18px", background:"rgba(255,255,255,.05)", border:`1px solid ${d.color}44`, boxShadow:`0 8px 24px ${d.color}18`, display:"flex", alignItems:"center", gap:16 }}>
+            <div style={{ width:44, height:44, borderRadius:10, flexShrink:0, background:`${d.color}22`, border:`1px solid ${d.color}55`, display:"grid", placeItems:"center", color:d.color }}>
+              {d.icon}
+            </div>
+            <div style={{ flex:1 }}>
+              <div style={{ fontSize:9, fontWeight:800, letterSpacing:".2em", textTransform:"uppercase", color:d.color }}>{d.type}</div>
+              <div style={{ fontSize:15, fontWeight:800, color:"#fff", marginTop:3 }}>{d.name}</div>
+              <div style={{ fontSize:11, opacity:.55, marginTop:2 }}>{d.desc}</div>
+            </div>
+            <div style={{ textAlign:"right" }}>
+              <div style={{ fontSize:10, opacity:.45, textDecoration:"line-through" }}>{d.regular}</div>
+              <div style={{ fontSize:18, fontWeight:900, color:d.color, marginTop:2 }}>{d.special}</div>
+              <div style={{ fontSize:10, color:"#27D17F", fontWeight:700, marginTop:2 }}>{d.saving}</div>
+            </div>
+          </div>
+        ))}
+        <div style={{ padding:"12px 18px", borderRadius:10, background:"rgba(72,39,204,.2)", border:"1px solid rgba(72,39,204,.35)", fontSize:13, fontWeight:500, opacity:.8, textAlign:"center", color:"#fff" }}>
+          Specials auto-apply at scan · No cashier training needed
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function KasiSceneEOD() {
+  const cards = [
+    { headline:"End-of-Day Report", body:"Cash vs. card, VAT, voids, and full reconciliation — generated in one tap before you lock up.", accent:KS_PURPLE,
+      icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg> },
+    { headline:"Top Sellers",       body:"See exactly which SKUs moved most today. Order right tomorrow. Stop guessing what's going to run out.", accent:KS_WARM,
+      icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg> },
+    { headline:"Stock Alerts",      body:"Low-stock warnings before you run out, not after. Know what to reorder while you still have time.", accent:KS_MAGENTA,
+      icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8z"/><path d="M10 21a2 2 0 004 0"/></svg> },
   ];
   return (
     <div style={{ width:"100%", display:"flex", flexDirection:"column", justifyContent:"center", color:"#fff" }}>
       <div className="mh-chip" style={{ borderColor:`${KS_PURPLE}88`, color:"#fff", background:"rgba(72,39,204,.2)", alignSelf:"flex-start" }}>
-        <span className="mh-dot purple"/> Live network stats
+        <span className="mh-dot purple"/> Close of shift
       </div>
       <h2 style={{ fontWeight:900, fontSize:100, letterSpacing:"-0.04em", lineHeight:.92, margin:"16px 0 40px" }}>
-        Trusted by<br/><span style={{ color:KS_WARM }}>thousands.</span>
+        Close every<br/><span style={{ color:KS_WARM }}>shift right.</span>
       </h2>
       <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:22 }}>
-        {stats.map((s,i) => (
-          <div key={i} style={{
-            background:"rgba(255,255,255,.06)", border:`1px solid ${s.accent}44`,
-            borderRadius:20, padding:"36px 28px", backdropFilter:"blur(6px)",
-            boxShadow:`0 0 60px -20px ${s.accent}44`
-          }}>
-            <div style={{ fontWeight:900, fontSize:78, letterSpacing:"-0.03em", lineHeight:.9, color:s.accent }}>{s.val}</div>
-            <div style={{ fontSize:17, fontWeight:800, marginTop:16 }}>{s.label}</div>
-            <div style={{ fontSize:13, opacity:.6, marginTop:6, lineHeight:1.45 }}>{s.note}</div>
+        {cards.map((c,i) => (
+          <div key={i} style={{ background:"rgba(255,255,255,.06)", border:`1px solid ${c.accent}44`, borderRadius:20, padding:"36px 28px", backdropFilter:"blur(6px)", boxShadow:`0 0 60px -20px ${c.accent}44` }}>
+            <div style={{ width:48, height:48, borderRadius:12, background:`${c.accent}22`, border:`1px solid ${c.accent}55`, display:"grid", placeItems:"center", color:c.accent, marginBottom:18 }}>
+              {c.icon}
+            </div>
+            <div style={{ fontSize:17, fontWeight:800, marginBottom:10, color:"#fff" }}>{c.headline}</div>
+            <div style={{ fontSize:13, opacity:.65, lineHeight:1.55 }}>{c.body}</div>
           </div>
         ))}
       </div>
-      <div style={{
-        marginTop:26, padding:"15px 22px",
-        background:"rgba(72,39,204,.15)", border:"1px solid rgba(72,39,204,.3)",
-        borderRadius:12, display:"flex", alignItems:"center", justifyContent:"space-between"
-      }}>
-        <div style={{ fontSize:14, fontWeight:500, opacity:.75 }}>
-          Join the network. Start free at the booth today.
-        </div>
-        <div style={{ fontWeight:900, fontSize:13, color:KS_WARM, letterSpacing:".1em" }}>
-          FREE 30-DAY TRIAL &#8594;
-        </div>
+      <div style={{ marginTop:26, padding:"15px 22px", background:"rgba(72,39,204,.15)", border:"1px solid rgba(72,39,204,.3)", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <div style={{ fontSize:14, fontWeight:500, opacity:.75 }}>Start free at the booth today. No setup required.</div>
+        <div style={{ fontWeight:900, fontSize:13, color:KS_WARM, letterSpacing:".1em" }}>FREE 30-DAY TRIAL &#8594;</div>
       </div>
     </div>
   );
@@ -1838,7 +2046,7 @@ const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 7000, 4000];
 const PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:5 },
   { id:"myroutes",  name:"myRoutes",  label:"Routing",       accent:"#FF9D00", Frame:myRoutesBoothFrame,  sceneCount:7 },
-  { id:"kasistock", name:"KasiStock", label:"Community POS", accent:"#4827CC", Frame:KasiStockBoothFrame, sceneCount:4 },
+  { id:"kasistock", name:"KasiStock", label:"Bar & Bottle POS", accent:"#4827CC", Frame:KasiStockBoothFrame, sceneCount:7 },
   { id:"splash",    name:"Mhare",     label:"",              accent:"#FF9D00", Frame:MhareSplashFrame,    sceneCount:1, splash:true },
 ];
 
