@@ -2674,14 +2674,16 @@ footer::before {
 .partner-item:hover { opacity: 1; }
 
 .partner-item img {
-  height: 34px;
+  height: 40px;
   width: auto;
+  max-width: 200px;
   display: block;
   object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 @media (max-width: 640px) {
   .partners-eyebrow { padding: 0 20px 0 20px; font-size: 9px; }
   .partner-item { padding: 0 36px; }
-  .partner-item img { height: 26px; }
+  .partner-item img { height: 30px; max-width: 130px; }
 }
