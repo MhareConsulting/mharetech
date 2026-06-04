@@ -9,144 +9,29 @@
 {% block content %}
 
 <!-- ── Product Header ──────────────────────────────── -->
-<div class="product-page-header">
+<div class="product-page-header product-page-header--hero product-page-header--routes">
+  <div class="product-page-header-bg"></div>
+  <div class="product-page-header-overlay"></div>
   <div class="container">
     <a href="{% url 'index' %}" class="product-page-back">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Back to products
     </a>
     <div class="product-page-eyebrow"><span class="live-dot"></span> Live product</div>
-    <h1 class="product-page-title">Plan once.<br><span class="hero-gradient">Dispatch confidently.</span></h1>
+    <h1 class="product-page-title">Plan once. <span class="hero-gradient">Dispatch confidently.</span></h1>
     <p class="product-page-sub">myRoutes takes the guesswork out of daily dispatch. Upload your stops, set your fleet constraints, and get optimised routes that minimise distance before the first vehicle leaves the depot.</p>
   </div>
 </div>
 
-<!-- ── Hero Split ─────────────────────────────────── -->
-<section class="product-split-section product-split-section--alt">
+<!-- ── What is myRoutes ────────────────────────────── -->
+<section class="product-split-section">
   <div class="container">
-    <div class="product-split product-split--flip">
-
-      <div class="split-visual">
-        <div class="browser-frame">
-          <div class="browser-chrome">
-            <div class="bc-dots">
-              <span class="bc-dot bc-dot--red"></span>
-              <span class="bc-dot bc-dot--yellow"></span>
-              <span class="bc-dot bc-dot--green"></span>
-            </div>
-            <div class="bc-url">app.myroutes.co.za</div>
-          </div>
-          <div class="app-shell">
-            <div class="gantt-planbar">
-              <div class="gantt-breadcrumb">
-                <span class="gantt-bc-dim">OPERATIONS · PLANS</span>
-                <span class="gantt-bc-sep">›</span>
-                <span class="gantt-bc-title">Morning Run</span>
-              </div>
-              <div class="gantt-actions">
-                <span class="gantt-btn gantt-btn--blue">▶ Re-optimise</span>
-                <span class="gantt-btn gantt-btn--green">Lock &amp; Dispatch</span>
-                <span class="gantt-btn gantt-btn--yellow">Optimised</span>
-              </div>
-            </div>
-            <div class="gantt-body">
-              <div class="gantt-fleet">
-                <div class="gantt-fleet-label">FLEET <span class="gantt-fleet-count">34 vehicles</span></div>
-                <div class="gantt-fleet-tabs">
-                  <span class="gftab gftab--active">Used</span>
-                  <span class="gftab">All</span>
-                </div>
-                <div class="gantt-vehicle">
-                  <input type="checkbox" checked style="width:9px;height:9px;accent-color:#5041d9;flex-shrink:0;" />
-                  <span class="gv-status-dot" style="background:#22C55E;"></span>
-                  <div class="gv-text">
-                    <div class="gv-reg">GP 111-001</div>
-                    <div class="gv-sub">Mercedes-Benz Ac...</div>
-                    <div class="gv-sub">3 stops · 89.0km</div>
-                  </div>
-                  <span class="gv-badge">In plan</span>
-                </div>
-                <div class="gantt-vehicle gantt-vehicle--dim">
-                  <input type="checkbox" style="width:9px;height:9px;accent-color:#5041d9;flex-shrink:0;" />
-                  <span class="gv-status-dot" style="background:#D1D5DB;"></span>
-                  <div class="gv-text">
-                    <div class="gv-reg">GP 201-001</div>
-                    <div class="gv-sub">Toyota Dyna 6-105</div>
-                    <div class="gv-sub">–</div>
-                  </div>
-                </div>
-              </div>
-              <div class="gantt-timeline">
-                <div class="gantt-time-header">
-                  <span>6:00</span><span>7:00</span><span>8:00</span><span>9:00</span><span>10:00</span>
-                </div>
-                <div class="gantt-track-area">
-                  <div class="gantt-track">
-                    <div class="gantt-bar">GP 111-001 · 3 · 89.0km</div>
-                  </div>
-                  <div class="gantt-track gantt-track--empty"></div>
-                </div>
-              </div>
-              <div class="gantt-detail">
-                <div class="gd-header">
-                  <div>
-                    <div class="gd-trip-id">Trip 1 · GP 111-001</div>
-                    <div class="gd-trip-meta">06:30 – 09:45 · 3 stops · 89km · 135 min</div>
-                  </div>
-                  <span class="gd-close">✕</span>
-                </div>
-                <div class="gd-weight-bar">Weight 0% (0/8000 kg)</div>
-                <div class="gd-stops-label">STOPS (5)</div>
-                <div class="gd-stop">
-                  <span class="gd-num gd-num--depot">●</span>
-                  <div class="gd-stop-body"><div class="gd-stop-name">Depot</div></div>
-                  <span class="gd-time">06:30</span>
-                </div>
-                <div class="gd-stop">
-                  <span class="gd-num">1</span>
-                  <div class="gd-stop-body">
-                    <div class="gd-stop-name">Spar Midrand</div>
-                    <div class="gd-stop-ref">MR-001</div>
-                    <div class="gd-stop-addr">Waterfall Corner, Midrand</div>
-                    <div class="gd-stop-kg">500 kg</div>
-                  </div>
-                  <span class="gd-time">07:15</span>
-                </div>
-                <div class="gd-stop">
-                  <span class="gd-num">2</span>
-                  <div class="gd-stop-body">
-                    <div class="gd-stop-name">Pick n Pay Centurion</div>
-                    <div class="gd-stop-ref">MR-002</div>
-                    <div class="gd-stop-addr">Centurion Mall, Centurion</div>
-                    <div class="gd-stop-kg">500 kg</div>
-                  </div>
-                  <span class="gd-time">08:00</span>
-                </div>
-                <div class="gd-stop">
-                  <span class="gd-num">3</span>
-                  <div class="gd-stop-body">
-                    <div class="gd-stop-name">Woolworths Pretoria CBD</div>
-                    <div class="gd-stop-ref">MR-003</div>
-                    <div class="gd-stop-addr">Church Square, Pretoria</div>
-                    <div class="gd-stop-kg">500 kg</div>
-                  </div>
-                  <span class="gd-time">08:45</span>
-                </div>
-                <div class="gd-stop">
-                  <span class="gd-num gd-num--depot">●</span>
-                  <div class="gd-stop-body"><div class="gd-stop-name">Depot</div></div>
-                  <span class="gd-time">09:45</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="product-split" style="align-items:start;">
       <div class="split-content">
         <p class="section-label">myRoutes · Overview</p>
         <h2 class="split-title">The algorithm plans. Your dispatcher decides.</h2>
-        <p class="split-desc">myRoutes runs a vehicle routing solver against real South African road data and delivers a complete multi-vehicle plan. Your dispatcher reviews, adjusts, and dispatches with a single click.</p>
+        <p class="split-desc">myRoutes runs a vehicle routing solver against real South African road data — not straight-line approximations — and returns a complete multi-vehicle plan that minimises total fleet distance.</p>
+        <p class="split-desc">Your dispatcher reviews it, adjusts what they know better than the solver, and dispatches with a single click. The optimised sequence is a starting point, not a cage.</p>
         <ul class="split-features">
           <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Multi-stop route optimisation on real South African road data</li>
           <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Drag-and-drop stop sequencing with live distance recalculation</li>
@@ -157,227 +42,64 @@
         </ul>
       </div>
 
+      <div class="split-content">
+        <p class="section-label">Who it's for</p>
+        <h2 class="split-title">Any fleet that plans more than a handful of stops a day.</h2>
+        <p class="split-desc">Distribution runs, multi-drop deliveries, field service — if sequencing stops by hand is eating your mornings and your fuel, myRoutes does the heavy lifting and hands your dispatcher a plan worth dispatching.</p>
+        <p class="split-desc">It's part of the same Mhare Tech family as myTrack and KasiStock: software we design, build and operate ourselves, shaped by the real operational feedback of production use.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ── Feature Deep Dive ───────────────────────────── -->
+<!-- ── Feature Grid ────────────────────────────────── -->
 <section class="deep-dive">
   <div class="container">
-
-    <div class="deep-dive-row">
-      <div class="deep-dive-visual">
-        <div class="vi-routes">
-          <div class="vi-hdr">Optimisation Result · Morning Run</div>
-          <div class="vi-compare">
-            <div class="vi-compare-col vi-compare-before">
-              <div class="vi-compare-lbl">Before</div>
-              <div class="vi-compare-val">287 km</div>
-              <div class="vi-compare-sub">manual sequence</div>
-              <div class="vi-compare-stops">
-                <span class="vi-stop-dot"></span><span class="vi-stop-line"></span>
-                <span class="vi-stop-dot"></span><span class="vi-stop-line"></span>
-                <span class="vi-stop-dot"></span><span class="vi-stop-line"></span>
-                <span class="vi-stop-dot"></span>
-              </div>
-            </div>
-            <div class="vi-arrow">→</div>
-            <div class="vi-compare-col vi-compare-after">
-              <div class="vi-compare-lbl">After</div>
-              <div class="vi-compare-val vi-compare-val--good">198 km</div>
-              <div class="vi-compare-sub vi-compare-sub--good">−31% distance</div>
-              <div class="vi-compare-stops">
-                <span class="vi-stop-dot vi-stop-dot--accent"></span><span class="vi-stop-line vi-stop-line--accent"></span>
-                <span class="vi-stop-dot vi-stop-dot--accent"></span><span class="vi-stop-line vi-stop-line--accent"></span>
-                <span class="vi-stop-dot vi-stop-dot--accent"></span><span class="vi-stop-line vi-stop-line--accent"></span>
-                <span class="vi-stop-dot vi-stop-dot--accent"></span>
-              </div>
-            </div>
-          </div>
-          <div class="vi-footer">8 stops · 3 vehicles · Solved in 1.2 s</div>
-        </div>
-      </div>
-      <div class="deep-dive-text">
-        <p class="section-label">myRoutes · Optimisation</p>
-        <h3 class="section-title">The shortest path through every stop. Solved before breakfast.</h3>
-        <p>myRoutes runs a vehicle routing solver against real South African road data — not straight-line approximations. Upload hundreds of stops, set your constraints, and get a complete multi-vehicle plan that minimises total distance before the first driver keys the ignition.</p>
-        <ul class="feature-list">
-          <li>Multi-vehicle route solver on live South African road network data</li>
-          <li>Handles hundreds of stops across dozens of vehicles in a single plan</li>
-          <li>Minimises total fleet distance, not just individual trip length</li>
-          <li>Re-optimise at any point if stops are added or removed mid-morning</li>
-        </ul>
-      </div>
+    <div style="text-align:center;max-width:680px;margin:0 auto;">
+      <p class="section-label">From upload to post-run</p>
+      <h2 class="section-title">One plan, <span class="section-gradient">solved before breakfast</span></h2>
+      <p class="section-sub" style="margin:0 auto;">Each capability the slide pack below walks through — here's what it does for your dispatch.</p>
     </div>
 
-    <div class="deep-dive-row flip">
-      <div class="deep-dive-visual">
-        <div class="vi-dispatch">
-          <div class="vi-hdr">Dispatch Board · Morning Run</div>
-          <div class="vi-dispatch-list">
-            <div class="vi-dispatch-row">
-              <span class="vi-reg">GP 111-001</span>
-              <div class="vi-dispatch-stops">
-                <span class="vi-ds-depot">Depot</span>
-                <span class="vi-ds-arrow">→</span><span class="vi-ds-stop">Spar Midrand</span>
-                <span class="vi-ds-arrow">→</span><span class="vi-ds-stop">PnP Centurion</span>
-                <span class="vi-ds-arrow">→</span><span class="vi-ds-stop">WW CBD</span>
-              </div>
-              <span class="vi-dispatch-dist">89 km</span>
-            </div>
-            <div class="vi-dispatch-row">
-              <span class="vi-reg">GP 112-002</span>
-              <div class="vi-dispatch-stops">
-                <span class="vi-ds-depot">Depot</span>
-                <span class="vi-ds-arrow">→</span><span class="vi-ds-stop">Checkers Sandton</span>
-                <span class="vi-ds-arrow">→</span><span class="vi-ds-stop">PnP Fourways</span>
-              </div>
-              <span class="vi-dispatch-dist">61 km</span>
-            </div>
-            <div class="vi-dispatch-row vi-dispatch-row--dim">
-              <span class="vi-reg">GP 201-001</span>
-              <div class="vi-dispatch-stops vi-ds-empty">No stops assigned</div>
-              <span class="vi-dispatch-dist">—</span>
-            </div>
-          </div>
-          <div class="vi-footer">Drag stops between vehicles to resequence</div>
-        </div>
-      </div>
-      <div class="deep-dive-text">
-        <p class="section-label">myRoutes · Dispatch</p>
-        <h3 class="section-title">The algorithm proposes. Your dispatcher decides.</h3>
-        <p>The optimised sequence is a starting point, not a cage. Dispatchers can drag stops between vehicles or reorder a sequence, and the distance totals recalculate live. When the plan is right, one click locks it and pushes routes to drivers.</p>
-        <ul class="feature-list">
-          <li>Drag-and-drop stop resequencing with instant distance recalculation</li>
-          <li>Move stops between vehicles without breaking the rest of the plan</li>
-          <li>Gantt-style timeline view — see all vehicles and their day at once</li>
-          <li>Lock &amp; Dispatch sends turn-by-turn routes to drivers in one action</li>
-        </ul>
-      </div>
-    </div>
+    <div class="product-features">
 
-    <div class="deep-dive-row">
-      <div class="deep-dive-visual">
-        <div class="vi-constraints">
-          <div class="vi-hdr">Vehicle Load · Trip 1</div>
-          <div class="vi-const-list">
-            <div class="vi-const-row">
-              <div class="vi-const-info"><span class="vi-reg">GP 111-001</span><span class="vi-const-meta">8,000 kg cap.</span></div>
-              <div class="vi-tank-wrap"><div class="vi-tank vi-tank--mid" style="width:31%"></div></div>
-              <span class="vi-pct">2,500 kg</span>
-            </div>
-            <div class="vi-const-row">
-              <div class="vi-const-info"><span class="vi-reg">GP 112-002</span><span class="vi-const-meta">5,000 kg cap.</span></div>
-              <div class="vi-tank-wrap"><div class="vi-tank" style="width:88%"></div></div>
-              <span class="vi-pct vi-pct--hi">4,400 kg</span>
-            </div>
-          </div>
-          <div class="vi-window-row">
-            <div class="vi-window"><span class="vi-window-lbl">Spar Midrand</span><span class="vi-window-time">08:00 – 10:00</span><span class="vi-badge vi-badge--green">✓ On time</span></div>
-            <div class="vi-window"><span class="vi-window-lbl">PnP Centurion</span><span class="vi-window-time">09:00 – 11:00</span><span class="vi-badge vi-badge--green">✓ On time</span></div>
-            <div class="vi-window"><span class="vi-window-lbl">Woolworths CBD</span><span class="vi-window-time">10:00 – 12:00</span><span class="vi-badge vi-badge--amber">At risk</span></div>
-          </div>
-          <div class="vi-footer">All capacity constraints respected · 1 window at risk</div>
-        </div>
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h6a4 4 0 014 4v0a4 4 0 01-4 4h-4a4 4 0 00-4 4"/></svg></div>
+        <h3>Multi-stop optimisation</h3>
+        <p>A vehicle routing solver runs against the live South African road network — not straight-line guesses. Upload hundreds of stops across dozens of vehicles and get a plan that minimises total fleet distance, in seconds.</p>
       </div>
-      <div class="deep-dive-text">
-        <p class="section-label">myRoutes · Constraints</p>
-        <h3 class="section-title">The solver knows your fleet as well as you do.</h3>
-        <p>Tell myRoutes what each vehicle can carry, how long each driver can work, and when each customer expects delivery — and the optimiser respects every constraint without you having to check. Plans that break rules simply don't get generated.</p>
-        <ul class="feature-list">
-          <li>Per-vehicle payload capacity enforced automatically during optimisation</li>
-          <li>Driver maximum hour limits baked into the schedule, not checked after</li>
-          <li>Customer time-window constraints: deliver between 08:00 and 10:00, guaranteed</li>
-          <li>Weight and volume load tracking per trip with visual load bar</li>
-        </ul>
-      </div>
-    </div>
 
-    <div class="deep-dive-row flip">
-      <div class="deep-dive-visual">
-        <div class="vi-geocoding">
-          <div class="vi-hdr">Address Geocoding · Validation</div>
-          <div class="vi-geo-list">
-            <div class="vi-geo-row"><span class="vi-geo-status vi-geo-ok">✓</span><div class="vi-geo-addr"><div class="vi-geo-name">Spar Midrand</div><div class="vi-geo-coord">-25.9956° S, 28.1247° E</div></div></div>
-            <div class="vi-geo-row"><span class="vi-geo-status vi-geo-ok">✓</span><div class="vi-geo-addr"><div class="vi-geo-name">Pick n Pay Centurion</div><div class="vi-geo-coord">-25.8527° S, 28.1882° E</div></div></div>
-            <div class="vi-geo-row"><span class="vi-geo-status vi-geo-warn">!</span><div class="vi-geo-addr"><div class="vi-geo-name">Customer · Molapo St, Soweto</div><div class="vi-geo-coord vi-geo-coord--warn">Partial match — confirm pin</div></div></div>
-            <div class="vi-geo-row"><span class="vi-geo-status vi-geo-ok">✓</span><div class="vi-geo-addr"><div class="vi-geo-name">Woolworths Pretoria CBD</div><div class="vi-geo-coord">-25.7448° S, 28.1869° E</div></div></div>
-          </div>
-          <div class="vi-footer">3 resolved · 1 needs manual pin confirmation</div>
-        </div>
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="12" height="4" rx="1"/><rect x="3" y="16" width="15" height="4" rx="1"/></svg></div>
+        <h3>Drag-and-drop dispatch</h3>
+        <p>Drag stops between vehicles or reorder a sequence and the distance totals recalculate live. When the plan is right, Lock &amp; Dispatch pushes turn-by-turn routes to every driver in one action.</p>
       </div>
-      <div class="deep-dive-text">
-        <p class="section-label">myRoutes · Geocoding</p>
-        <h3 class="section-title">Bad addresses get caught at the desk, not at the door.</h3>
-        <p>Every stop address is geocoded and validated before it enters a route plan. If an address can't be resolved, the dispatcher is warned immediately — not when a driver is already standing at the wrong street corner at 08:30.</p>
-        <ul class="feature-list">
-          <li>Automatic geocoding against South African address data on stop upload</li>
-          <li>Unresolvable addresses flagged before the plan is locked</li>
-          <li>Manual pin-drop correction for informal or incomplete addresses</li>
-          <li>Validated coordinates stored per customer for faster future planning</li>
-        </ul>
-      </div>
-    </div>
 
-    <div class="deep-dive-row">
-      <div class="deep-dive-visual">
-        <div class="vi-analysis">
-          <div class="vi-hdr">Post-Run Analysis · Mon 5 May</div>
-          <div class="vi-legend-row">
-            <span class="vi-leg-item"><span class="vi-leg-color" style="background:rgba(168,85,247,0.5)"></span>Planned</span>
-            <span class="vi-leg-item"><span class="vi-leg-color" style="background:#22C55E"></span>Actual</span>
-          </div>
-          <div class="vi-chart">
-            <div class="vi-chart-bars">
-              <div class="vi-chart-group">
-                <div style="display:flex;align-items:flex-end;gap:2px;flex:1;width:100%">
-                  <div class="vi-bar-wrap-v"><div class="vi-bar-planned" style="height:65%"></div></div>
-                  <div class="vi-bar-wrap-v"><div class="vi-bar-actual" style="height:68%"></div></div>
-                </div>
-                <div class="vi-chart-lbl">GP 111</div>
-              </div>
-              <div class="vi-chart-group">
-                <div style="display:flex;align-items:flex-end;gap:2px;flex:1;width:100%">
-                  <div class="vi-bar-wrap-v"><div class="vi-bar-planned" style="height:80%"></div></div>
-                  <div class="vi-bar-wrap-v"><div class="vi-bar-actual" style="height:72%"></div></div>
-                </div>
-                <div class="vi-chart-lbl">GP 112</div>
-              </div>
-              <div class="vi-chart-group">
-                <div style="display:flex;align-items:flex-end;gap:2px;flex:1;width:100%">
-                  <div class="vi-bar-wrap-v"><div class="vi-bar-planned" style="height:52%"></div></div>
-                  <div class="vi-bar-wrap-v"><div class="vi-bar-actual" style="height:60%"></div></div>
-                </div>
-                <div class="vi-chart-lbl">NW 113</div>
-              </div>
-              <div class="vi-chart-group">
-                <div style="display:flex;align-items:flex-end;gap:2px;flex:1;width:100%">
-                  <div class="vi-bar-wrap-v"><div class="vi-bar-planned" style="height:90%"></div></div>
-                  <div class="vi-bar-wrap-v"><div class="vi-bar-actual" style="height:88%"></div></div>
-                </div>
-                <div class="vi-chart-lbl">GP 114</div>
-              </div>
-            </div>
-            <div class="vi-chart-yaxis">
-              <span>120km</span><span>90km</span><span>60km</span><span>30km</span>
-            </div>
-          </div>
-          <div class="vi-footer">Avg deviation: −4.2 km · 2 late deliveries</div>
-        </div>
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg></div>
+        <h3>Fleet constraints</h3>
+        <p>Tell myRoutes what each vehicle can carry, how long each driver can work, and when each customer expects delivery. Plans that break a rule simply don't get generated — no after-the-fact checking.</p>
       </div>
-      <div class="deep-dive-text">
-        <p class="section-label">myRoutes · Analysis</p>
-        <h3 class="section-title">Every run is a lesson. If you know where to look.</h3>
-        <p>After each run, myRoutes stores the full route history and lets you step through it stop by stop. Compare the planned sequence against what actually happened, spot the patterns driving overtime and missed windows, and tighten the next plan around real data.</p>
-        <ul class="feature-list">
-          <li>Full route history retained and searchable by date, vehicle, or plan</li>
-          <li>Step-by-step trip replay with timestamps at each stop</li>
-          <li>Planned vs actual comparison: distance, timing, and sequence deviations</li>
-          <li>Ongoing performance trends to identify recurring delay patterns</li>
-        </ul>
-      </div>
-    </div>
 
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s-7-6.5-7-12a7 7 0 1114 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>Address geocoding</h3>
+        <p>Every stop is geocoded and validated before it enters a plan. Unresolvable or partial addresses are flagged at the desk — not when a driver is already standing at the wrong street corner at 08:30.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 109-9 9 9 0 00-7 3.3M3 4v3.3H6"/><path d="M12 8v4l3 2"/></svg></div>
+        <h3>Live re-optimise</h3>
+        <p>A stop gets added or dropped mid-morning — re-optimise the affected vehicles in seconds without tearing up the rest of the plan. The day stays tight even when it doesn't go to plan.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></div>
+        <h3>Post-run analysis</h3>
+        <p>Full route history is retained and searchable. Replay any run stop by stop, compare planned against actual distance and timing, and tighten the next plan around what really happened on the road.</p>
+      </div>
+
+    </div>
   </div>
 </section>
 

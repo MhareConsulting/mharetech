@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
@@ -56,7 +57,10 @@ def kasistock(request):
     return render(request, 'kasistock.html')
 
 
+@xframe_options_sameorigin
 def sloane_loop(request):
+    # Embedded as a same-origin iframe on the product pages (?product=<id>),
+    # so override Django's default X-Frame-Options: DENY.
     return render(request, '22onsloane.html')
 
 
