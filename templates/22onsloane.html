@@ -2423,15 +2423,22 @@ function MhareSplashFrame() {
 }
 
 const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 7000, 4000];
-const PRODUCTS = [
+const SCENE_FALLBACK = 6000; // scenes beyond SCENE_TIMINGS (e.g. myRoutes 8–10)
+const ALL_PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:6 },
   { id:"myroutes",  name:"myRoutes",  label:"Routing",       accent:"#FF9D00", Frame:myRoutesBoothFrame,  sceneCount:10 },
   { id:"kasistock", name:"KasiStock", label:"Bar & Bottle POS", accent:"#4827CC", Frame:KasiStockBoothFrame, sceneCount:7 },
   { id:"splash",    name:"Mhare",     label:"",              accent:"#FF9D00", Frame:MhareSplashFrame,    sceneCount:1, splash:true },
 ];
 
+// Single-product embed mode for product pages: /22onsloane/?product=mytrack
+const ONLY_ID   = new URLSearchParams(window.location.search).get("product");
+const FILTERED  = ONLY_ID ? ALL_PRODUCTS.filter(p => p.id === ONLY_ID) : null;
+const IS_EMBED  = !!(FILTERED && FILTERED.length);
+const PRODUCTS  = IS_EMBED ? FILTERED : ALL_PRODUCTS;
+
 function BoothPlayer() {
-  const [productIdx, setProductIdx] = React.useState(3); // start on splash
+  const [productIdx, setProductIdx] = React.useState(IS_EMBED ? 0 : 3); // splash unless embedded
   const [scene,      setScene]      = React.useState(1);
   const [playing,    setPlaying]    = React.useState(true);
   const [progress,   setProgress]   = React.useState(0);
@@ -2457,7 +2464,7 @@ function BoothPlayer() {
   const startProgress = React.useCallback(() => {
     cancelAnimationFrame(progRef.current);
     startRef.current = Date.now();
-    const dur = SCENE_TIMINGS[scene - 1];
+    const dur = SCENE_TIMINGS[scene - 1] || SCENE_FALLBACK;
     const tick = () => {
       const elapsed = Date.now() - startRef.current;
       setProgress(Math.min(elapsed / dur, 1));
@@ -2479,7 +2486,7 @@ function BoothPlayer() {
       } else {
         setScene(s => s === product.sceneCount ? 1 : s + 1);
       }
-    }, SCENE_TIMINGS[scene - 1]);
+    }, SCENE_TIMINGS[scene - 1] || SCENE_FALLBACK);
     return () => {
       clearTimeout(timerRef.current);
       cancelAnimationFrame(progRef.current);
@@ -2571,7 +2578,8 @@ function BoothPlayer() {
             }
           </button>
 
-          {/* loop-all toggle */}
+          {/* loop-all toggle + product tabs — hidden in single-product embed */}
+          {!IS_EMBED && <>
           <button onClick={() => setLoopAll(l => !l)} title={loopAll ? "Now looping all products — click for single" : "Now looping single product — click for all"} style={{
             border: loopAll ? `1px solid ${product.accent}55` : "1px solid transparent",
             background: loopAll ? `${product.accent}18` : "rgba(255,255,255,.08)",
@@ -2607,6 +2615,7 @@ function BoothPlayer() {
               <span style={{ fontSize:10, fontWeight:500, opacity:.7, marginLeft:6 }}>{p.label}</span>
             </button>
           ))}
+          </>}
 
           <div style={{ flex:1 }}/>
 

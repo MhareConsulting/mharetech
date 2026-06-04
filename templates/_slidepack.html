@@ -1,0 +1,19 @@
+{% load static %}
+<!-- ── Slide pack (live booth loop, filtered to one product) ── -->
+<section class="product-video-section product-slidepack" aria-labelledby="slidepack-heading">
+  <div class="container">
+    <div class="product-video-head">
+      <p class="section-label">Straight from the floor at 22 on Sloane</p>
+      <h2 class="section-title" id="slidepack-heading"><span class="section-gradient">{{ pack_name }}</span> · the slide pack</h2>
+      <p class="section-sub" style="margin:0 auto;">{{ pack_sub }}</p>
+    </div>
+    <div class="product-video-frame">
+      <div class="product-video-inner product-slidepack-inner">
+        <iframe src="{% url 'sloane_loop' %}?product={{ pack_id }}"
+                title="{{ pack_name }} slide pack"
+                loading="lazy" allow="fullscreen" allowfullscreen></iframe>
+      </div>
+    </div>
+    <p class="product-video-caption">The same live slide pack we ran at the expo — auto-advancing. <a href="{% url 'sloane_loop' %}">See the full booth loop with every product →</a></p>
+  </div>
+</section>

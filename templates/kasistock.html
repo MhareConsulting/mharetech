@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block nav_kasistock_class %}is-active{% endblock %}
+
+{% block title %}KasiStock — Bar &amp; Bottle Store POS · mhare tech{% endblock %}
+{% block description %}Offline-first point of sale built for South African taverns and bottle stores. Bar tabs, bottle-return tracking, specials, live stock and end-of-day reports — works straight through load-shedding.{% endblock %}
+
+{% block content %}
+
+<!-- ── Product Header ──────────────────────────────── -->
+<div class="product-page-header product-page-header--hero product-page-header--kasi">
+  <div class="product-page-header-bg"></div>
+  <div class="product-page-header-overlay"></div>
+  <div class="container">
+    <a href="{% url 'index' %}" class="product-page-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to products
+    </a>
+    <div class="product-page-eyebrow"><span class="live-dot"></span> New · Community POS</div>
+    <h1 class="product-page-title">Run your bar. <span class="hero-gradient">Own your stock.</span></h1>
+    <p class="product-page-sub">KasiStock is an offline-first point of sale built for how South African taverns and bottle stores actually work — open bar tabs, track bottle returns, run specials, and cash up at night, even when the power and the network are down.</p>
+  </div>
+</div>
+
+<!-- ── What is KasiStock ───────────────────────────── -->
+<section class="product-split-section">
+  <div class="container">
+    <div class="product-split" style="align-items:start;">
+      <div class="split-content">
+        <p class="section-label">KasiStock · Overview</p>
+        <h2 class="split-title">A till that was built for the kasi — not adapted for it.</h2>
+        <p class="split-desc">Most point-of-sale systems assume a stable internet connection, a quiet retail counter, and a customer who pays once and leaves. A tavern doesn't work like that. KasiStock is built around the realities of a township venue: running tabs, returnable bottles, busy nights, and electricity you can't rely on.</p>
+        <p class="split-desc">Everything happens on the device in your hand. Sales, tabs, stock counts and specials all run locally and keep working when the line drops — then sync automatically the moment you're back online. No connection, no excuse, no lost sales.</p>
+        <ul class="split-features">
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Offline-first — keep selling straight through load-shedding</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Open bar tabs per table or customer, settle at the end of the night</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Scan empties and pay out bottle-return incentives automatically</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Happy hour, bundles and Buy X Get Y applied automatically at the till</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>End-of-day cash-up, reconciliation and top-seller reports</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>30-day free trial — no contract, no setup, bring your phone</li>
+        </ul>
+      </div>
+
+      <div class="split-content">
+        <p class="section-label">Who it's for</p>
+        <h2 class="split-title">Taverns, bottle stores &amp; spaza shops.</h2>
+        <p class="split-desc">If you sell drinks by the bottle, run a tab for regulars, take back empties, and need to know what's in stock and what came in tonight — KasiStock is built for you. It runs on a phone or tablet, needs no cashier training, and the specials apply themselves so the person at the till can't get the price wrong.</p>
+        <p class="split-desc">It's part of the same Mhare Tech family as myTrack and myRoutes: software we design, build and operate ourselves, shaped by how the businesses on the ground actually run their day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Feature Grid ────────────────────────────────── -->
+<section class="deep-dive">
+  <div class="container">
+    <div style="text-align:center;max-width:680px;margin:0 auto;">
+      <p class="section-label">Everything your bar needs</p>
+      <h2 class="section-title">One app, <span class="section-gradient">from open to cash-up</span></h2>
+      <p class="section-sub" style="margin:0 auto;">Every tool the slide pack below walks through — here's what each one does for your venue.</p>
+    </div>
+
+    <div class="kasi-features">
+
+      <div class="kasi-feat">
+        <div class="kasi-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><path d="M7 12h10"/></svg></div>
+        <h3>Offline-first POS</h3>
+        <p>Sell without internet and keep trading through load-shedding. Every sale is stored on the device and syncs automatically when you're back online.</p>
+      </div>
+
+      <div class="kasi-feat">
+        <div class="kasi-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h.01M12 9h.01M15 9h.01M9 12h6M9 15h4"/></svg></div>
+        <h3>Bar tab mode</h3>
+        <p>Open as many tabs as you need — per table or per customer. Add drinks as the night goes on, then settle with cash or card at close. No calculator, no confusion.</p>
+      </div>
+
+      <div class="kasi-feat">
+        <div class="kasi-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 2h4v3l2 3v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V8l2-3V2z"/><path d="M8 12h8"/></svg></div>
+        <h3>Bottle return tracking</h3>
+        <p>Scan the empties and KasiStock calculates the incentive payout automatically, at the rate you set per product. Full return history — no shortfall surprises at month-end.</p>
+      </div>
+
+      <div class="kasi-feat">
+        <div class="kasi-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+        <h3>Specials &amp; happy hour</h3>
+        <p>Set bundle pricing, happy-hour windows and Buy X Get Y once. They trigger automatically at the till — no manual discounting, no cashier training, no mistakes.</p>
+      </div>
+
+      <div class="kasi-feat">
+        <div class="kasi-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8z"/><path d="M10 21a2 2 0 004 0"/></svg></div>
+        <h3>Live stock &amp; low alerts</h3>
+        <p>See stock levels per product as you sell, and get a warning before something runs out — not after. Know exactly what to reorder while you still have time.</p>
+      </div>
+
+      <div class="kasi-feat">
+        <div class="kasi-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></div>
+        <h3>End-of-day reports</h3>
+        <p>Cash vs. card, VAT, voids and full reconciliation in one tap before you lock up — plus the top sellers that tell you what to order tomorrow.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% include "_slidepack.html" with pack_id="kasistock" pack_name="KasiStock" pack_sub="The pitch we ran live at the 22 on Sloane expo — scan-to-sell, bar tabs, bottle returns, specials and the end-of-day close, one scene at a time." %}
+
+<!-- ── CTA ────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="hero-bg"></div>
+  <div class="container cta-content">
+    <div class="hero-eyebrow">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+      Get in touch
+    </div>
+    <h2 class="cta-headline">Run <span class="cta-gradient">KasiStock</span> in your bar — 30 days free.</h2>
+    <p class="cta-sub">No contract, no setup fee, no catch. Bring your phone and start ringing up sales today — we'll help you get going.</p>
+    <a href="mailto:sales@mhareconsulting.co.za" class="cta-btn">
+      Contact us — sales@mhareconsulting.co.za
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+{% endblock %}

@@ -52,6 +52,10 @@ def myroutes(request):
     return render(request, 'myroutes.html')
 
 
+def kasistock(request):
+    return render(request, 'kasistock.html')
+
+
 def sloane_loop(request):
     return render(request, '22onsloane.html')
 
