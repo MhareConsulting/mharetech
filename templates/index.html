@@ -304,6 +304,98 @@
         </div>
       </div>
 
+      <div class="product-landing-card">
+        <div class="product-landing-mockup">
+          <div class="browser-frame" style="transform:none;box-shadow:0 20px 60px rgba(0,0,0,0.12);">
+            <div class="browser-chrome">
+              <div class="bc-dots">
+                <span class="bc-dot bc-dot--red"></span>
+                <span class="bc-dot bc-dot--yellow"></span>
+                <span class="bc-dot bc-dot--green"></span>
+              </div>
+              <div class="bc-url">pos.kasistock.co.za</div>
+            </div>
+            <div class="app-shell">
+              <div class="app-topbar">
+                <div class="app-brand">
+                  <span class="app-brand-icon" style="background:linear-gradient(135deg,#4827CC,#E1266B);"></span>
+                  <span class="app-brand-name">Kasi<b>Stock</b></span>
+                </div>
+                <div class="app-topnav">
+                  <span class="app-topnav-item app-topnav-item--live" style="color:#4827CC;">● POS</span>
+                  <span class="app-topnav-item app-topnav-item--active">Tabs</span>
+                  <span class="app-topnav-item">Stock</span>
+                  <span class="app-topnav-item">Reports</span>
+                </div>
+              </div>
+              <div style="padding:14px;display:flex;flex-direction:column;gap:10px;background:#F7F8FB;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div>
+                    <div style="font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#9aa3b2;font-weight:700;">Tavern · Diepkloof</div>
+                    <div style="font-size:14px;font-weight:800;color:#151B29;">Bar Tabs — Tonight</div>
+                  </div>
+                  <span style="padding:5px 12px;border-radius:999px;background:#FFB840;color:#151B29;font-size:10px;font-weight:800;">+ New Tab</span>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:9px;padding:7px 12px;background:#fff;border:1px solid #e8edf4;border-radius:8px;">
+                  <span style="width:7px;height:7px;border-radius:50%;background:#27D17F;box-shadow:0 0 6px #27D17F;"></span>
+                  <span style="font-size:9px;font-weight:800;color:#444;letter-spacing:0.06em;text-transform:uppercase;">3 tabs open</span>
+                  <span style="font-size:9px;color:#E1266B;font-weight:700;margin-left:auto;">1 settling</span>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:#fff;border:1px solid #e8edf4;border-radius:10px;">
+                  <div style="display:flex;align-items:center;gap:9px;">
+                    <span style="width:9px;height:9px;border-radius:50%;background:#3B82F6;"></span>
+                    <div>
+                      <div style="font-size:12px;font-weight:800;color:#151B29;">Table 3</div>
+                      <div style="font-size:9px;color:#8a93a3;margin-top:1px;">Castle ×3 · Savanna ×2</div>
+                    </div>
+                  </div>
+                  <span style="font-size:13px;font-weight:900;color:#151B29;">R 87.00</span>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:#fff;border:1px solid #e8edf4;border-radius:10px;">
+                  <div style="display:flex;align-items:center;gap:9px;">
+                    <span style="width:9px;height:9px;border-radius:50%;background:#FFB840;"></span>
+                    <div>
+                      <div style="font-size:12px;font-weight:800;color:#151B29;">Jayden M.</div>
+                      <div style="font-size:9px;color:#8a93a3;margin-top:1px;">Black Label ×6 · Shots ×3</div>
+                    </div>
+                  </div>
+                  <span style="font-size:13px;font-weight:900;color:#151B29;">R 142.50</span>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:#FFF5F8;border:1px solid rgba(225,38,107,0.35);border-radius:10px;">
+                  <div style="display:flex;align-items:center;gap:9px;">
+                    <span style="width:9px;height:9px;border-radius:50%;background:#E1266B;"></span>
+                    <div>
+                      <div style="font-size:12px;font-weight:800;color:#151B29;">Counter Tab <span style="font-size:7px;padding:1px 6px;border-radius:99px;background:#E1266B;color:#fff;font-weight:800;letter-spacing:0.06em;vertical-align:middle;">SETTLING</span></div>
+                      <div style="font-size:9px;color:#8a93a3;margin-top:1px;">Hunter's ×2 · Savanna ×1</div>
+                    </div>
+                  </div>
+                  <span style="font-size:13px;font-weight:900;color:#E1266B;">R 54.99</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="product-landing-body">
+          <div class="product-landing-badge"><span class="live-dot"></span> New product</div>
+          <div class="product-landing-name">KasiStock</div>
+          <p class="product-landing-desc">Run your bar. Own your stock. An offline-first point of sale built for South African taverns and bottle stores — bar tabs, bottle returns and specials that keep working straight through load-shedding.</p>
+          <ul class="product-landing-features">
+            <li>Offline-first POS — keep selling through load-shedding</li>
+            <li>Bar tabs per table or customer, settle at close</li>
+            <li>Bottle-return tracking with automatic incentive payouts</li>
+            <li>Specials, happy hour &amp; end-of-day cash-up reports</li>
+          </ul>
+          <a href="{% url 'kasistock' %}" class="product-landing-cta">
+            Explore KasiStock
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -358,3 +450,4 @@
 </section>
 
 {% endblock %}
+

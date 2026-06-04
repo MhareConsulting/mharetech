@@ -745,8 +745,8 @@ nav {
 
 .products-landing-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
   margin-top: 56px;
 }
 
@@ -2784,8 +2784,8 @@ footer::before {
    on desktop or tablet viewports above these breakpoints
    ══════════════════════════════════════════════════════ */
 
-/* ── Tablet (≤768px): stack products grid ──────────── */
-@media (max-width: 768px) {
+/* ── Below 980px: stack products grid (avoid cramped 3-up) ── */
+@media (max-width: 980px) {
   .products-landing-grid {
     grid-template-columns: 1fr;
     gap: 24px;
