@@ -2369,12 +2369,436 @@ window.KasiStock = { KasiStockBoothFrame };
 </script>
 
 <!-- ============================================================
+     BLOCK 6.5 · myWMS component
+     ============================================================ -->
+<script type="text/babel" data-presets="env,react">
+/* global React, MH, RealQR */
+const { MhareLogo: MhLogoW, COLORS: COLO_W } = MH;
+
+const WMS_TEAL    = "#16C8B6";
+const WMS_BLUE    = "#3B82F6";
+const WMS_GREEN   = "#34D399";
+const WMS_AMBER   = "#FF9D00";
+const WMS_MAGENTA = "#E1266B";
+
+// Stylised DC aisle/rack grid with a glowing located pallet
+function WmsAisleMap({ highlight = true }) {
+  const aisles = [0,1,2,3,4];
+  return (
+    <svg viewBox="0 0 600 460" style={{ width:"100%", height:"100%", display:"block" }} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="wmsGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={WMS_TEAL} stopOpacity="0.16"/>
+          <stop offset="100%" stopColor={WMS_BLUE} stopOpacity="0"/>
+        </radialGradient>
+        <filter id="wmsPin" x="-120%" y="-120%" width="340%" height="340%"><feGaussianBlur stdDeviation="5"/></filter>
+      </defs>
+      <rect width="600" height="460" fill="#070d14"/>
+      <ellipse cx="300" cy="230" rx="300" ry="220" fill="url(#wmsGlow)"/>
+      {/* aisle racks */}
+      {aisles.map(a => (
+        <g key={a}>
+          <rect x={48 + a*108} y="60" width="78" height="340" rx="4" fill="#0e1722" stroke="#16314a" strokeWidth="1"/>
+          {[0,1,2,3,4].map(r => (
+            <line key={r} x1={48 + a*108} y1={60 + r*68} x2={48 + a*108 + 78} y2={60 + r*68} stroke="#16314a" strokeWidth="1"/>
+          ))}
+          {/* pallets on shelves */}
+          {[0,1,2,3].map(r => (
+            <rect key={"p"+r} x={54 + a*108} y={66 + r*68} width="66" height="22"
+              fill={(a===2 && r===1 && highlight) ? WMS_TEAL : "#13283b"}
+              opacity={(a===2 && r===1 && highlight) ? 0.95 : 0.7} rx="2"/>
+          ))}
+          <text x={48 + a*108 + 39} y="418" fontFamily="monospace" fontSize="11" fill="rgba(255,255,255,.35)" textAnchor="middle">A{a+1}</text>
+        </g>
+      ))}
+      {/* located pallet ping */}
+      {highlight && (
+        <g>
+          <circle cx="273" cy="139" r="22" fill={WMS_TEAL} opacity=".18" filter="url(#wmsPin)"/>
+          <circle cx="273" cy="139" r="7" fill={WMS_TEAL}/>
+          <circle cx="273" cy="139" r="2.6" fill="#fff"/>
+          <circle cx="273" cy="139" r="7" fill="none" stroke={WMS_TEAL} strokeWidth="1.5">
+            <animate attributeName="r" values="7;26;7" dur="2.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".7;0;.7" dur="2.4s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+      )}
+      {/* anchors */}
+      {[[60,46],[330,46],[540,46],[60,414],[330,414],[540,414]].map((p,i)=>(
+        <g key={"an"+i}>
+          <rect x={p[0]-5} y={p[1]-5} width="10" height="10" rx="2" fill="#0e1722" stroke={WMS_BLUE} strokeWidth="1.2"/>
+          <circle cx={p[0]} cy={p[1]} r="2" fill={WMS_BLUE}/>
+        </g>
+      ))}
+      <text x="300" y="446" fontFamily="monospace" fontSize="9" fill="rgba(255,255,255,.25)" textAnchor="middle">DC-01 · BLE MESH · 1–5 m POSITIONING</text>
+    </svg>
+  );
+}
+
+function myWMSBoothFrame({ scene = 1 }) {
+  return (
+    <div className="mh-artboard mh-grain" style={{ width:1600, height:900, background:COLO_W.navy }}>
+      <div style={{ position:"absolute", inset:0, background:"radial-gradient(70% 60% at 85% 12%, rgba(22,200,182,.28), transparent 60%), radial-gradient(70% 80% at 6% 100%, rgba(59,130,246,.30), transparent 65%)" }}/>
+      <div className="mh-noise"/>
+
+      <div style={{ position:"absolute", top:28, left:32, zIndex:5, display:"flex", gap:8, alignItems:"center" }}>
+        {[1,2,3,4,5,6,7].map(n => (
+          <div key={n} style={{ width: n===scene ? 36 : 8, height:8, borderRadius:4, background: n===scene ? WMS_TEAL : "rgba(255,255,255,.25)", transition:"all .3s ease" }}/>
+        ))}
+        <div style={{ fontFamily:"monospace", fontSize:11, opacity:.7, marginLeft:10, color:"#fff", letterSpacing:".15em" }}>
+          SCENE 0{scene} / 07 · myWMS
+        </div>
+      </div>
+
+      <div style={{ position:"absolute", top:22, right:32, zIndex:5 }}><MhLogoW height={36}/></div>
+
+      <div style={{ position:"absolute", inset:0, padding:"96px 80px", display:"flex", zIndex:3 }}>
+        {scene === 1 && <WmsHook/>}
+        {scene === 2 && <WmsInbound/>}
+        {scene === 3 && <WmsOutbound/>}
+        {scene === 4 && <WmsRTLS/>}
+        {scene === 5 && <WmsColdChain/>}
+        {scene === 6 && <WmsTiers/>}
+        {scene === 7 && <WmsCTA/>}
+      </div>
+    </div>
+  );
+}
+
+function WmsHook() {
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1.15fr 1fr", gap:56, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${WMS_TEAL}66`, color:WMS_TEAL, background:`${WMS_TEAL}14`, alignSelf:"flex-start" }}>
+          <span className="mh-dot" style={{ background:WMS_TEAL, boxShadow:`0 0 12px ${WMS_TEAL}` }}/> myWMS · Warehouse &amp; inventory
+        </div>
+        <h1 style={{ fontWeight:900, fontSize:124, lineHeight:.86, letterSpacing:"-0.045em", margin:"24px 0 0" }}>
+          Dock to door.<br/><span style={{ color:WMS_TEAL }}>One chain.</span>
+        </h1>
+        <div style={{ fontWeight:600, fontSize:28, opacity:.88, marginTop:24, letterSpacing:"-0.01em", maxWidth:600 }}>
+          Warehouse, fleet and last-mile on one login — so when a customer asks{" "}
+          <span style={{ color:WMS_TEAL, fontWeight:800 }}>"where's my pallet?"</span>, there's one answer.
+        </div>
+        <div style={{ marginTop:30, display:"flex", gap:14 }}>
+          {[
+            { val:"Dock-to-door", label:"One pallet · one identity", color:WMS_TEAL },
+            { val:"Offline-first", label:"Built for load-shedding",   color:WMS_BLUE },
+            { val:"Coming soon",   label:"Design partners welcome",   color:WMS_AMBER },
+          ].map((s,i)=>(
+            <div key={i} style={{ textAlign:"center", padding:"12px 22px", background:"rgba(255,255,255,.04)", borderRadius:10, border:"1px solid rgba(255,255,255,.1)" }}>
+              <div style={{ fontWeight:900, fontSize:17, color:s.color, letterSpacing:"-.01em" }}>{s.val}</div>
+              <div style={{ fontSize:9, opacity:.7, marginTop:5, letterSpacing:".1em", textTransform:"uppercase", color:"#cbd5e1" }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ position:"relative", height:520, borderRadius:20, overflow:"hidden", border:"1px solid rgba(255,255,255,.08)", boxShadow:`0 40px 80px -20px ${WMS_BLUE}66` }}>
+        <WmsAisleMap/>
+        <div style={{ position:"absolute", left:18, bottom:18, right:18, background:"rgba(8,14,22,.86)", backdropFilter:"blur(8px)", border:`1px solid ${WMS_TEAL}44`, borderRadius:12, padding:"14px 16px", display:"flex", alignItems:"center", gap:14 }}>
+          <div style={{ width:10, height:10, borderRadius:"50%", background:WMS_TEAL, boxShadow:`0 0 10px ${WMS_TEAL}`, flexShrink:0 }}/>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:10, letterSpacing:".18em", textTransform:"uppercase", opacity:.55, fontWeight:700 }}>Pallet PLT-4471 · located</div>
+            <div style={{ fontWeight:800, fontSize:16, marginTop:2 }}>Aisle A3 · Rack 02 · Bay B</div>
+          </div>
+          <div style={{ fontFamily:"monospace", fontSize:12, color:WMS_TEAL }}>± 2 m</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WmsInbound() {
+  const lines = [
+    { sku:"SKU-10293 · UHT Milk 1L", qty:"480 / 480", loc:"A1-03-A", ok:true },
+    { sku:"SKU-22841 · Maize 12.5kg", qty:"240 / 240", loc:"A4-01-C", ok:true },
+    { sku:"SKU-77310 · Cooking Oil 2L", qty:"118 / 120", loc:"hold",    ok:false },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1.05fr", gap:56, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${WMS_BLUE}66`, color:WMS_BLUE, background:`${WMS_BLUE}16` }}>
+          <span className="mh-dot" style={{ background:WMS_BLUE, boxShadow:`0 0 12px ${WMS_BLUE}` }}/> Inbound · Receive &amp; putaway
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:92, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          From the dock,<br/><span style={{ color:WMS_TEAL }}>scanned &amp; shelved.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:21, opacity:.82, maxWidth:520, marginTop:22 }}>
+          Match goods against the ASN as they land, raise a GRN on the spot, and let myWMS direct every pallet to the right bin — barcode or QR, on a phone.
+        </div>
+        <div style={{ marginTop:26, display:"flex", flexDirection:"column", gap:12 }}>
+          {[
+            { dot:WMS_BLUE,  label:"Expected vs received, line by line", sub:"Short and over-deliveries flagged instantly" },
+            { dot:WMS_TEAL,  label:"Goods-received note on receipt",     sub:"No paperwork backlog at the dock" },
+            { dot:WMS_GREEN, label:"Directed putaway to a bin",          sub:"Right stock, right location, first time" },
+          ].map((it,i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", flexShrink:0, background:it.dot, boxShadow:`0 0 10px ${it.dot}` }}/>
+              <div><div style={{ fontWeight:700, fontSize:16 }}>{it.label}</div><div style={{ fontSize:12, opacity:.55 }}>{it.sub}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background:"#fff", borderRadius:16, overflow:"hidden", boxShadow:"0 40px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08)" }}>
+        <div style={{ background:"#0e1722", padding:"13px 18px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          <div>
+            <div style={{ fontSize:8, color:"rgba(255,255,255,.45)", textTransform:"uppercase", letterSpacing:".14em", fontFamily:"monospace" }}>myWMS · RECEIVING</div>
+            <div style={{ fontSize:15, fontWeight:800, color:"#fff" }}>ASN-2026-0488 · Clover SA</div>
+          </div>
+          <div style={{ padding:"5px 13px", borderRadius:999, background:WMS_TEAL, color:"#06231f", fontSize:10, fontWeight:800 }}>Receiving</div>
+        </div>
+        <div style={{ padding:"12px 14px", display:"flex", flexDirection:"column", gap:8 }}>
+          {lines.map((l,i)=>(
+            <div key={i} style={{ border:`1px solid ${l.ok ? "#e8edf4" : WMS_MAGENTA+"55"}`, background: l.ok ? "#fff" : "#FFF5F8", borderRadius:10, padding:"12px 14px" }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                <span style={{ fontSize:12.5, fontWeight:800, color:"#0e1722" }}>{l.sku}</span>
+                <span style={{ fontSize:12, fontWeight:900, color: l.ok ? "#16a34a" : WMS_MAGENTA }}>{l.qty}</span>
+              </div>
+              <div style={{ display:"flex", gap:8, marginTop:9, alignItems:"center" }}>
+                <span style={{ fontSize:9, padding:"3px 9px", borderRadius:99, background:"#0e1722", color:"#fff", fontWeight:700, fontFamily:"monospace" }}>{l.ok ? "PUTAWAY "+l.loc : "QC HOLD"}</span>
+                <span style={{ fontSize:10, color: l.ok ? "#16a34a" : WMS_MAGENTA, fontWeight:700 }}>{l.ok ? "✓ Matched ASN" : "⚠ 2 units short"}</span>
+              </div>
+            </div>
+          ))}
+          <div style={{ marginTop:2, padding:"11px 14px", borderRadius:10, background:`${WMS_TEAL}14`, border:`1px solid ${WMS_TEAL}44`, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+            <span style={{ fontSize:12, fontWeight:700, color:"#0e1722" }}>GRN ready · 838 / 840 units</span>
+            <span style={{ fontSize:11, fontWeight:800, color:"#0e7c6b" }}>Generate GRN →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WmsOutbound() {
+  const picks = [
+    { sku:"UHT Milk 1L",   bin:"A1-03-A", n:24, done:true },
+    { sku:"Maize 12.5kg",  bin:"A4-01-C", n:12, done:true },
+    { sku:"Cooking Oil 2L",bin:"A2-05-B", n:18, done:false },
+    { sku:"Sugar 2.5kg",   bin:"A3-02-A", n:30, done:false },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1.05fr", gap:56, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${WMS_TEAL}66`, color:WMS_TEAL, background:`${WMS_TEAL}14` }}>
+          <span className="mh-dot" style={{ background:WMS_TEAL, boxShadow:`0 0 12px ${WMS_TEAL}` }}/> Outbound · Pick, pack, dispatch
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:98, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          Pick. Pack.<br/><span style={{ color:WMS_TEAL }}>Prove it.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:21, opacity:.82, maxWidth:520, marginTop:22 }}>
+          Optimised pick paths through the racks, packing checks before the door, and a proof-of-handover signature that closes the loop with myRoutes on the last mile.
+        </div>
+        <div style={{ marginTop:26, display:"flex", flexDirection:"column", gap:12 }}>
+          {[
+            { dot:WMS_TEAL,  label:"Bin-sequenced pick paths",        sub:"Less walking, faster orders" },
+            { dot:WMS_BLUE,  label:"Pack and verify before dispatch", sub:"Right order, right truck" },
+            { dot:WMS_GREEN, label:"Proof of handover, captured",     sub:"Hands off cleanly to last-mile ePOD" },
+          ].map((it,i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", flexShrink:0, background:it.dot, boxShadow:`0 0 10px ${it.dot}` }}/>
+              <div><div style={{ fontWeight:700, fontSize:16 }}>{it.label}</div><div style={{ fontSize:12, opacity:.55 }}>{it.sub}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background:"#0a121b", borderRadius:16, overflow:"hidden", border:`1px solid ${WMS_TEAL}33`, boxShadow:`0 40px 80px rgba(0,0,0,.6)` }}>
+        <div style={{ background:WMS_TEAL, padding:"12px 18px", display:"flex", alignItems:"center", gap:10 }}>
+          <div style={{ width:8, height:8, borderRadius:"50%", background:"#06231f" }}/>
+          <span style={{ fontWeight:900, fontSize:12, letterSpacing:".18em", textTransform:"uppercase", color:"#06231f" }}>PICK LIST · ORD-55120</span>
+          <span style={{ marginLeft:"auto", fontFamily:"monospace", fontSize:11, color:"#06231f" }}>2 / 4 picked</span>
+        </div>
+        <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:9 }}>
+          {picks.map((p,i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:13, padding:"11px 14px", background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.07)", borderRadius:10, opacity: p.done ? .62 : 1 }}>
+              <div style={{ width:24, height:24, borderRadius:6, flexShrink:0, display:"grid", placeItems:"center", background: p.done ? WMS_GREEN : "rgba(255,255,255,.08)", color: p.done ? "#06231f" : "#fff" }}>
+                {p.done
+                  ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 12.5l4 4 10-10" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  : <span style={{ fontSize:11, fontWeight:800 }}>{i+1}</span>}
+              </div>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:13.5, fontWeight:700, color:"#fff", textDecoration: p.done ? "line-through" : "none" }}>{p.sku}</div>
+                <div style={{ fontSize:10, opacity:.5, marginTop:1, fontFamily:"monospace" }}>BIN {p.bin}</div>
+              </div>
+              <div style={{ fontSize:14, fontWeight:900, color: p.done ? WMS_GREEN : WMS_TEAL }}>×{p.n}</div>
+            </div>
+          ))}
+          <div style={{ marginTop:2, padding:"12px 14px", borderRadius:10, background:`${WMS_GREEN}1a`, border:`1px solid ${WMS_GREEN}55`, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+            <span style={{ fontSize:12, fontWeight:700 }}>On completion → handover to myRoutes</span>
+            <span style={{ fontSize:11, fontWeight:800, color:WMS_GREEN }}>ePOD ready</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WmsRTLS() {
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:56, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${WMS_TEAL}66`, color:WMS_TEAL, background:`${WMS_TEAL}14` }}>
+          <span className="mh-dot" style={{ background:WMS_TEAL, boxShadow:`0 0 12px ${WMS_TEAL}` }}/> Enterprise · Real-time location
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:92, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          Find any pallet.<br/><span style={{ color:WMS_TEAL }}>1–5 metres.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:21, opacity:.82, maxWidth:520, marginTop:22 }}>
+          Teltonika EYE BLE mesh tags self-heal across the racks and keep reporting when WiFi drops — real aisle-and-rack location, plus chain-of-custody from rack to recipient.
+        </div>
+        <div style={{ marginTop:26, display:"flex", flexDirection:"column", gap:12 }}>
+          {[
+            { dot:WMS_TEAL,    label:"Live aisle/rack positioning",  sub:"1–5 m, anchor-density driven" },
+            { dot:WMS_BLUE,    label:"Self-healing BLE mesh",         sub:"AES-128 encrypted, no single point" },
+            { dot:WMS_MAGENTA, label:"Shrinkage you can see",         sub:"Chain-of-custody turns theft visible" },
+          ].map((it,i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:14 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", flexShrink:0, background:it.dot, boxShadow:`0 0 10px ${it.dot}` }}/>
+              <div><div style={{ fontWeight:700, fontSize:16 }}>{it.label}</div><div style={{ fontSize:12, opacity:.55 }}>{it.sub}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ position:"relative", height:520, borderRadius:18, overflow:"hidden", border:`1px solid ${WMS_TEAL}33`, boxShadow:`0 40px 80px -20px ${WMS_BLUE}66` }}>
+        <WmsAisleMap/>
+      </div>
+    </div>
+  );
+}
+
+function WmsColdChain() {
+  // temperature path that stays in band with one excursion flagged
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1.08fr", gap:56, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${WMS_BLUE}66`, color:WMS_BLUE, background:`${WMS_BLUE}16` }}>
+          <span className="mh-dot" style={{ background:WMS_BLUE, boxShadow:`0 0 12px ${WMS_BLUE}` }}/> Cold-chain · Proven
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:90, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          Cold-chain<br/><span style={{ color:WMS_TEAL }}>you can prove.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:21, opacity:.82, maxWidth:520, marginTop:22 }}>
+          EN12830-certified EYE sensors log temperature and humidity continuously — across the warehouse <em>and</em> the truck — so a compliance claim is a record, not an argument.
+        </div>
+        <div style={{ marginTop:26, display:"flex", gap:14 }}>
+          {[
+            { v:"0.5 °C", l:"Sensor accuracy" },
+            { v:"345 days", l:"On-device log" },
+            { v:"−20…+60", l:"°C range, IP67" },
+          ].map((s,i)=>(
+            <div key={i} style={{ flex:1, textAlign:"center", padding:"14px 10px", background:"rgba(255,255,255,.04)", borderRadius:12, border:"1px solid rgba(255,255,255,.1)" }}>
+              <div style={{ fontWeight:900, fontSize:24, color:WMS_TEAL, letterSpacing:"-.02em" }}>{s.v}</div>
+              <div style={{ fontSize:9.5, opacity:.6, marginTop:5, letterSpacing:".1em", textTransform:"uppercase" }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background:"#0a121b", borderRadius:18, border:`1px solid ${WMS_BLUE}33`, padding:"22px 24px", boxShadow:`0 40px 80px rgba(0,0,0,.6)` }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
+          <div style={{ fontSize:13, fontWeight:800 }}>Reefer Zone C · last 12 h</div>
+          <div style={{ fontFamily:"monospace", fontSize:11, color:WMS_GREEN }}>● IN RANGE 2–8 °C</div>
+        </div>
+        <svg viewBox="0 0 520 220" style={{ width:"100%", height:230 }}>
+          {/* range band */}
+          <rect x="0" y="70" width="520" height="80" fill={WMS_GREEN} opacity=".08"/>
+          <line x1="0" y1="70" x2="520" y2="70" stroke={WMS_GREEN} strokeWidth="1" strokeDasharray="3 3" opacity=".5"/>
+          <line x1="0" y1="150" x2="520" y2="150" stroke={WMS_GREEN} strokeWidth="1" strokeDasharray="3 3" opacity=".5"/>
+          <text x="6" y="64" fontFamily="monospace" fontSize="10" fill={WMS_GREEN} opacity=".7">8 °C</text>
+          <text x="6" y="166" fontFamily="monospace" fontSize="10" fill={WMS_GREEN} opacity=".7">2 °C</text>
+          {/* temp line */}
+          <path d="M0 120 L70 116 L120 122 L170 110 L210 112 L250 96 L280 58 L300 60 L330 104 L380 112 L430 108 L520 114"
+            fill="none" stroke={WMS_TEAL} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/>
+          {/* excursion marker */}
+          <circle cx="290" cy="58" r="5" fill={WMS_AMBER}/>
+          <line x1="290" y1="20" x2="290" y2="200" stroke={WMS_AMBER} strokeWidth="1" strokeDasharray="2 3" opacity=".6"/>
+          <text x="296" y="30" fontFamily="monospace" fontSize="9.5" fill={WMS_AMBER}>EXCURSION · 9.4 °C · door 6 min</text>
+        </svg>
+        <div style={{ marginTop:10, padding:"12px 14px", background:`${WMS_AMBER}16`, border:`1px solid ${WMS_AMBER}44`, borderRadius:10, display:"flex", alignItems:"center", gap:10 }}>
+          <span className="mh-dot orange"/>
+          <span style={{ fontSize:12.5, fontWeight:600 }}>Excursion caught &amp; logged · alert sent to duty manager</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WmsTiers() {
+  const tiers = [
+    { name:"Essential",    hw:"QR / barcode",          color:WMS_TEAL,    for:"SMEs & lean DCs",        bullets:["Receive · putaway · pick · dispatch","Cycle counts & stock accuracy","Runs on a phone — no new hardware"] },
+    { name:"Professional", hw:"+ myTrack + myRoutes",   color:WMS_BLUE,    for:"3PLs needing visibility", bullets:["True dock-to-door on one login","GPS fleet + last-mile ePOD","One answer to “where is it?”"], featured:true },
+    { name:"Enterprise",   hw:"+ EYE BLE Mesh RTLS",    color:WMS_MAGENTA, for:"High-value & cold-chain", bullets:["Real-time aisle/rack location","Cold-chain temp & humidity proof","Chain-of-custody, rack to recipient"] },
+  ];
+  return (
+    <div style={{ width:"100%", display:"flex", flexDirection:"column", justifyContent:"center", color:"#fff" }}>
+      <div className="mh-chip" style={{ borderColor:`${WMS_TEAL}66`, color:WMS_TEAL, background:`${WMS_TEAL}14`, alignSelf:"flex-start" }}>
+        <span className="mh-dot" style={{ background:WMS_TEAL, boxShadow:`0 0 12px ${WMS_TEAL}` }}/> One suite · Pay for what you need
+      </div>
+      <h2 style={{ fontWeight:900, fontSize:88, letterSpacing:"-0.04em", lineHeight:.92, margin:"16px 0 36px" }}>
+        Start on barcode. <span style={{ color:WMS_TEAL }}>Scale to RTLS.</span>
+      </h2>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:22 }}>
+        {tiers.map((t,i)=>(
+          <div key={i} style={{ background: t.featured ? `${t.color}14` : "rgba(255,255,255,.05)", border:`1px solid ${t.color}${t.featured ? "88" : "44"}`, borderRadius:18, padding:"26px 24px", boxShadow: t.featured ? `0 0 60px -18px ${t.color}` : "none", position:"relative" }}>
+            {t.featured && <div style={{ position:"absolute", top:-11, left:24, padding:"3px 12px", borderRadius:999, background:t.color, color:"#06231f", fontSize:9, fontWeight:900, letterSpacing:".12em" }}>DOCK-TO-DOOR</div>}
+            <div style={{ fontSize:9, fontWeight:800, letterSpacing:".18em", textTransform:"uppercase", color:t.color }}>{t.for}</div>
+            <div style={{ fontWeight:900, fontSize:30, letterSpacing:"-.02em", marginTop:6 }}>{t.name}</div>
+            <div style={{ fontSize:13, opacity:.6, marginTop:4, fontFamily:"monospace" }}>{t.hw}</div>
+            <div style={{ height:1, background:"rgba(255,255,255,.1)", margin:"16px 0" }}/>
+            <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+              {t.bullets.map((b,j)=>(
+                <div key={j} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink:0, marginTop:2 }}><path d="M5 12.5l4 4 10-10" stroke={t.color} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <span style={{ fontSize:13.5, opacity:.9, lineHeight:1.4 }}>{b}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop:24, fontSize:15, opacity:.6, fontWeight:500, textAlign:"center" }}>
+        Add RTLS only to the aisles that hold your highest-value stock. No rip-and-replace.
+      </div>
+    </div>
+  );
+}
+
+function WmsCTA() {
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1.4fr 1fr", gap:64, alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${WMS_AMBER}66`, color:WMS_AMBER, background:`${WMS_AMBER}16`, alignSelf:"flex-start" }}>
+          <span className="mh-dot orange"/> Coming soon · Design partners welcome
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:104, letterSpacing:"-0.04em", lineHeight:.92, marginTop:20, textShadow:"0 4px 20px rgba(0,0,0,.45)" }}>
+          90 days. One site.<br/><span style={{ color:WMS_TEAL }}>One number you'll defend.</span>
+        </h2>
+        <div style={{ marginTop:28, fontSize:20, opacity:.85, maxWidth:620 }}>
+          Pilot myWMS on one DC — barcode first, then dock-to-door, then RTLS on your highest-value zone. Prove the uplift on your floor before you commit.
+        </div>
+        <div style={{ marginTop:30, display:"flex", gap:16, alignItems:"center", flexWrap:"wrap" }}>
+          <div style={{ padding:"16px 26px", borderRadius:999, background:WMS_TEAL, color:"#06231f", fontWeight:800, fontSize:20 }}>Become a design partner</div>
+          <div style={{ fontSize:17, opacity:.9 }}>mharetech.co.za/mywms</div>
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }}>
+        <div style={{ background:"#fff", borderRadius:20, padding:16, boxShadow:`0 40px 80px -20px ${WMS_BLUE}aa` }}>
+          <RealQR size={200}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.myWMS = { myWMSBoothFrame };
+</script>
+
+<!-- ============================================================
      BLOCK 7 · Booth Player app
      ============================================================ -->
 <script type="text/babel" data-presets="env,react">
 const { MyTrackBoothFrame }   = window.MyTrack;
 const { myRoutesBoothFrame }  = window.myRoutes;
 const { KasiStockBoothFrame } = window.KasiStock;
+const { myWMSBoothFrame }     = window.myWMS;
 const { MhareLogo: SplashLogo } = window.MH;
 
 function MhareSplashFrame() {
@@ -2404,6 +2828,7 @@ function MhareSplashFrame() {
             { name:"myTrack",   accent:"#E1266B", label:"Telematics"     },
             { name:"myRoutes",  accent:"#FF9D00", label:"Route Planning"  },
             { name:"KasiStock", accent:"#4827CC", label:"Community POS"   },
+            { name:"myWMS",     accent:"#16C8B6", label:"Warehouse"      },
           ].map((p,i)=>(
             <div key={i} style={{ padding:"10px 24px", border:`1px solid ${p.accent}44`, background:`${p.accent}0e`, display:"flex", alignItems:"center", gap:10 }}>
               <div style={{ width:8, height:8, borderRadius:"50%", background:p.accent, boxShadow:`0 0 10px ${p.accent}` }}/>
@@ -2428,6 +2853,7 @@ const ALL_PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:6 },
   { id:"myroutes",  name:"myRoutes",  label:"Routing",       accent:"#FF9D00", Frame:myRoutesBoothFrame,  sceneCount:10 },
   { id:"kasistock", name:"KasiStock", label:"Bar & Bottle POS", accent:"#4827CC", Frame:KasiStockBoothFrame, sceneCount:7 },
+  { id:"mywms",     name:"myWMS",     label:"Warehouse",     accent:"#16C8B6", Frame:myWMSBoothFrame,     sceneCount:7 },
   { id:"splash",    name:"Mhare",     label:"",              accent:"#FF9D00", Frame:MhareSplashFrame,    sceneCount:1, splash:true },
 ];
 
@@ -2438,7 +2864,8 @@ const IS_EMBED  = !!(FILTERED && FILTERED.length);
 const PRODUCTS  = IS_EMBED ? FILTERED : ALL_PRODUCTS;
 
 function BoothPlayer() {
-  const [productIdx, setProductIdx] = React.useState(IS_EMBED ? 0 : 3); // splash unless embedded
+  const splashIdx = PRODUCTS.findIndex(p => p.splash);
+  const [productIdx, setProductIdx] = React.useState(IS_EMBED ? 0 : (splashIdx < 0 ? 0 : splashIdx)); // splash unless embedded
   const [scene,      setScene]      = React.useState(1);
   const [playing,    setPlaying]    = React.useState(true);
   const [progress,   setProgress]   = React.useState(0);

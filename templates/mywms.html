@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block nav_mywms_class %}is-active{% endblock %}
+
+{% block title %}myWMS — Warehouse &amp; Inventory · mhare tech{% endblock %}
+{% block description %}A warehouse and inventory system built for the SADC reality — receiving, putaway, picking and dispatch, with real-time location and cold-chain proof. The warehouse leg of one dock-to-door logistics suite. In development.{% endblock %}
+
+{% block content %}
+
+<!-- ── Product Header ──────────────────────────────── -->
+<div class="product-page-header product-page-header--hero product-page-header--wms">
+  <div class="product-page-header-bg"></div>
+  <div class="product-page-header-overlay"></div>
+  <div class="container">
+    <a href="{% url 'index' %}" class="product-page-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to products
+    </a>
+    <div class="product-page-eyebrow"><span class="live-dot"></span> Coming soon · in development</div>
+    <h1 class="product-page-title">Dock to door. <span class="hero-gradient">One chain that doesn't break.</span></h1>
+    <p class="product-page-sub">myWMS is the warehouse leg of the Mhare Tech suite — receiving, putaway, picking and dispatch, joined to fleet tracking and last-mile delivery on one login. So when a customer asks "where's my pallet?", there's one answer.</p>
+  </div>
+</div>
+
+<!-- ── What is myWMS ───────────────────────────────── -->
+<section class="product-split-section">
+  <div class="container">
+    <div class="product-split" style="align-items:start;">
+      <div class="split-content">
+        <p class="section-label">myWMS · Overview</p>
+        <h2 class="split-title">Warehouse, fleet and last-mile — finally on one login.</h2>
+        <p class="split-desc">Most operations run the warehouse, the trucks and the last mile on three disconnected systems, so nobody has a single answer to "where is it?". myWMS is built to close that gap — one pallet, one identity, from your dock onto your truck to your customer's door.</p>
+        <p class="split-desc">It's designed for the Southern African reality: offline-first capture that survives load-shedding, chain-of-custody that turns shrinkage into something you can see, and a tiered approach that lets you start on a phone and scale to real-time location only where you need it.</p>
+        <ul class="split-features">
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Receiving &amp; directed putaway against the ASN — barcode or QR</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Bin-sequenced picking, packing checks and dispatch with proof of handover</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cycle counting and live stock accuracy across multi-client 3PL operations</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Optional BLE-mesh RTLS — real aisle/rack location to 1–5 metres</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cold-chain temperature &amp; humidity logging across storage and transport</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One tenancy with myTrack &amp; myRoutes for true dock-to-door visibility</li>
+        </ul>
+      </div>
+
+      <div class="split-content">
+        <p class="section-label">Who it's for</p>
+        <h2 class="split-title">Built for the SADC distribution reality.</h2>
+        <p class="split-desc">3PLs and distribution centres carrying high-value, regulated or cold-chain stock — operations where load-shedding stalls picking, warehouse shrinkage has become a strategic cost, and proving a cold-chain claim is still a manual exercise.</p>
+        <p class="split-desc"><strong>myWMS is in active development.</strong> We're building it the way we build everything at Mhare Tech — alongside the operators who'll run it. We're onboarding a small number of design partners now to pilot it on a single site before it goes wide.</p>
+        <p class="split-desc">It joins myTrack and myRoutes as the third product in the suite: software we design, build and operate ourselves, shaped by real operational feedback.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Feature Grid ────────────────────────────────── -->
+<section class="deep-dive">
+  <div class="container">
+    <div style="text-align:center;max-width:680px;margin:0 auto;">
+      <p class="section-label">What we're building</p>
+      <h2 class="section-title">From the dock <span class="section-gradient">to the door</span></h2>
+      <p class="section-sub" style="margin:0 auto;">Each capability the slide pack below walks through — here's what it's designed to do for your warehouse.</p>
+    </div>
+
+    <div class="product-features">
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg></div>
+        <h3>Receiving &amp; putaway</h3>
+        <p>Match goods against the ASN as they land, raise a goods-received note on the spot, and let myWMS direct every pallet to the right bin — short and over-deliveries flagged the moment they happen.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h9"/></svg></div>
+        <h3>Picking &amp; dispatch</h3>
+        <p>Bin-sequenced pick paths cut the walking, packing checks catch errors before the door, and a proof-of-handover signature closes the loop cleanly with myRoutes on the last mile.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s-7-6.5-7-12a7 7 0 1114 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>Real-time location</h3>
+        <p>An optional Teltonika EYE BLE-mesh layer locates pallets to the aisle and rack — 1–5 metres — and self-heals when WiFi drops. Chain-of-custody from rack to recipient turns shrinkage visible.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13.5V5a2 2 0 014 0v8.5a4 4 0 11-4 0z"/><path d="M12 5v9"/></svg></div>
+        <h3>Cold-chain proof</h3>
+        <p>EN12830-certified EYE sensors log temperature and humidity continuously — across the warehouse and the truck — with 0.5 °C accuracy. A compliance claim becomes a record, not an argument.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 17H7A5 5 0 017 7h2"/><path d="M15 7h2a5 5 0 010 10h-2"/><path d="M8 12h8"/></svg></div>
+        <h3>Dock-to-door suite</h3>
+        <p>One multi-tenant login across myWMS, myTrack and myRoutes. The pallet you receive is the pallet on the truck is the pallet at the customer's door — one identity, one answer to "where is it?".</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div>
+        <h3>Tiered to your operation</h3>
+        <p>Start on barcode to replace the spreadsheets, add fleet and last-mile when you need dock-to-door, and layer RTLS onto only your highest-value or temperature-sensitive aisles. No rip-and-replace.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% include "_slidepack.html" with pack_id="mywms" pack_name="myWMS" pack_sub="A first look at the dock-to-door story — receiving, picking, real-time location, cold-chain proof and the tiered rollout, one scene at a time." %}
+
+<!-- ── CTA ────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="hero-bg"></div>
+  <div class="container cta-content">
+    <div class="hero-eyebrow">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+      Design partners welcome
+    </div>
+    <h2 class="cta-headline">Pilot <span class="cta-gradient">myWMS</span> on one site — 90 days.</h2>
+    <p class="cta-sub">myWMS is in development and we're choosing a handful of design partners to shape it. If you run a DC and want dock-to-door that doesn't break, let's pick the site together.</p>
+    <a href="mailto:sales@mhareconsulting.co.za?subject=myWMS%20design%20partner" class="cta-btn">
+      Become a design partner — sales@mhareconsulting.co.za
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+{% endblock %}

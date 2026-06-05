@@ -57,6 +57,10 @@ def kasistock(request):
     return render(request, 'kasistock.html')
 
 
+def mywms(request):
+    return render(request, 'mywms.html')
+
+
 @xframe_options_sameorigin
 def sloane_loop(request):
     # Embedded as a same-origin iframe on the product pages (?product=<id>),
