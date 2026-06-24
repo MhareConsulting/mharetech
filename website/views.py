@@ -49,6 +49,10 @@ def mytrack(request):
     return render(request, 'mytrack.html')
 
 
+def mytrack_fleet(request):
+    return render(request, 'mytrack_fleet.html')
+
+
 def myroutes(request):
     return render(request, 'myroutes.html')
 

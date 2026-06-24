@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block nav_mytrack_class %}is-active{% endblock %}
+
+{% block title %}myTrack for Fleets — Accountability across every shift · mhare tech{% endblock %}
+{% block description %}One accountable record for mixed fleets running rotating shifts: live GPS, driver-to-vehicle assignment, trip history and route playback so you always know which vehicle went where, and who was behind the wheel.{% endblock %}
+
+{% block content %}
+
+<!-- ── Product Header ──────────────────────────────── -->
+<div class="product-page-header product-page-header--hero product-page-header--track">
+  <div class="product-page-header-bg"></div>
+  <div class="product-page-header-overlay"></div>
+  <div class="container">
+    <a href="{% url 'mytrack' %}" class="product-page-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to myTrack
+    </a>
+    <div class="product-page-eyebrow"><span class="live-dot"></span> myTrack for fleets</div>
+    <h1 class="product-page-title">Every vehicle, every shift, <span class="hero-gradient">fully accounted for</span></h1>
+    <p class="product-page-sub">Buses, minibuses and light vehicles. Hundreds of drivers on rotating shifts, swapping keys between them. myTrack turns that constant movement into one clear, accountable record — so you always know which vehicle went where, and who was behind the wheel.</p>
+  </div>
+</div>
+
+<!-- ── The operational reality ─────────────────────── -->
+<section class="product-split-section">
+  <div class="container">
+    <div class="product-split" style="align-items:start;">
+      <div class="split-content">
+        <p class="section-label">The reality on the ground</p>
+        <h2 class="split-title">A fleet that never stops changing hands.</h2>
+        <p class="split-desc">When a few hundred drivers run different shifts and exchange vehicles through the day, the paper trail breaks down fast. By the time a question comes up — a complaint, a fuel spike, a vehicle that came back late — nobody can say for certain who had which vehicle, or where it actually went.</p>
+        <p class="split-desc">That uncertainty is where cost hides: extra kilometres, after-hours use, wear that no one is answerable for. The fix isn't more forms — it's a record that writes itself.</p>
+      </div>
+
+      <div class="split-content">
+        <p class="section-label">What myTrack gives you</p>
+        <h2 class="split-title">One record, written automatically.</h2>
+        <p class="split-desc">myTrack ties every kilometre to a vehicle, a shift and a driver — without anyone filling in a logbook. The same live data that shows dispatch the fleet moving becomes the history you can look back on whenever a question is asked.</p>
+        <ul class="split-features">
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Every vehicle on one live map, updating as it moves</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Driver-to-vehicle assignment per shift, so the record knows who had what</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Full trip history with route playback — replay any journey, any day</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Depot and zone geofencing with entry, exit and after-hours activity</li>
+          <li><span class="feat-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Automated reports — no manual log reviews at month-end</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Audit trail (route history, woven in) ─────────── -->
+<section class="product-split-section product-split-section--alt">
+  <div class="container">
+    <div class="product-split" style="align-items:start;">
+      <div class="split-content">
+        <p class="section-label">Trip history &amp; route playback</p>
+        <h2 class="split-title">Every trip stays on the record.</h2>
+        <p class="split-desc">myTrack keeps the full route of every journey — the path taken, the stops made, the time spent, the distance covered. Pick any vehicle and any date and replay exactly where it went, turn by turn.</p>
+        <p class="split-desc">It means a vehicle's movements are never a mystery. Routine trips look routine; anything outside the normal pattern — an unexpected detour, a journey after the shift has ended — stands out on its own, without anyone having to go looking. The record simply answers the question for you.</p>
+        <p class="split-desc">For an operation with vehicles in constant motion, that's the difference between trusting the fleet and being able to show it.</p>
+      </div>
+      <div class="split-content">
+        <p class="section-label">See it move</p>
+        <h2 class="split-title">The live map and the route trace.</h2>
+        <p class="split-desc">The same view dispatch watches in real time is the view you scroll back through later. Below is the live booth walkthrough — the fleet map and traced routes, exactly as the platform shows them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "_slidepack.html" with pack_id="mytrack" pack_name="myTrack" pack_sub="The live walkthrough we ran at the 22 on Sloane expo — the fleet map, traced routes and the signals myTrack turns into an accountable record, one scene at a time." %}
+
+<!-- ── Feature Grid ────────────────────────────────── -->
+<section class="deep-dive">
+  <div class="container">
+    <div style="text-align:center;max-width:680px;margin:0 auto;">
+      <p class="section-label">Built for fleets that answer for every kilometre</p>
+      <h2 class="section-title">From the depot gate <span class="section-gradient">to the day's last shift</span></h2>
+      <p class="section-sub" style="margin:0 auto;">The capabilities that matter when vehicles change hands all day and every trip needs to be accountable.</p>
+    </div>
+
+    <div class="product-features">
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s-7-6.5-7-12a7 7 0 1114 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>Live GPS map</h3>
+        <p>Your whole fleet — buses, minibuses and light vehicles — on one screen, updating the moment a vehicle moves. Satellite, street and dark modes suit any control-room setup.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a9 9 0 019 9M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg></div>
+        <h3>Trip history &amp; route playback</h3>
+        <p>Every journey is kept in full — route, stops, distance and time. Replay any vehicle on any date and see exactly where it went, so a movement is never left unexplained.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/></svg></div>
+        <h3>Driver &amp; vehicle assignment</h3>
+        <p>Tie each shift to the driver and the vehicle they took out. With keys changing hands all day, the record always knows who was responsible for which trip.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s-7-6-7-13a7 7 0 1114 0c0 7-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+        <h3>Geofencing &amp; after-hours activity</h3>
+        <p>Draw depots, routes and zones. myTrack logs every entry and exit, and surfaces movement outside operating hours — so activity beyond the working day is visible at a glance.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Driver safety rankings</h3>
+        <p>Harsh braking, acceleration and speeding are weighted into a clean 7-day driver league with 30 days of history behind every score — coaching from data, not guesswork.</p>
+      </div>
+
+      <div class="product-feature">
+        <div class="product-feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8"/></svg></div>
+        <h3>Automated reports</h3>
+        <p>Daily, weekly and monthly digests land by email and WhatsApp — distance, trips, exceptions and compliance — so the audit trail is ready before anyone asks for it.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="hero-bg"></div>
+  <div class="container cta-content">
+    <div class="hero-eyebrow">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+      Get in touch
+    </div>
+    <h2 class="cta-headline">Ready to account for every <span class="cta-gradient">vehicle and shift</span>?</h2>
+    <p class="cta-sub">Talk to the team that builds and operates myTrack every day. We'll show you exactly how it fits a fleet your size.</p>
+    <a href="mailto:sales@mhareconsulting.co.za" class="cta-btn">
+      Contact us — sales@mhareconsulting.co.za
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+{% endblock %}
