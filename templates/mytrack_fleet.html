@@ -6,12 +6,101 @@
 {% block title %}myTrack for Fleets — Accountability across every shift · mhare tech{% endblock %}
 {% block description %}One accountable record for mixed fleets running rotating shifts: live GPS, driver-to-vehicle assignment, trip history and route playback so you always know which vehicle went where, and who was behind the wheel.{% endblock %}
 
+{% block body_class %}fleet-brochure{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Fuller width on this brochure only — content sections + hero, not nav/footer */
+  .fleet-brochure section > .container,
+  .fleet-brochure .product-page-header > .container { max-width: 1340px; }
+  .fleet-brochure .product-page-title { max-width: 780px; }
+  .fleet-brochure .product-page-sub { max-width: 660px; }
+  .fleet-brochure .product-split { gap: 88px; }
+
+  /* Hero illustration */
+  .fleet-brochure .product-page-header--hero { min-height: 480px; }
+  .fleet-hero-art {
+    position: absolute; right: clamp(16px, 5vw, 96px); bottom: 44px;
+    width: 42%; max-width: 600px; z-index: 1; pointer-events: none;
+  }
+  @media (max-width: 1024px) { .fleet-hero-art { display: none; } }
+
+  /* Mixed-fleet vehicle strip */
+  .fleet-strip-head { max-width: 640px; margin-bottom: 40px; }
+  .fleet-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .fleet-card {
+    position: relative; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 18px; padding: 24px 26px 28px;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  .fleet-card:hover {
+    border-color: rgba(80, 65, 217, 0.4); transform: translateY(-4px);
+    box-shadow: 0 18px 44px rgba(80, 65, 217, 0.12);
+  }
+  .fleet-card-bg { position: absolute; inset: 0; background: var(--brand-gradient-soft); opacity: .55; z-index: 0; }
+  .fleet-card > :not(.fleet-card-bg) { position: relative; z-index: 1; }
+  .fleet-card-art { width: 100%; height: auto; margin-bottom: 16px; }
+  .fleet-card h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 6px; }
+  .fleet-card p { font-size: 0.92rem; color: var(--muted); line-height: 1.55; }
+  @media (max-width: 860px) { .fleet-cards { grid-template-columns: 1fr; } }
+
+  /* Route-trace mini map in the audit section */
+  .fleet-route-art { width: 100%; height: auto; margin-top: 10px; border-radius: 16px; display: block; }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <!-- ── Product Header ──────────────────────────────── -->
 <div class="product-page-header product-page-header--hero product-page-header--track">
   <div class="product-page-header-bg"></div>
   <div class="product-page-header-overlay"></div>
+
+  <svg class="fleet-hero-art" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="fhBus" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5041d9"/><stop offset=".55" stop-color="#8a3cc9"/><stop offset="1" stop-color="#f7357b"/>
+      </linearGradient>
+      <linearGradient id="fhRoute" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#f9ae1f"/><stop offset="1" stop-color="#f7357b"/>
+      </linearGradient>
+    </defs>
+    <!-- traced route -->
+    <path d="M64 332 C 180 312, 150 196, 296 182 S 470 158, 540 72" stroke="url(#fhRoute)" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 15" opacity=".95"/>
+    <!-- ground -->
+    <line x1="40" y1="356" x2="560" y2="356" stroke="rgba(11,1,70,.12)" stroke-width="3" stroke-linecap="round"/>
+    <!-- start pin -->
+    <g transform="translate(64,332)">
+      <path d="M0 2 C -11 -13 -15 -19 -15 -26 a15 15 0 1 1 30 0 c0 7 -4 13 -15 28 Z" fill="#5041d9"/>
+      <circle cx="0" cy="-26" r="6" fill="#fff"/>
+    </g>
+    <!-- destination pin + live ping -->
+    <g transform="translate(540,72)">
+      <circle cx="0" cy="-26" r="14" fill="none" stroke="#f7357b" stroke-width="2" opacity=".6">
+        <animate attributeName="r" values="14;30;14" dur="2.6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values=".6;0;.6" dur="2.6s" repeatCount="indefinite"/>
+      </circle>
+      <path d="M0 2 C -11 -13 -15 -19 -15 -26 a15 15 0 1 1 30 0 c0 7 -4 13 -15 28 Z" fill="#f7357b"/>
+      <circle cx="0" cy="-26" r="6" fill="#fff"/>
+    </g>
+    <!-- bus -->
+    <g transform="translate(150,230)">
+      <ellipse cx="150" cy="116" rx="142" ry="12" fill="rgba(11,1,70,.10)"/>
+      <rect x="6" y="6" width="288" height="94" rx="18" fill="url(#fhBus)"/>
+      <rect x="26" y="16" width="150" height="12" rx="6" fill="rgba(255,255,255,.42)"/>
+      <g fill="#ffffff" opacity=".92">
+        <rect x="26" y="40" width="44" height="32" rx="6"/>
+        <rect x="78" y="40" width="44" height="32" rx="6"/>
+        <rect x="130" y="40" width="44" height="32" rx="6"/>
+        <rect x="182" y="40" width="44" height="32" rx="6"/>
+      </g>
+      <rect x="234" y="40" width="34" height="56" rx="6" fill="rgba(255,255,255,.55)"/>
+      <circle cx="80" cy="100" r="20" fill="#0b0146"/><circle cx="80" cy="100" r="8" fill="#fff"/>
+      <circle cx="222" cy="100" r="20" fill="#0b0146"/><circle cx="222" cy="100" r="8" fill="#fff"/>
+    </g>
+  </svg>
+
   <div class="container">
     <a href="{% url 'mytrack' %}" class="product-page-back">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -22,6 +111,76 @@
     <p class="product-page-sub">Buses, minibuses and light vehicles. Hundreds of drivers on rotating shifts, swapping keys between them. myTrack turns that constant movement into one clear, accountable record — so you always know which vehicle went where, and who was behind the wheel.</p>
   </div>
 </div>
+
+<!-- ── Mixed-fleet vehicle strip ───────────────────── -->
+<section>
+  <div class="container">
+    <div class="fleet-strip-head">
+      <p class="section-label">One platform, every vehicle type</p>
+      <h2 class="section-title">Built for a <span class="section-gradient">mixed fleet</span></h2>
+      <p class="section-sub" style="margin:0;">Buses, minibuses and light vehicles run side by side on myTrack — the same live tracking, trip history and accountability across every class of vehicle you operate.</p>
+    </div>
+
+    <div class="fleet-cards">
+
+      <div class="fleet-card">
+        <div class="fleet-card-bg"></div>
+        <svg class="fleet-card-art" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><linearGradient id="vcBus" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5041d9"/><stop offset="1" stop-color="#f7357b"/></linearGradient></defs>
+          <ellipse cx="140" cy="138" rx="120" ry="10" fill="rgba(11,1,70,.08)"/>
+          <rect x="24" y="26" width="232" height="98" rx="16" fill="url(#vcBus)"/>
+          <rect x="40" y="34" width="120" height="11" rx="5.5" fill="rgba(255,255,255,.4)"/>
+          <g fill="#fff" opacity=".92">
+            <rect x="40" y="54" width="36" height="30" rx="5"/>
+            <rect x="84" y="54" width="36" height="30" rx="5"/>
+            <rect x="128" y="54" width="36" height="30" rx="5"/>
+            <rect x="172" y="54" width="36" height="30" rx="5"/>
+          </g>
+          <rect x="216" y="54" width="28" height="58" rx="5" fill="rgba(255,255,255,.55)"/>
+          <circle cx="86" cy="124" r="18" fill="#0b0146"/><circle cx="86" cy="124" r="7" fill="#fff"/>
+          <circle cx="200" cy="124" r="18" fill="#0b0146"/><circle cx="200" cy="124" r="7" fill="#fff"/>
+        </svg>
+        <h3>Buses</h3>
+        <p>Full-size coaches and commuter buses — live position, route history and driver behaviour on every long run.</p>
+      </div>
+
+      <div class="fleet-card">
+        <div class="fleet-card-bg"></div>
+        <svg class="fleet-card-art" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><linearGradient id="vcVan" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7b3fd0"/><stop offset="1" stop-color="#f7357b"/></linearGradient></defs>
+          <ellipse cx="140" cy="138" rx="118" ry="10" fill="rgba(11,1,70,.08)"/>
+          <path d="M34 116 V 56 Q34 42 50 42 H 168 L 246 70 V 116 Z" fill="url(#vcVan)"/>
+          <path d="M176 50 L222 68 H 178 Q176 68 176 64 Z" fill="rgba(255,255,255,.78)"/>
+          <g fill="#fff" opacity=".92">
+            <rect x="50" y="56" width="40" height="30" rx="5"/>
+            <rect x="98" y="56" width="40" height="30" rx="5"/>
+            <rect x="146" y="56" width="22" height="30" rx="5"/>
+          </g>
+          <circle cx="84" cy="118" r="18" fill="#0b0146"/><circle cx="84" cy="118" r="7" fill="#fff"/>
+          <circle cx="206" cy="118" r="18" fill="#0b0146"/><circle cx="206" cy="118" r="7" fill="#fff"/>
+        </svg>
+        <h3>Minibuses</h3>
+        <p>Taxis and shuttle kombis swapping drivers all day — every shift tied to a vehicle and a trip log.</p>
+      </div>
+
+      <div class="fleet-card">
+        <div class="fleet-card-bg"></div>
+        <svg class="fleet-card-art" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><linearGradient id="vcBak" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5041d9"/><stop offset="1" stop-color="#f9ae1f"/></linearGradient></defs>
+          <ellipse cx="140" cy="138" rx="118" ry="10" fill="rgba(11,1,70,.08)"/>
+          <rect x="130" y="84" width="120" height="34" rx="6" fill="url(#vcBak)"/>
+          <path d="M30 118 V 70 Q30 60 40 60 H 96 L 124 88 V 118 Z" fill="url(#vcBak)"/>
+          <path d="M48 82 V 72 Q48 70 52 70 H 92 L 112 88 H 48 Z" fill="rgba(255,255,255,.8)"/>
+          <circle cx="78" cy="120" r="18" fill="#0b0146"/><circle cx="78" cy="120" r="7" fill="#fff"/>
+          <circle cx="208" cy="120" r="18" fill="#0b0146"/><circle cx="208" cy="120" r="7" fill="#fff"/>
+        </svg>
+        <h3>Light vehicles</h3>
+        <p>Bakkies, vans and support cars — the same geofencing and after-hours visibility as the rest of the fleet.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- ── The operational reality ─────────────────────── -->
 <section class="product-split-section">
@@ -65,6 +224,44 @@
         <p class="section-label">See it move</p>
         <h2 class="split-title">The live map and the route trace.</h2>
         <p class="split-desc">The same view dispatch watches in real time is the view you scroll back through later. Below is the live booth walkthrough — the fleet map and traced routes, exactly as the platform shows them.</p>
+
+        <svg class="fleet-route-art" viewBox="0 0 560 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="frTrace" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#5041d9"/><stop offset="1" stop-color="#f7357b"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="560" height="300" rx="16" fill="#0b0146"/>
+          <!-- faint street grid -->
+          <g stroke="rgba(255,255,255,.06)" stroke-width="1">
+            <path d="M0 60H560M0 120H560M0 180H560M0 240H560"/>
+            <path d="M80 0V300M180 0V300M280 0V300M380 0V300M480 0V300"/>
+          </g>
+          <!-- a couple of arterials -->
+          <g stroke="rgba(255,255,255,.12)" stroke-width="6" fill="none" stroke-linecap="round">
+            <path d="M0 210 Q200 170 560 140"/>
+            <path d="M300 0 Q280 150 320 300"/>
+          </g>
+          <!-- traced route -->
+          <path d="M70 250 C 150 220, 150 130, 250 120 S 410 110, 500 56" stroke="url(#frTrace)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <!-- start marker -->
+          <circle cx="70" cy="250" r="8" fill="#5041d9"/><circle cx="70" cy="250" r="3.2" fill="#fff"/>
+          <!-- moving vehicle marker -->
+          <circle cx="250" cy="120" r="20" fill="#f7357b" opacity=".18"/>
+          <circle cx="250" cy="120" r="7.5" fill="#f7357b"/><circle cx="250" cy="120" r="3" fill="#fff"/>
+          <!-- destination pin -->
+          <g transform="translate(500,56)">
+            <path d="M0 4 C -9 -8 -12 -13 -12 -19 a12 12 0 1 1 24 0 c0 6 -3 11 -12 23 Z" fill="#f9ae1f"/>
+            <circle cx="0" cy="-19" r="4.6" fill="#0b0146"/>
+          </g>
+          <!-- live chip -->
+          <g>
+            <rect x="20" y="20" width="132" height="30" rx="8" fill="rgba(255,255,255,.08)" stroke="rgba(247,53,123,.45)"/>
+            <circle cx="38" cy="35" r="4" fill="#f7357b"/>
+            <text x="52" y="39" font-family="Montserrat, sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#f7357b">LIVE TRACKING</text>
+          </g>
+          <text x="20" y="284" font-family="monospace" font-size="10" fill="rgba(255,255,255,.35)">TRIP #4821 · 26.2041° S, 28.0473° E</text>
+        </svg>
       </div>
     </div>
   </div>
