@@ -1,0 +1,339 @@
+{% extends "internal/base_internal.html" %}
+{% load static %}
+{% block title %}Needs Assessment · Mhare Internal{% endblock %}
+
+{% block content %}
+<div class="in-container">
+  <p class="in-eyebrow">myTrack</p>
+  <h1 class="in-h1">Business Needs Assessment</h1>
+
+  {% if thanks %}
+  <div class="in-panel">
+    <div class="in-thanks">
+      <div class="in-tick" aria-hidden="true">✓</div>
+      <h2>Assessment captured</h2>
+      <p class="in-lead" style="margin:8px auto 18px;">The completed assessment has been emailed to the team. You can start another, or open the pricing toolkit to build a quote.</p>
+      <div class="in-toolbar" style="justify-content:center;">
+        <a class="in-btn" href="{% url 'internal_pricing' %}">Open Pricing Toolkit</a>
+        <a class="in-btn in-btn--ghost" href="{% url 'internal_assessment' %}">New assessment</a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p class="in-lead">Capture the prospect's requirements. Fields drive scope and pricing. Prefer the downloadable
+    <a href="{% url 'internal_downloads' %}">Word / PDF form</a> for field use with a signature.</p>
+
+  {% if form_error %}<div class="in-alert in-alert--error" role="alert">{{ form_error }}</div>{% endif %}
+
+  <form id="in-assessment" method="post" action="{% url 'internal_assessment_submit' %}">
+    {% csrf_token %}
+    <div class="in-honeypot" aria-hidden="true" style="position:absolute;left:-9999px;">
+      <label for="in-hp">Leave blank</label>
+      <input type="text" name="contact_hp" id="in-hp" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <!-- 1. Client -->
+    <div class="in-panel">
+      <h2>1 · Client / Company Profile</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field in-field--full"><label>Company name *</label><input type="text" name="company" required value="{{ form_values.company|default:'' }}"></div>
+        <div class="in-field"><label>Industry / sector</label><input type="text" name="industry" value="{{ form_values.industry|default:'' }}"></div>
+        <div class="in-field"><label>Company reg. no.</label><input type="text" name="regno" value="{{ form_values.regno|default:'' }}"></div>
+        <div class="in-field"><label>Primary contact</label><input type="text" name="contact_name" value="{{ form_values.contact_name|default:'' }}"></div>
+        <div class="in-field"><label>Role</label><input type="text" name="contact_role" value="{{ form_values.contact_role|default:'' }}"></div>
+        <div class="in-field"><label>Phone</label><input type="tel" name="contact_phone" value="{{ form_values.contact_phone|default:'' }}"></div>
+        <div class="in-field"><label>Email *</label><input type="email" name="contact_email" required value="{{ form_values.contact_email|default:'' }}"></div>
+        <div class="in-field"><label>Decision-maker (if different)</label><input type="text" name="decision_maker" value="{{ form_values.decision_maker|default:'' }}"></div>
+        <div class="in-field"><label>Billing contact &amp; email</label><input type="text" name="billing" value="{{ form_values.billing|default:'' }}"></div>
+        <div class="in-field"><label>No. of branches / depots</label><input type="number" min="0" name="depots_count" value="{{ form_values.depots_count|default:'' }}"></div>
+        <div class="in-field"><label>Head-office location</label><input type="text" name="ho_location" value="{{ form_values.ho_location|default:'' }}"></div>
+      </div>
+    </div>
+
+    <!-- 2. Fleet -->
+    <div class="in-panel">
+      <h2>2 · Fleet Profile</h2>
+      <p class="in-panel-sub">One row per vehicle group. Tank size + CAN/OBD availability drive hardware and unit cost.</p>
+      <div class="in-table-wrap">
+        <table class="in-table" id="in-fleet">
+          <thead><tr>{% for key, label in fleet_cols %}<th>{{ label }}</th>{% endfor %}</tr></thead>
+          <tbody>
+          {% for i in fleet_rows %}
+            <tr>
+              {% for key, label in fleet_cols %}
+              <td>
+                {% if key == 'can' or key == 'obd' %}
+                  <select name="fleet_{{ i }}_{{ key }}"><option value=""></option><option>Y</option><option>N</option></select>
+                {% else %}
+                  <input type="text" name="fleet_{{ i }}_{{ key }}">
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="in-table-actions"><button type="button" class="in-btn in-btn--ghost in-btn--sm" data-add-row="in-fleet" data-prefix="fleet">+ Add vehicle group</button></div>
+    </div>
+
+    <!-- 3. Operational -->
+    <div class="in-panel">
+      <h2>3 · Operational Context</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field in-field--full"><label>Operating provinces / regions</label><input type="text" name="regions" value="{{ form_values.regions|default:'' }}"></div>
+        <div class="in-field in-field--full">
+          <span class="in-label">Route profile</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="checkbox" name="route_profile" value="Local / urban"> Local / urban</label>
+            <label class="in-pill"><input type="checkbox" name="route_profile" value="Long-haul"> Long-haul</label>
+            <label class="in-pill"><input type="checkbox" name="route_profile" value="Cross-border (roaming)"> Cross-border (roaming)</label>
+          </div>
+        </div>
+        <div class="in-field in-field--full"><label>Depots &amp; yards (locations)</label><input type="text" name="yards" value="{{ form_values.yards|default:'' }}"></div>
+        <div class="in-field"><label>Hours of operation</label><input type="text" name="hours" value="{{ form_values.hours|default:'' }}"></div>
+        <div class="in-field"><label>Shift pattern</label><input type="text" name="shift" value="{{ form_values.shift|default:'' }}"></div>
+      </div>
+    </div>
+
+    <!-- 4. Objectives -->
+    <div class="in-panel">
+      <h2>4 · Objectives &amp; Pain Points</h2>
+      <p class="in-panel-sub">Rank priorities 1 (highest) to 5. Leave blank if not relevant.</p>
+      <div class="in-fieldgrid">
+        {% for key, label in objectives %}
+        <div class="in-field"><label>{{ label }}</label><input type="number" min="1" max="5" name="priority_{{ key }}"></div>
+        {% endfor %}
+        <div class="in-field in-field--full"><label>Other objectives</label><input type="text" name="objectives_other"></div>
+      </div>
+    </div>
+
+    <!-- 5. Features -->
+    <div class="in-panel">
+      <h2>5 · Feature Requirements</h2>
+      <p class="in-panel-sub">Mark each feature as Must-have, Nice-to-have, or Not needed.</p>
+      <div class="in-table-wrap">
+        <table class="in-table">
+          <thead><tr><th>Feature</th>{% for val, lbl in feature_choices %}<th style="text-align:center;">{{ lbl }}</th>{% endfor %}</tr></thead>
+          <tbody>
+          {% for key, label in features %}
+            <tr>
+              <td>{{ label }}</td>
+              {% for val, lbl in feature_choices %}
+              <td style="text-align:center;"><input type="radio" name="feat_{{ key }}" value="{{ val }}"></td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6. Hardware -->
+    <div class="in-panel">
+      <h2>6 · Hardware Requirements</h2>
+      <p class="in-panel-sub">Base unit = Teltonika FMB tracker. Data source: CAN adapter (LV-CAN200) preferred, OBD plug for light vehicles, LLS fuel probe as fallback. Accessories: panic, immobiliser, RFID / iButton, temp sensor, backup battery.</p>
+      <div class="in-table-wrap">
+        <table class="in-table" id="in-hw">
+          <thead><tr>{% for key, label in hw_cols %}<th>{{ label }}</th>{% endfor %}</tr></thead>
+          <tbody>
+          {% for i in hw_rows %}
+            <tr>
+              {% for key, label in hw_cols %}
+              <td>
+                {% if key == 'source' %}
+                  <select name="hw_{{ i }}_{{ key }}"><option value=""></option><option>CAN</option><option>OBD</option><option>Probe</option><option>None</option></select>
+                {% else %}
+                  <input type="text" name="hw_{{ i }}_{{ key }}">
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="in-table-actions"><button type="button" class="in-btn in-btn--ghost in-btn--sm" data-add-row="in-hw" data-prefix="hw">+ Add group</button></div>
+    </div>
+
+    <!-- 7. Installation -->
+    <div class="in-panel">
+      <h2>7 · Installation Logistics</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field in-field--full">
+          <span class="in-label">Install location</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="checkbox" name="install_location" value="At depot (single site)"> At depot</label>
+            <label class="in-pill"><input type="checkbox" name="install_location" value="Multiple sites"> Multiple sites</label>
+            <label class="in-pill"><input type="checkbox" name="install_location" value="Mobile / on-site"> Mobile / on-site</label>
+          </div>
+        </div>
+        <div class="in-field"><label>No. of sites</label><input type="number" min="0" name="sites_count"></div>
+        <div class="in-field"><label>Furthest site (km)</label><input type="number" min="0" name="furthest_km"></div>
+        <div class="in-field in-field--full"><label>Vehicle downtime windows available</label><input type="text" name="downtime"></div>
+        <div class="in-field">
+          <span class="in-label">Certified auto-electrician on-site?</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="autoelec" value="Yes"> Yes</label>
+            <label class="in-pill"><input type="radio" name="autoelec" value="No"> No</label>
+          </div>
+        </div>
+        <div class="in-field in-field--full"><label>Scheduling notes / constraints</label><textarea name="sched_notes"></textarea></div>
+      </div>
+    </div>
+
+    <!-- 8. Connectivity -->
+    <div class="in-panel">
+      <h2>8 · Connectivity &amp; Data</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field">
+          <span class="in-label">SIM / data supplied by</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="sim_by" value="myTrack"> myTrack</label>
+            <label class="in-pill"><input type="radio" name="sim_by" value="Client"> Client</label>
+          </div>
+        </div>
+        <div class="in-field">
+          <span class="in-label">Cross-border roaming required?</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="roaming" value="Yes"> Yes</label>
+            <label class="in-pill"><input type="radio" name="roaming" value="No"> No</label>
+          </div>
+        </div>
+        <div class="in-field in-field--full"><label>Network coverage concerns in operating area</label><input type="text" name="coverage"></div>
+      </div>
+    </div>
+
+    <!-- 9. Integration -->
+    <div class="in-panel">
+      <h2>9 · Integration &amp; Reporting</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field in-field--full"><label>Existing systems (ERP / fuel cards / accounting)</label><input type="text" name="existing_systems"></div>
+        <div class="in-field">
+          <span class="in-label">API / integration needed?</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="api_needed" value="Yes"> Yes</label>
+            <label class="in-pill"><input type="radio" name="api_needed" value="No"> No</label>
+          </div>
+        </div>
+        <div class="in-field">
+          <span class="in-label">White-label / client branding?</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="whitelabel" value="Yes"> Yes</label>
+            <label class="in-pill"><input type="radio" name="whitelabel" value="No"> No</label>
+          </div>
+        </div>
+        <div class="in-field"><label>No. of platform users / logins</label><input type="number" min="0" name="users_count"></div>
+        <div class="in-field"><label>Report cadence</label><input type="text" name="report_cadence"></div>
+      </div>
+    </div>
+
+    <!-- 10. Compliance -->
+    <div class="in-panel">
+      <h2>10 · Compliance &amp; Data Governance</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field in-field--full">
+          <span class="in-label">POPIA consent process in place for driver tracking?</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="popia" value="Yes"> Yes</label>
+            <label class="in-pill"><input type="radio" name="popia" value="No"> No</label>
+            <label class="in-pill"><input type="radio" name="popia" value="Needs guidance"> Needs guidance</label>
+          </div>
+        </div>
+        <div class="in-field"><label>Required data-retention period</label><input type="text" name="retention"></div>
+        <div class="in-field"><label>Data owner</label><input type="text" name="data_owner"></div>
+      </div>
+    </div>
+
+    <!-- 11. Commercial -->
+    <div class="in-panel">
+      <h2>11 · Commercial</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field in-field--full"><label>Budget range / expectation</label><input type="text" name="budget"></div>
+        <div class="in-field">
+          <span class="in-label">Preferred contract term</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="contract_term" value="12 months"> 12 mo</label>
+            <label class="in-pill"><input type="radio" name="contract_term" value="24 months"> 24 mo</label>
+            <label class="in-pill"><input type="radio" name="contract_term" value="36 months"> 36 mo</label>
+          </div>
+        </div>
+        <div class="in-field">
+          <span class="in-label">Hardware billing preference</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="hw_billing" value="Upfront (once-off)"> Upfront</label>
+            <label class="in-pill"><input type="radio" name="hw_billing" value="Amortised into monthly"> Amortised</label>
+          </div>
+        </div>
+        <div class="in-field"><label>Payment terms</label><input type="text" name="payment_terms"></div>
+        <div class="in-field"><label>Billing entity</label><input type="text" name="billing_entity"></div>
+      </div>
+    </div>
+
+    <!-- 12. Support -->
+    <div class="in-panel">
+      <h2>12 · Service &amp; Support</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field in-field--full"><label>SLA / response-time expectations</label><input type="text" name="sla"></div>
+        <div class="in-field">
+          <span class="in-label">Training required?</span>
+          <div class="in-checkrow">
+            <label class="in-pill"><input type="radio" name="training" value="Yes - on-site"> On-site</label>
+            <label class="in-pill"><input type="radio" name="training" value="Yes - remote"> Remote</label>
+            <label class="in-pill"><input type="radio" name="training" value="No"> No</label>
+          </div>
+        </div>
+        <div class="in-field"><label>Support hours expected</label><input type="text" name="support_hours"></div>
+      </div>
+    </div>
+
+    <!-- 13. Sign-off -->
+    <div class="in-panel">
+      <h2>13 · Sign-off</h2>
+      <div class="in-fieldgrid">
+        <div class="in-field"><label>myTrack assessor</label><input type="text" name="assessor"></div>
+        <div class="in-field"><label>Date</label><input type="text" name="assessment_date" placeholder="dd/mm/yyyy"></div>
+      </div>
+    </div>
+
+    <div class="in-toolbar">
+      <button type="submit" class="in-btn" id="in-submit">Submit assessment</button>
+      <a class="in-btn in-btn--ghost" href="{% url 'internal_hub' %}">Cancel</a>
+    </div>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if not thanks %}
+<script>
+(function () {
+  // Add-row for the fleet / hardware tables (clones the last row, reindexes names).
+  document.querySelectorAll('[data-add-row]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var table = document.getElementById(btn.dataset.addRow);
+      var prefix = btn.dataset.prefix;
+      var body = table.tBodies[0];
+      var rows = body.querySelectorAll('tr');
+      if (rows.length >= 12) { btn.disabled = true; return; }
+      var idx = rows.length;
+      var clone = rows[rows.length - 1].cloneNode(true);
+      clone.querySelectorAll('input, select').forEach(function (el) {
+        var name = el.getAttribute('name') || '';
+        el.setAttribute('name', name.replace(/_\d+_/, '_' + idx + '_'));
+        if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = '';
+      });
+      body.appendChild(clone);
+    });
+  });
+
+  var form = document.getElementById('in-assessment');
+  if (form) form.addEventListener('submit', function () {
+    var b = document.getElementById('in-submit');
+    b.disabled = true; b.textContent = 'Submitting…';
+  });
+})();
+</script>
+{% endif %}
+{% endblock %}

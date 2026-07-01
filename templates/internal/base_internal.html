@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>{% block title %}Mhare Internal{% endblock %}</title>
+  {% load static %}
+  <link rel="icon" href="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Primary Icon.svg' %}" type="image/svg+xml" />
+  <link rel="stylesheet" href="{% static 'css/internal.css' %}" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+{% block chrome %}
+<nav class="in-nav">
+  <div class="in-container in-nav-inner">
+    <a href="{% url 'internal_hub' %}" class="in-brand">
+      <img src="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Primary Logo.svg' %}" alt="Mhare" class="in-brand-img" />
+      <span class="in-badge">Internal</span>
+    </a>
+    <ul class="in-links">
+      <li><a href="{% url 'internal_hub' %}" class="{% if active == 'hub' %}is-active{% endif %}">Hub</a></li>
+      <li><a href="{% url 'internal_assessment' %}" class="{% if active == 'assessment' %}is-active{% endif %}">Needs Assessment</a></li>
+      <li><a href="{% url 'internal_pricing' %}" class="{% if active == 'pricing' %}is-active{% endif %}">Pricing Toolkit</a></li>
+      <li><a href="{% url 'internal_downloads' %}" class="{% if active == 'downloads' %}is-active{% endif %}">Downloads</a></li>
+    </ul>
+    <a class="in-logout" href="{% url 'internal_logout' %}">Log out</a>
+  </div>
+</nav>
+{% endblock %}
+
+<main class="in-main">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="in-footer">
+  <div class="in-container">
+    <span>Mhare Tech · Internal tools · Confidential</span>
+    <span>internal.mharetech.co.za</span>
+  </div>
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

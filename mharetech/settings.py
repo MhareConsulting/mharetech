@@ -44,11 +44,17 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-g%nx=+_qy^jap3
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['mharetech.co.za', 'www.mharetech.co.za', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['mharetech.co.za', 'www.mharetech.co.za', 'sibanye.mharetech.co.za',
+                 'internal.mharetech.co.za', 'localhost', '127.0.0.1']
+if DEBUG:
+    # Allow *.localhost (e.g. internal.localhost) for local subdomain testing.
+    ALLOWED_HOSTS.append('.localhost')
 
 CSRF_TRUSTED_ORIGINS = [
     'https://mharetech.co.za',
     'https://www.mharetech.co.za',
+    'https://sibanye.mharetech.co.za',
+    'https://internal.mharetech.co.za',
 ]
 CSRF_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SAMESITE = 'Lax'
@@ -57,13 +63,21 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
     'website',
+    'internal',
 ]
+
+# Signed-cookie sessions — no database required (DATABASES is empty).
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # Swaps urlconf + enforces the password gate for the internal.* subdomain.
+    'internal.middleware.InternalGateMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -122,3 +136,12 @@ EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.environ.get('EXPO_LEAD_FROM', 'sales@mhareconsulting.co.za')
 EXPO_LEAD_TO = os.environ.get('EXPO_LEAD_TO', 'sales@mhareconsulting.co.za')
 EXPO_LEAD_FROM = os.environ.get('EXPO_LEAD_FROM', DEFAULT_FROM_EMAIL)
+
+# Internal tools subdomain (internal.mharetech.co.za)
+INTERNAL_PASSWORD = os.environ.get('INTERNAL_PASSWORD', '')
+INTERNAL_ASSESSMENT_TO = os.environ.get('INTERNAL_ASSESSMENT_TO', EXPO_LEAD_TO)
+
+# Local-dev aid: with no SMTP configured, print emails to the console so the
+# assessment form can be exercised end-to-end without a mail server.
+if DEBUG and not EMAIL_HOST:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

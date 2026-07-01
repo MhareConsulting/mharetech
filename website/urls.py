@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('mytrack/', views.mytrack, name='mytrack'),
     path('mytrack/fleet/', views.mytrack_fleet, name='mytrack_fleet'),
+    path('mytrack/sibanye/', views.mytrack_client, name='mytrack_client'),
     path('myroutes/', views.myroutes, name='myroutes'),
     path('kasistock/', views.kasistock, name='kasistock'),
     path('mywms/', views.mywms, name='mywms'),

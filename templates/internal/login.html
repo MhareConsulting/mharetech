@@ -1,0 +1,22 @@
+{% extends "internal/base_internal.html" %}
+{% load static %}
+{% block title %}Sign in · Mhare Internal{% endblock %}
+{% block chrome %}{% endblock %}
+
+{% block content %}
+<div class="in-container in-login-wrap">
+  <form class="in-login-card" method="post" action="{% url 'internal_login' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <img src="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Primary Logo.svg' %}" alt="Mhare" class="in-brand-img" />
+    <h1>Internal tools</h1>
+    <p>Enter the team password to continue.</p>
+    {% if error %}<div class="in-alert in-alert--error">{{ error }}</div>{% endif %}
+    <div class="in-field" style="margin-bottom:16px;">
+      <label for="in-pw">Password</label>
+      <input type="password" id="in-pw" name="password" autocomplete="current-password" autofocus required />
+    </div>
+    <button type="submit" class="in-btn in-btn--block">Sign in</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "internal/base_internal.html" %}
+{% load static %}
+{% block title %}Downloads · Mhare Internal{% endblock %}
+
+{% block content %}
+<div class="in-container">
+  <p class="in-eyebrow">Resources</p>
+  <h1 class="in-h1">Downloads library</h1>
+  <p class="in-lead">Offline versions of the myTrack sales toolkit. The live form and calculator are usually quicker — these are for printing, signatures and editing.</p>
+
+  <div class="in-grid">
+    <div class="in-card">
+      <h3>Needs Assessment (Word)</h3>
+      <p>Editable 13-section requirements form.</p>
+      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% static 'internal/downloads/myTrack_Needs_Assessment.docx' %}" download>Download .docx</a></div>
+    </div>
+    <div class="in-card">
+      <h3>Needs Assessment (PDF)</h3>
+      <p>Fillable / printable form with signature block.</p>
+      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% static 'internal/downloads/myTrack_Needs_Assessment.pdf' %}" download>Download .pdf</a></div>
+    </div>
+    <div class="in-card">
+      <h3>Pricing Toolkit (Excel)</h3>
+      <p>Cost inputs, quote builder, tier rate card and quote summary.</p>
+      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% static 'internal/downloads/myTrack_Pricing_Toolkit.xlsx' %}" download>Download .xlsx</a></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

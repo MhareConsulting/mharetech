@@ -41,7 +41,13 @@ def _expo_context(
     }
 
 
+CLIENT_HOSTS = {'sibanye.mharetech.co.za'}
+
+
 def index(request):
+    # The Sibanye subdomain serves the co-branded pitch page at its root.
+    if request.get_host().split(':')[0].lower() in CLIENT_HOSTS:
+        return mytrack_client(request)
     return render(request, 'index.html')
 
 
@@ -51,6 +57,15 @@ def mytrack(request):
 
 def mytrack_fleet(request):
     return render(request, 'mytrack_fleet.html')
+
+
+def mytrack_client(request):
+    # Private, co-branded pitch page — served at sibanye.mharetech.co.za
+    # and at /mytrack/sibanye/ for preview. Not linked in nav/footer.
+    return render(request, 'mytrack_client.html', {
+        'client_name': 'Sibanye-Stillwater',
+        'client_accent': '#AA985D',  # Sibanye brand gold
+    })
 
 
 def myroutes(request):
