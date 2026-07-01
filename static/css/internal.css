@@ -232,6 +232,19 @@ details.in-assumptions[open] summary { border-bottom:1px solid var(--border); }
 .in-slider-out .big { font-size:2rem; font-weight:800; color:var(--accent-hi); font-variant-numeric:tabular-nums; }
 .in-slider-out .sub { color:var(--muted-hi); font-size:.9rem; }
 
+/* Single subscription tile (updates with the slider) */
+.in-subtile { margin-top:18px; border:1px solid var(--border); border-radius:12px; overflow:hidden;
+  background:linear-gradient(135deg, rgba(80,65,217,.06), rgba(247,53,123,.05)); position:relative; padding:18px 20px; }
+.in-subtile::before { content:""; position:absolute; inset:0 auto 0 0; width:4px; background:var(--brand-gradient); }
+.in-subtile-head { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.in-subtile-name { font-weight:700; color:var(--ink); }
+.in-subtile-price { margin:8px 0 2px; }
+.in-subtile-price .amt { font-size:2.1rem; font-weight:800; color:var(--accent-hi); font-variant-numeric:tabular-nums; }
+.in-subtile-price .per { color:var(--muted); font-size:.9rem; }
+.in-subtile-meta { color:var(--muted-hi); font-size:.86rem; }
+
+.in-xp-cols { display:flex; flex-direction:column; gap:20px; }
+
 /* Tier / plan cards */
 .in-plan-grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); margin-top:16px; align-items:stretch; }
 .in-plan { display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border);

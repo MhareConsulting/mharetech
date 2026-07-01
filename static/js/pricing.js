@@ -179,20 +179,25 @@
   }
 
   function renderSlider(s) {
-    var sl = CFG.slider, unit = sl.unit;
+    var sl = CFG.slider, unit = sl.unit, one = unit.replace(/s$/, '');
     var start = Math.min(sl.max, Math.max(sl.min, s.units || sl.min));
     $('ph-slider').innerHTML =
       '<div class="in-slider-top"><span class="lab">' + esc(sl.label) + '</span><span class="val" id="xp-count"></span></div>' +
       '<input type="range" class="in-range" id="xp-range" min="' + sl.min + '" max="' + sl.max + '" step="' + sl.step + '" value="' + start + '">' +
       '<div class="in-range-scale"><span>' + sl.min + '</span><span>' + sl.max + '+</span></div>' +
-      '<div class="in-slider-out"><span class="big" id="xp-monthly"></span><span class="sub" id="xp-sub"></span></div>';
+      '<div class="in-subtile">' +
+        '<div class="in-subtile-head"><span class="in-subtile-name">' + esc(CFG.name) + ' subscription</span><span class="in-tier-tag" id="st-tier"></span></div>' +
+        '<div class="in-subtile-price"><span class="amt" id="st-monthly"></span><span class="per">/month</span></div>' +
+        '<div class="in-subtile-meta" id="st-meta"></div>' +
+      '</div>';
     var range = $('xp-range');
     function upd() {
       var u = parseInt(range.value, 10) || 0;
       var perUnit = s.listPerUnit * (1 - bandDisc(s.discBands, u) / 100);
       $('xp-count').textContent = u + ' ' + unit;
-      $('xp-monthly').textContent = zar(u * perUnit) + '/mo';
-      $('xp-sub').textContent = zar(perUnit) + ' per ' + unit.replace(/s$/, '') + '/mo · ' + tierName(u) + ' tier';
+      $('st-tier').textContent = tierName(u) + ' tier';
+      $('st-monthly').textContent = zar(u * perUnit);
+      $('st-meta').textContent = zar(perUnit) + ' per ' + one + '/month · ' + u + ' ' + unit;
     }
     range.addEventListener('input', upd);
     upd();
