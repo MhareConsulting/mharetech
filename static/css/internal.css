@@ -212,6 +212,48 @@ details.in-assumptions[open] summary { border-bottom:1px solid var(--border); }
   .in-h1 { font-size:1.55rem; }
 }
 
+/* ── Client pricing experiment (slider + tier cards) ─── */
+.in-xp { margin-top:40px; }
+.in-xp-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.in-xp-note { color:var(--muted); font-size:.8rem; }
+
+/* Usage slider */
+.in-slider { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px 24px; margin-top:16px; }
+.in-slider-top { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+.in-slider-top .lab { font-weight:600; color:var(--muted-hi); }
+.in-slider-top .val { font-weight:800; font-size:1.15rem; color:var(--ink); }
+.in-range { -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:999px;
+  background:linear-gradient(90deg, var(--digital-violet), var(--magenta)); margin:18px 0 6px; cursor:pointer; }
+.in-range::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff;
+  border:3px solid var(--accent); box-shadow:0 2px 6px rgba(11,1,70,.25); cursor:pointer; }
+.in-range::-moz-range-thumb { width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid var(--accent); cursor:pointer; }
+.in-range-scale { display:flex; justify-content:space-between; color:var(--muted); font-size:.72rem; }
+.in-slider-out { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-top:16px; padding-top:16px; border-top:1px solid var(--border); }
+.in-slider-out .big { font-size:2rem; font-weight:800; color:var(--accent-hi); font-variant-numeric:tabular-nums; }
+.in-slider-out .sub { color:var(--muted-hi); font-size:.9rem; }
+
+/* Tier / plan cards */
+.in-plan-grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); margin-top:16px; align-items:stretch; }
+.in-plan { display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); box-shadow:var(--shadow); padding:24px 22px; position:relative; }
+.in-plan-name { font-weight:700; font-size:1.05rem; color:var(--ink); }
+.in-plan-blurb { color:var(--muted); font-size:.82rem; margin-top:2px; }
+.in-plan-price { margin:14px 0 2px; }
+.in-plan-price .amt { font-size:1.9rem; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; }
+.in-plan-price .per { color:var(--muted); font-size:.82rem; }
+.in-plan-meta { color:var(--muted-hi); font-size:.8rem; margin-bottom:14px; }
+.in-plan-feats { list-style:none; display:flex; flex-direction:column; gap:8px; margin:0 0 18px; flex:1; }
+.in-plan-feats li { display:flex; gap:9px; align-items:flex-start; font-size:.86rem; color:var(--muted-hi); }
+.in-plan-feats li::before { content:""; flex:0 0 16px; height:16px; margin-top:1px; border-radius:50%;
+  background:var(--tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%235041d9' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/10px no-repeat; }
+.in-plan .in-btn { width:100%; }
+.in-plan--featured { border-color:transparent; box-shadow:0 14px 34px rgba(80,65,217,.18);
+  outline:2px solid var(--accent); transform:translateY(-6px); }
+.in-plan--featured::before { content:""; position:absolute; inset:0 0 auto 0; height:4px; border-radius:14px 14px 0 0; background:var(--brand-gradient); }
+.in-plan-badge { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--brand-gradient);
+  color:#fff; font-size:.66rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:4px 12px; border-radius:999px; white-space:nowrap; }
+@media (max-width:640px){ .in-plan--featured { transform:none; } }
+
 /* ── Print (client quote) ────────────────────────────── */
 @media print {
   .in-nav, .in-footer, .in-toolbar, details.in-assumptions, .in-eyebrow { display:none !important; }

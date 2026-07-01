@@ -46,6 +46,20 @@
     </div>
   </div>
 
+  <!-- Client pricing (experimental) — populated live from the calculator above -->
+  <section class="in-xp">
+    <div class="in-xp-head">
+      <div>
+        <p class="in-eyebrow">Client pricing</p>
+        <h2 class="in-h1" style="font-size:1.5rem;">Ready to present</h2>
+      </div>
+      <span class="in-xp-note">Experimental · indicative · driven by the calculator above</span>
+    </div>
+
+    <div id="ph-slider" class="in-slider"></div>
+    <div id="ph-tiers" class="in-plan-grid"></div>
+  </section>
+
   <script id="pricing-config" type="application/json">{{ config_json|safe }}</script>
   <div id="ph-urls" data-quote="{% url 'internal_quote_pdf' %}" hidden></div>
 </div>

@@ -85,19 +85,22 @@
     var units = rows.reduce(function (s, r) { return s + (r.qty || 0); }, 0);
     var discPct = units <= 20 ? a.disc_small : (units <= 100 ? a.disc_med : a.disc_ent);
     var disc = discPct / 100;
-    var lines = [], subtotal = 0, monthly = 0;
+    var lines = [], subtotal = 0, monthly = 0, sumPre = 0;
     rows.forEach(function (r) {
       if (!r.qty) return;
       var hw = a.tracker + a.sim + a.cable + (src[r.source] || 0) +
         (r.panic ? a.panic : 0) + (r.immob ? a.immob : 0) + (r.rfid ? a.rfid : 0) + (r.temp ? a.temp : 0) + (r.batt ? a.batt : 0);
       var hwP = hw * (1 + hwmk), insP = (lab[r.install] || 0) * (1 + insmk);
-      var moUnit = (run / (1 - margin) + (amortise ? hwP / term : 0)) * (1 - disc);
+      var moPreUnit = run / (1 - margin) + (amortise ? hwP / term : 0);
+      var moUnit = moPreUnit * (1 - disc);
       var onceUnit = insP + (amortise ? 0 : hwP);
-      subtotal += r.qty * onceUnit; monthly += r.qty * moUnit;
+      subtotal += r.qty * onceUnit; monthly += r.qty * moUnit; sumPre += r.qty * moPreUnit;
       lines.push({ desc: r.group || 'Vehicle group', qty: r.qty, once_unit: onceUnit, monthly_unit: moUnit });
     });
     var fee = units > 0 ? a.init : 0;
-    return finalize(units, discPct, term, amortise ? 'Amortised' : 'Upfront', lines, subtotal, fee, monthly);
+    var listPerUnit = units > 0 ? sumPre / units : run / (1 - margin);
+    return finalize(units, discPct, term, amortise ? 'Amortised' : 'Upfront', lines, subtotal, fee, monthly,
+      listPerUnit, { small: a.disc_small, med: a.disc_med, ent: a.disc_ent });
   }
 
   // ── SOFTWARE mode UI ─────────────────────────────────────────────────────
@@ -122,17 +125,19 @@
     var subtotal = integration ? a.integration : 0;
     var fee = vehicles > 0 ? (a.setup + a.dataload + a.training) : 0;
     var lines = vehicles > 0 ? [{ desc: CFG.name + ' subscription', qty: vehicles, once_unit: 0, monthly_unit: moUnit }] : [];
-    return finalize(vehicles, discPct, term, integration ? 'With integration' : 'Software only', lines, subtotal, fee, monthly);
+    return finalize(vehicles, discPct, term, integration ? 'With integration' : 'Software only', lines, subtotal, fee, monthly,
+      run / (1 - margin), { small: a.disc_small, med: a.disc_med, ent: a.disc_ent });
   }
 
   // ── shared finalize + render ─────────────────────────────────────────────
-  function finalize(units, discPct, term, billing, lines, subtotal, fee, monthly) {
+  function finalize(units, discPct, term, billing, lines, subtotal, fee, monthly, listPerUnit, discBands) {
     var once = subtotal + fee;
     return {
       units: units, discPct: discPct, term: term, billing: billing, lines: lines,
       subtotal_once: subtotal, fee_once: fee, once_off: once, monthly: monthly,
       avg_unit: units > 0 ? monthly / units : 0, tcv: once + monthly * term,
-      tier: units === 0 ? '—' : (units <= 20 ? 'Small' : (units <= 100 ? 'Medium' : 'Enterprise'))
+      tier: units === 0 ? '—' : (units <= 20 ? 'Small' : (units <= 100 ? 'Medium' : 'Enterprise')),
+      listPerUnit: listPerUnit || 0, discBands: discBands || { small: 0, med: 0, ent: 0 }
     };
   }
   function assumptions() {
@@ -159,9 +164,67 @@
     $('r-breakdown').innerHTML = s.lines.map(function (b) {
       return '<div class="in-kpi"><span class="k">' + esc(b.desc) + ' ×' + b.qty + '</span><span class="v">' + zar(b.monthly_unit) + '/mo · ' + zar(b.once_unit) + '</span></div>';
     }).join('') || '<p class="in-panel-sub">Add units to see pricing.</p>';
+    renderExperiment(s);
     scheduleSave();
   }
   function onChange() { compute(); }
+
+  // ── Client pricing experiment: usage slider + tier cards ─────────────────
+  function bandDisc(bands, u) { return u <= 20 ? bands.small : (u <= 100 ? bands.med : bands.ent); }
+  function tierName(u) { return u <= 20 ? 'Small' : (u <= 100 ? 'Medium' : 'Enterprise'); }
+
+  function renderExperiment(s) {
+    renderSlider(s);
+    renderTiers(s);
+  }
+
+  function renderSlider(s) {
+    var sl = CFG.slider, unit = sl.unit;
+    var start = Math.min(sl.max, Math.max(sl.min, s.units || sl.min));
+    $('ph-slider').innerHTML =
+      '<div class="in-slider-top"><span class="lab">' + esc(sl.label) + '</span><span class="val" id="xp-count"></span></div>' +
+      '<input type="range" class="in-range" id="xp-range" min="' + sl.min + '" max="' + sl.max + '" step="' + sl.step + '" value="' + start + '">' +
+      '<div class="in-range-scale"><span>' + sl.min + '</span><span>' + sl.max + '+</span></div>' +
+      '<div class="in-slider-out"><span class="big" id="xp-monthly"></span><span class="sub" id="xp-sub"></span></div>';
+    var range = $('xp-range');
+    function upd() {
+      var u = parseInt(range.value, 10) || 0;
+      var perUnit = s.listPerUnit * (1 - bandDisc(s.discBands, u) / 100);
+      $('xp-count').textContent = u + ' ' + unit;
+      $('xp-monthly').textContent = zar(u * perUnit) + '/mo';
+      $('xp-sub').textContent = zar(perUnit) + ' per ' + unit.replace(/s$/, '') + '/mo · ' + tierName(u) + ' tier';
+    }
+    range.addEventListener('input', upd);
+    upd();
+  }
+
+  function renderTiers(s) {
+    var html = CFG.plans.map(function (p) {
+      var perUnit = s.listPerUnit * (1 - p.discount / 100);
+      var monthly = s.units * perUnit;
+      var feats = p.features.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('');
+      var priceBlock = s.units > 0
+        ? '<div class="in-plan-price"><span class="amt">' + zar(perUnit) + '</span><span class="per"> /' + esc((CFG.slider.unit || 'unit').replace(/s$/, '')) + '/mo</span></div>' +
+          '<div class="in-plan-meta">' + zar(monthly) + '/mo for ' + s.units + ' · ' + p.term + '-month term</div>'
+        : '<div class="in-plan-price"><span class="amt">' + zar(perUnit) + '</span><span class="per"> /unit/mo</span></div>' +
+          '<div class="in-plan-meta">' + p.term + '-month term</div>';
+      return '<div class="in-plan' + (p.recommended ? ' in-plan--featured' : '') + '">' +
+        (p.recommended ? '<span class="in-plan-badge">Recommended</span>' : '') +
+        '<div class="in-plan-name">' + esc(p.name) + '</div>' +
+        '<div class="in-plan-blurb">' + esc(p.blurb) + '</div>' +
+        priceBlock +
+        '<ul class="in-plan-feats">' + feats + '</ul>' +
+        '<button type="button" class="in-btn' + (p.recommended ? '' : ' in-btn--ghost') + '" data-plan-term="' + p.term + '">' + esc(p.cta) + '</button>' +
+        '</div>';
+    }).join('');
+    $('ph-tiers').innerHTML = html;
+    $('ph-tiers').querySelectorAll('[data-plan-term]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var t = $('ph-term'); if (t) { t.value = btn.dataset.planTerm; onChange(); }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  }
 
   // ── draft ────────────────────────────────────────────────────────────────
   function serialize() {

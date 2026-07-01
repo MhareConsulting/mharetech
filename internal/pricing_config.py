@@ -8,12 +8,33 @@ static/js/pricing.js. Two modes:
 All money values are ILLUSTRATIVE placeholders — edited in-browser to real costs.
 """
 
+def _plans(feat):
+    """Three commitment tiers (Starter / Pro / Business). Longer term → bigger
+    loyalty discount. Pro is the highlighted 'recommended' option."""
+    return [
+        {'key': 'starter', 'name': 'Starter', 'term': 12, 'discount': 0, 'recommended': False,
+         'cta': 'Use this plan', 'blurb': 'Month-to-month flexibility', 'features': feat['starter']},
+        {'key': 'pro', 'name': 'Pro', 'term': 24, 'discount': 8, 'recommended': True,
+         'cta': 'Use this plan', 'blurb': 'Best value for most fleets', 'features': feat['pro']},
+        {'key': 'business', 'name': 'Business', 'term': 36, 'discount': 15, 'recommended': False,
+         'cta': 'Talk to us', 'blurb': 'Scale & dedicated support', 'features': feat['business']},
+    ]
+
+
 MYTRACK_PRICING = {
     'slug': 'mytrack',
     'name': 'myTrack',
     'mode': 'hardware',
     'currency': 'R',
     'result_labels': {'subtotal': 'Hardware + installation', 'fee': 'Account initiation fee'},
+    'slider': {'label': 'Vehicles tracked', 'unit': 'vehicles', 'min': 5, 'max': 250, 'step': 5},
+    'plans': _plans({
+        'starter': ['Live GPS tracking', 'Trip history & playback', 'Speeding & geofence alerts', 'Email support'],
+        'pro': ['Everything in Starter', 'Fuel theft detection', 'Driver behaviour scoring',
+                'WhatsApp notifications', 'Compliance alerts (licence / PDP)', 'Priority support'],
+        'business': ['Everything in Pro', 'Multi-depot management', 'API & integrations',
+                     'Custom reports & dashboards', 'Dedicated account manager', 'SLA-backed support'],
+    }),
     'assumptions': [
         {'title': 'Hardware (R / item)', 'items': [
             {'key': 'tracker', 'label': 'FMB tracker', 'value': 1200},
@@ -65,6 +86,14 @@ MYROUTES_PRICING = {
     'mode': 'software',
     'currency': 'R',
     'result_labels': {'subtotal': 'Integration (optional)', 'fee': 'Onboarding, data & training'},
+    'slider': {'label': 'Vehicles routed', 'unit': 'vehicles', 'min': 5, 'max': 250, 'step': 5},
+    'plans': _plans({
+        'starter': ['Multi-stop optimisation', 'Drag-and-drop dispatch', 'Address geocoding', 'Email support'],
+        'pro': ['Everything in Starter', 'Fleet capacity & constraints', 'Live re-optimisation',
+                'Driver app / turn-by-turn', 'WhatsApp proof-of-delivery', 'Priority support'],
+        'business': ['Everything in Pro', 'Post-run analysis & replay', 'Load-shedding-aware dispatch',
+                     'API & integrations', 'Dedicated onboarding', 'SLA-backed support'],
+    }),
     'assumptions': [
         {'title': 'Monthly run cost (R / vehicle / mo)', 'items': [
             {'key': 'm_platform', 'label': 'Platform licence / vehicle', 'value': 120},
