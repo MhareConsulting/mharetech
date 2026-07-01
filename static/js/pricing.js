@@ -33,6 +33,7 @@
   }
   function val(a, n) { return Array.isArray(a[n]) ? a[n].join(', ') : (a[n] || ''); }
   function arr(a, n) { return Array.isArray(a[n]) ? a[n] : (a[n] ? [a[n]] : []); }
+  function has(a, n) { return arr(a, n).length > 0; }
   function yes(s) { return /^yes/i.test(s || ''); }
   function numOf(s) { var m = /(\d+(\.\d+)?)/.exec(s || ''); return m ? parseFloat(m[1]) : 0; }
   function mustCount(a) { return Object.keys(a).filter(function (k) { return /^feat_/.test(k) && val(a, k) === 'must'; }).length; }
@@ -66,10 +67,17 @@
     }
     var rows = [];
     for (var i = 0; i < 12; i++) {
-      var g = ANS['hw_' + i + '_group'], s = ANS['hw_' + i + '_source'], q = ANS['hw_' + i + '_qty'], ac = ANS['hw_' + i + '_accessories'];
-      if (g || s || q) rows.push(hwFromAssess(g, s, q, ac));
+      var g = ANS['hw_' + i + '_group'], s = ANS['hw_' + i + '_source'], q = ANS['hw_' + i + '_qty'], ins = ANS['hw_' + i + '_install'];
+      var acc = ['panic', 'immob', 'rfid', 'temp', 'batt'].some(function (k) { return has(ANS, 'hw_' + i + '_' + k); });
+      if (g || s || q || ins || acc) rows.push({
+        group: g || 'Group', qty: numOf(q),
+        source: ['CAN', 'OBD', 'Probe'].indexOf(s) >= 0 ? s : 'None',
+        panic: has(ANS, 'hw_' + i + '_panic'), immob: has(ANS, 'hw_' + i + '_immob'), rfid: has(ANS, 'hw_' + i + '_rfid'),
+        temp: has(ANS, 'hw_' + i + '_temp'), batt: has(ANS, 'hw_' + i + '_batt'),
+        install: ['Basic', 'Standard', 'Advanced'].indexOf(ins) >= 0 ? ins : 'Standard'
+      });
     }
-    if (!rows.length) {  // fall back to the fleet table
+    if (!rows.length) {  // fall back to the fleet table (section 2)
       for (var j = 0; j < 12; j++) {
         var t = ANS['fleet_' + j + '_type'], fq = ANS['fleet_' + j + '_qty'];
         if (t || fq) {
@@ -80,16 +88,6 @@
       }
     }
     return { rows: rows, term: term, billing: /upfront/i.test(val(ANS, 'hw_billing')) ? 'Upfront' : 'Amortised' };
-  }
-  function hwFromAssess(g, s, q, ac) {
-    ac = (ac || '').toLowerCase();
-    var source = ['CAN', 'OBD', 'Probe'].indexOf(s) >= 0 ? s : 'None';
-    return {
-      group: g || 'Group', qty: numOf(q), source: source,
-      panic: /panic/.test(ac), immob: /immob|cut/.test(ac), rfid: /rfid|ibutton|button/.test(ac),
-      temp: /temp|reefer|cold/.test(ac), batt: /batt|battery/.test(ac),
-      install: s === 'Probe' ? 'Advanced' : (s === 'CAN' ? 'Standard' : 'Basic')
-    };
   }
   var PREFILL = derivePrefill();
 
@@ -255,9 +253,14 @@
   function compute() {
     var s = CFG.mode === 'software' ? computeSoftware(assumptions(), readAdj()) : computeHardware(assumptions(), readAdj());
     lastState = s;
+    // In amortised billing the hardware sits in the monthly, so the once-off
+    // subtotal is installation only — label it accordingly.
+    var subLabel = CFG.result_labels.subtotal;
+    if (CFG.mode === 'hardware') subLabel = s.billing === 'Amortised' ? 'Installation' : 'Hardware + installation';
+    s.subLabel = subLabel;
     $('r-tier').textContent = s.tier + (s.units ? ' · ' + s.units + ' units' : '');
     $('r-units').textContent = s.units;
-    $('r-sub-label').textContent = CFG.result_labels.subtotal;
+    $('r-sub-label').textContent = subLabel;
     $('r-fee-label').textContent = CFG.result_labels.fee;
     $('r-sub').textContent = zar(s.subtotal_once);
     $('r-fee').textContent = zar(s.fee_once);
@@ -267,7 +270,7 @@
     $('r-avg').textContent = zar(s.avg_unit);
     $('r-tcv').textContent = zar(s.tcv);
     $('r-breakdown').innerHTML = s.lines.map(function (b) {
-      return '<div class="in-kpi"><span class="k">' + esc(b.desc) + ' ×' + b.qty + '</span><span class="v">' + zar(b.monthly_unit) + '/mo · ' + zar(b.once_unit) + '</span></div>';
+      return '<div class="in-kpi"><span class="k">' + esc(b.desc) + ' ×' + b.qty + '</span><span class="v">' + zar(b.qty * b.monthly_unit) + '/mo · ' + zar(b.qty * b.once_unit) + '</span></div>';
     }).join('') || '<p class="in-panel-sub">Add units to see pricing.</p>';
     renderExperiment(s);
     scheduleSave();
@@ -380,7 +383,7 @@
       quote_ref: quoteRef(), date: new Date().toLocaleDateString('en-ZA'),
       prepared_for: $('q-for').value, prepared_by: $('q-by').value,
       meta: { term: s.term, tier: s.tier, discount_pct: s.discPct, billing: s.billing },
-      labels: CFG.result_labels, lines: s.lines,
+      labels: { subtotal: s.subLabel || CFG.result_labels.subtotal, fee: CFG.result_labels.fee }, lines: s.lines,
       totals: { units: s.units, subtotal_once: s.subtotal_once, fee_once: s.fee_once, once_off: s.once_off, monthly: s.monthly, avg_unit: s.avg_unit, tcv: s.tcv }
     };
     btn.disabled = true; btn.textContent = 'Generating…';

@@ -114,12 +114,14 @@ MYTRACK = {
                 ('idle_cost', 'Idle & fleet-cost reporting'), ('dwell', 'Geofence dwell-time reporting')])),
         section('6 · Hardware Requirements',
             note('Base unit = Teltonika FMB tracker. Data source: CAN adapter (LV-CAN200) preferred, '
-                 'OBD plug for light vehicles, LLS fuel probe as fallback. Accessories: panic, immobiliser, '
-                 'RFID / iButton, temp sensor, backup battery.'),
+                 'OBD plug for light vehicles, LLS fuel probe as fallback. Tick accessories per group and '
+                 'set the install level — this drives the pricing per group.'),
             table('hw', [
-                col('group', 'Vehicle group'),
-                col('source', 'Data source (CAN/OBD/Probe)', 'select', ['', 'CAN', 'OBD', 'Probe', 'None']),
-                col('accessories', 'Accessories required'), col('qty', 'Qty')])),
+                col('group', 'Vehicle group'), col('qty', 'Qty'),
+                col('source', 'Data source', 'select', ['', 'CAN', 'OBD', 'Probe', 'None']),
+                col('panic', 'Panic', 'check'), col('immob', 'Immob', 'check'),
+                col('rfid', 'RFID', 'check'), col('temp', 'Temp', 'check'), col('batt', 'Batt', 'check'),
+                col('install', 'Install', 'select', ['', 'Basic', 'Standard', 'Advanced'])])),
         section('7 · Installation Logistics',
             choice('install_location', 'Install location',
                    ['At depot (single site)', 'Multiple sites', 'Mobile / on-site'], multi=True),

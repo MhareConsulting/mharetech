@@ -95,9 +95,11 @@
               {% for i in ""|center:b.rows %}
                 <tr>
                   {% for c in b.cols %}
-                  <td>
+                  <td{% if c.input == 'check' %} style="text-align:center;"{% endif %}>
                     {% if c.input == 'select' %}
                       <select name="{{ b.prefix }}_{{ forloop.parentloop.counter0 }}_{{ c.key }}">{% for o in c.options %}<option value="{{ o }}">{{ o }}</option>{% endfor %}</select>
+                    {% elif c.input == 'check' %}
+                      <input type="checkbox" name="{{ b.prefix }}_{{ forloop.parentloop.counter0 }}_{{ c.key }}" value="Y">
                     {% else %}
                       <input type="text" name="{{ b.prefix }}_{{ forloop.parentloop.counter0 }}_{{ c.key }}">
                     {% endif %}

@@ -20,7 +20,9 @@
     clone.querySelectorAll('input, select').forEach(function (el) {
       var name = el.getAttribute('name') || '';
       el.setAttribute('name', name.replace(/_\d+_/, '_' + idx + '_'));
-      if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = '';
+      if (el.tagName === 'SELECT') el.selectedIndex = 0;
+      else if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+      else el.value = '';
     });
     body.appendChild(clone);
     return clone;
