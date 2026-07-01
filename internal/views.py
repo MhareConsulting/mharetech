@@ -10,22 +10,27 @@ from .middleware import SESSION_FLAG
 
 
 @require_GET
-def hub(request):
-    return render(request, 'internal/hub.html', {'active': 'hub'})
+def home(request):
+    return render(request, 'internal/home.html', {'active': 'home'})
+
+
+@require_GET
+def toolkit(request):
+    return render(request, 'internal/toolkit.html', {'active': 'toolkit'})
 
 
 def login_view(request):
-    # If already in, or gate disabled in DEBUG, skip straight to the hub.
+    # If already in, or gate disabled in DEBUG, skip straight to the home page.
     password = getattr(settings, 'INTERNAL_PASSWORD', '')
     if request.session.get(SESSION_FLAG) or (not password and settings.DEBUG):
-        return redirect('internal_hub')
+        return redirect('internal_home')
 
     error = None
-    next_url = request.GET.get('next') or request.POST.get('next') or reverse('internal_hub')
+    next_url = request.GET.get('next') or request.POST.get('next') or reverse('internal_home')
     if request.method == 'POST':
         if password and request.POST.get('password') == password:
             request.session[SESSION_FLAG] = True
-            return redirect(next_url if next_url.startswith('/') else reverse('internal_hub'))
+            return redirect(next_url if next_url.startswith('/') else reverse('internal_home'))
         error = 'Incorrect password.'
     return render(request, 'internal/login.html', {'error': error, 'next': next_url})
 
@@ -37,7 +42,7 @@ def logout_view(request):
 
 def _assessment_context(**extra):
     ctx = {
-        'active': 'assessment',
+        'active': 'toolkit',
         'objectives': az.OBJECTIVES,
         'features': az.FEATURES,
         'feature_choices': az.FEATURE_CHOICES,
@@ -81,9 +86,9 @@ def assessment_submit(request):
 
 @require_GET
 def pricing(request):
-    return render(request, 'internal/pricing.html', {'active': 'pricing'})
+    return render(request, 'internal/pricing.html', {'active': 'toolkit'})
 
 
 @require_GET
 def downloads(request):
-    return render(request, 'internal/downloads.html', {'active': 'downloads'})
+    return render(request, 'internal/downloads.html', {'active': 'toolkit'})

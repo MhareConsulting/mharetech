@@ -1,24 +1,27 @@
 {% extends "internal/base_internal.html" %}
-{% block title %}Hub · Mhare Internal{% endblock %}
+{% block title %}myTrack Sales Toolkit · Mhare Internal{% endblock %}
 
 {% block content %}
 <div class="in-container">
-  <p class="in-eyebrow">Mhare Tech · Internal</p>
-  <h1 class="in-h1">Internal tools</h1>
-  <p class="in-lead">Working tools for the team — scoping, pricing and resources. Not for external sharing.</p>
+  <p class="in-eyebrow"><a href="{% url 'internal_home' %}">Home</a> · Sales</p>
+  <h1 class="in-h1">myTrack Sales Toolkit</h1>
+  <p class="in-lead">Everything for scoping and pricing a myTrack deal.</p>
 
   <div class="in-grid">
     <div class="in-card">
+      <span class="in-card-tag">Scoping</span>
       <h3>Needs Assessment</h3>
-      <p>Run a structured requirements gathering with a prospect. Submitting emails the captured assessment to the team.</p>
+      <p>Structured requirements gathering with a prospect. Submitting emails the captured assessment to the team.</p>
       <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% url 'internal_assessment' %}">Open form</a></div>
     </div>
     <div class="in-card">
+      <span class="in-card-tag">Pricing</span>
       <h3>Pricing Toolkit</h3>
-      <p>Live subscription calculator — enter the fleet and cost assumptions to get once-off, monthly and contract-total figures.</p>
+      <p>Live subscription calculator — fleet and cost assumptions in, once-off / monthly / contract-total out.</p>
       <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% url 'internal_pricing' %}">Open calculator</a></div>
     </div>
     <div class="in-card">
+      <span class="in-card-tag">Resources</span>
       <h3>Downloads</h3>
       <p>The Word / PDF assessment forms and the Excel pricing model for offline use.</p>
       <div class="in-card-cta"><a class="in-btn in-btn--sm in-btn--ghost" href="{% url 'internal_downloads' %}">Open library</a></div>
