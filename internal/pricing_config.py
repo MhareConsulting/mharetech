@@ -73,6 +73,17 @@ MYTRACK_PRICING = {
             {'key': 'disc_ent', 'label': 'Discount — Enterprise %', 'value': 15, 'pct': True},
         ]},
     ],
+    # Weightings applied when triggered by the client's assessment answers.
+    # type: add_monthly_unit | pct_install | pct_monthly | add_once
+    'weights': [
+        {'key': 'roaming', 'label': 'Cross-border roaming (per vehicle/mo)', 'value': 25, 'type': 'add_monthly_unit'},
+        {'key': 'mobile_install', 'label': 'Mobile / multi-site install uplift %', 'value': 20, 'type': 'pct_install'},
+        {'key': 'sla_support', 'label': 'Premium support / SLA uplift %', 'value': 15, 'type': 'pct_monthly'},
+        {'key': 'premium_features', 'label': 'Premium feature bundle uplift %', 'value': 8, 'type': 'pct_monthly'},
+        {'key': 'api_setup', 'label': 'Integration / API setup', 'value': 4000, 'type': 'add_once'},
+        {'key': 'whitelabel', 'label': 'White-label branding setup', 'value': 6000, 'type': 'add_once'},
+        {'key': 'popia', 'label': 'POPIA setup assistance', 'value': 1500, 'type': 'add_once'},
+    ],
     'seed': [
         {'group': 'Long-haul trucks', 'qty': 12, 'source': 'CAN', 'panic': True, 'immob': True, 'rfid': True, 'temp': False, 'batt': True, 'install': 'Standard'},
         {'group': 'Delivery vans', 'qty': 14, 'source': 'OBD', 'panic': True, 'immob': False, 'rfid': True, 'temp': False, 'batt': False, 'install': 'Basic'},
@@ -114,6 +125,13 @@ MYROUTES_PRICING = {
             {'key': 'disc_med', 'label': 'Discount — Medium %', 'value': 10, 'pct': True},
             {'key': 'disc_ent', 'label': 'Discount — Enterprise %', 'value': 18, 'pct': True},
         ]},
+    ],
+    'weights': [
+        {'key': 'geocoding', 'label': 'Geocoding & data cleanup', 'value': 3000, 'type': 'add_once'},
+        {'key': 'constraints', 'label': 'Complex constraints uplift %', 'value': 10, 'type': 'pct_monthly'},
+        {'key': 'sla_support', 'label': 'Premium support / SLA uplift %', 'value': 15, 'type': 'pct_monthly'},
+        {'key': 'premium_features', 'label': 'Premium feature bundle uplift %', 'value': 8, 'type': 'pct_monthly'},
+        {'key': 'api_setup', 'label': 'Integration / API setup', 'value': 5000, 'type': 'add_once'},
     ],
     'seed': {'vehicles': 20, 'integration': False},
 }

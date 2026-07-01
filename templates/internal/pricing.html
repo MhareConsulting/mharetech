@@ -10,6 +10,9 @@
 
   <div id="ph-resume" class="in-alert in-alert--ok" role="status" hidden></div>
 
+  <!-- Mandatory-assessment gate (shown when no assessment exists in this browser) -->
+  <div id="ph-gate" class="in-panel" hidden></div>
+
   <!-- Price at a glance: slider drives a single subscription tile -->
   <section class="in-xp" style="margin-top:8px;">
     <div id="ph-slider" class="in-slider"></div>
@@ -58,7 +61,7 @@
   </div>
 
   <script id="pricing-config" type="application/json">{{ config_json|safe }}</script>
-  <div id="ph-urls" data-quote="{% url 'internal_quote_pdf' %}" hidden></div>
+  <div id="ph-urls" data-quote="{% url 'internal_quote_pdf' %}" data-assess="{% url 'internal_assessment' product %}" hidden></div>
 </div>
 {% endblock %}
 

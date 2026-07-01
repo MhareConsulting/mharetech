@@ -80,7 +80,13 @@
   });
 
   form.addEventListener('submit', function () {
-    draft.clear();  // submitted → no longer a draft
+    // Persist the answers so the pricing toolkit can derive pricing from them.
+    // Keep the draft until the thanks page confirms success (survives a reject).
+    try {
+      if (form.dataset.resultkey) {
+        localStorage.setItem(form.dataset.resultkey, JSON.stringify({ t: Date.now(), data: serialize() }));
+      }
+    } catch (e) {}
     var b = document.getElementById('in-submit');
     b.disabled = true; b.textContent = 'Submitting…';
   });

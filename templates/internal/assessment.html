@@ -14,11 +14,12 @@
       <h2>Assessment captured</h2>
       <p class="in-lead" style="margin:8px auto 18px;">The completed assessment has been emailed to the team. Start another, or open the pricing toolkit to build a quote.</p>
       <div class="in-toolbar" style="justify-content:center;">
-        <a class="in-btn" href="{% url 'internal_pricing' product %}">Open Pricing Toolkit</a>
+        <a class="in-btn" href="{% url 'internal_pricing' product %}">Generate pricing →</a>
         <a class="in-btn in-btn--ghost" href="{% url 'internal_assessment' product %}">New assessment</a>
       </div>
     </div>
   </div>
+  <script>try{localStorage.removeItem('mhare:draft:assessment:{{ product }}');}catch(e){}</script>
   {% else %}
   <p class="in-lead">Each assessment starts as a fresh draft. Your progress is saved in this browser as you go — if you leave and come back, you can resume it.</p>
 
@@ -26,7 +27,8 @@
   {% if form_error %}<div class="in-alert in-alert--error" role="alert">{{ form_error }}</div>{% endif %}
 
   <form id="in-assessment" method="post" action="{% url 'internal_assessment_submit' product %}"
-        data-draftkey="mhare:draft:assessment:{{ product }}">
+        data-draftkey="mhare:draft:assessment:{{ product }}"
+        data-resultkey="mhare:assessment:{{ product }}:result">
     {% csrf_token %}
     <div aria-hidden="true" style="position:absolute;left:-9999px;">
       <label for="in-hp">Leave blank</label>
