@@ -10,25 +10,20 @@
 
   <div id="ph-resume" class="in-alert in-alert--ok" role="status" hidden></div>
 
-  <!-- Client pricing — populated live from the calculator below -->
+  <!-- Price at a glance: slider drives a single subscription tile -->
   <section class="in-xp" style="margin-top:8px;">
-    <div class="in-xp-head">
-      <div>
-        <p class="in-eyebrow">Client pricing</p>
-        <h2 class="in-h1" style="font-size:1.5rem;">Ready to present</h2>
-      </div>
-      <span class="in-xp-note">Indicative · driven by the calculator below</span>
-    </div>
-
-    <div class="in-xp-cols">
-      <div id="ph-slider" class="in-slider"></div>
-      <div id="ph-tiers" class="in-plan-grid"></div>
-    </div>
+    <div id="ph-slider" class="in-slider"></div>
   </section>
 
   <div class="in-pricing-layout">
-    <!-- inputs built by pricing.js from the embedded config -->
-    <div id="ph-left"></div>
+    <div class="in-pricing-inputs">
+      <!-- inputs built by pricing.js from the embedded config -->
+      <div id="ph-left"></div>
+      <div class="in-xp-head" style="margin-top:26px;">
+        <div><p class="in-eyebrow">Client-facing</p><h2 class="in-h1" style="font-size:1.35rem;">Plan options</h2></div>
+      </div>
+      <div id="ph-tiers" class="in-plan-grid"></div>
+    </div>
 
     <!-- results -->
     <div class="in-results">

@@ -246,9 +246,9 @@ details.in-assumptions[open] summary { border-bottom:1px solid var(--border); }
 .in-xp-cols { display:flex; flex-direction:column; gap:20px; }
 
 /* Tier / plan cards */
-.in-plan-grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); margin-top:16px; align-items:stretch; }
+.in-plan-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); margin-top:14px; align-items:stretch; }
 .in-plan { display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border);
-  border-radius:var(--radius); box-shadow:var(--shadow); padding:24px 22px; position:relative; }
+  border-radius:var(--radius); box-shadow:var(--shadow); padding:20px 18px; position:relative; }
 .in-plan-name { font-weight:700; font-size:1.05rem; color:var(--ink); }
 .in-plan-blurb { color:var(--muted); font-size:.82rem; margin-top:2px; }
 .in-plan-price { margin:14px 0 2px; }
@@ -261,7 +261,7 @@ details.in-assumptions[open] summary { border-bottom:1px solid var(--border); }
   background:var(--tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%235041d9' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/10px no-repeat; }
 .in-plan .in-btn { width:100%; }
 .in-plan--featured { border-color:transparent; box-shadow:0 14px 34px rgba(80,65,217,.18);
-  outline:2px solid var(--accent); transform:translateY(-6px); }
+  outline:2px solid var(--accent); }
 .in-plan--featured::before { content:""; position:absolute; inset:0 0 auto 0; height:4px; border-radius:14px 14px 0 0; background:var(--brand-gradient); }
 .in-plan-badge { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--brand-gradient);
   color:#fff; font-size:.66rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:4px 12px; border-radius:999px; white-space:nowrap; }
