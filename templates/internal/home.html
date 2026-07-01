@@ -5,20 +5,27 @@
 <div class="in-container">
   <p class="in-eyebrow">Mhare Tech · Internal</p>
   <h1 class="in-h1">Internal workspace</h1>
-  <p class="in-lead">Working tools and resources for the team. Not for external sharing. Pick an area to get started — more will be added over time.</p>
+  <p class="in-lead">Working tools and resources for the team. Not for external sharing. Pick a product toolkit to get started — more sections will be added over time.</p>
 
   <div class="in-grid">
-    <a class="in-card in-card--link" href="{% url 'internal_toolkit' %}">
+    <a class="in-card in-card--link" href="{% url 'internal_toolkit' 'mytrack' %}">
       <span class="in-card-tag">Sales</span>
       <h3>myTrack Sales Toolkit</h3>
-      <p>Run a client needs assessment, build a subscription quote, and grab the offline forms and pricing model.</p>
+      <p>Fleet telematics. Run a client needs assessment, build a subscription quote, and grab the offline forms and pricing model.</p>
+      <span class="in-card-cta">Open →</span>
+    </a>
+
+    <a class="in-card in-card--link" href="{% url 'internal_toolkit' 'myroutes' %}">
+      <span class="in-card-tag">Sales</span>
+      <h3>myRoutes Sales Toolkit</h3>
+      <p>Route optimisation. Assess a prospect's dispatch operation and price a per-vehicle subscription — most myTrack clients need this too.</p>
       <span class="in-card-cta">Open →</span>
     </a>
 
     <div class="in-card in-card--soon">
       <span class="in-card-tag">Coming soon</span>
       <h3>More tools</h3>
-      <p>This space is where other internal tools will live — add them as new sections alongside the sales toolkit.</p>
+      <p>Other internal tools will live here — add them as new sections alongside the product toolkits.</p>
     </div>
   </div>
 </div>

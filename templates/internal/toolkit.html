@@ -1,31 +1,33 @@
 {% extends "internal/base_internal.html" %}
-{% block title %}myTrack Sales Toolkit · Mhare Internal{% endblock %}
+{% block title %}{{ product_name }} Toolkit · Mhare Internal{% endblock %}
 
 {% block content %}
 <div class="in-container">
   <p class="in-eyebrow"><a href="{% url 'internal_home' %}">Home</a> · Sales</p>
-  <h1 class="in-h1">myTrack Sales Toolkit</h1>
-  <p class="in-lead">Everything for scoping and pricing a myTrack deal.</p>
+  <h1 class="in-h1">{{ product_name }} Sales Toolkit</h1>
+  <p class="in-lead">{{ tagline }}</p>
 
   <div class="in-grid">
     <div class="in-card">
       <span class="in-card-tag">Scoping</span>
       <h3>Needs Assessment</h3>
       <p>Structured requirements gathering with a prospect. Submitting emails the captured assessment to the team.</p>
-      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% url 'internal_assessment' %}">Open form</a></div>
+      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% url 'internal_assessment' product %}">Open form</a></div>
     </div>
     <div class="in-card">
       <span class="in-card-tag">Pricing</span>
       <h3>Pricing Toolkit</h3>
-      <p>Live subscription calculator — fleet and cost assumptions in, once-off / monthly / contract-total out.</p>
-      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% url 'internal_pricing' %}">Open calculator</a></div>
+      <p>Live subscription calculator with a branded PDF quote — fleet and cost assumptions in, once-off / monthly / TCV out.</p>
+      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% url 'internal_pricing' product %}">Open calculator</a></div>
     </div>
+    {% if has_downloads %}
     <div class="in-card">
       <span class="in-card-tag">Resources</span>
       <h3>Downloads</h3>
       <p>The Word / PDF assessment forms and the Excel pricing model for offline use.</p>
-      <div class="in-card-cta"><a class="in-btn in-btn--sm in-btn--ghost" href="{% url 'internal_downloads' %}">Open library</a></div>
+      <div class="in-card-cta"><a class="in-btn in-btn--sm in-btn--ghost" href="{% url 'internal_downloads' product %}">Open library</a></div>
     </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

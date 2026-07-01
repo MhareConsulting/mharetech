@@ -1,29 +1,21 @@
 {% extends "internal/base_internal.html" %}
 {% load static %}
-{% block title %}Downloads · Mhare Internal{% endblock %}
+{% block title %}{{ product_name }} Downloads · Mhare Internal{% endblock %}
 
 {% block content %}
 <div class="in-container">
-  <p class="in-eyebrow">Resources</p>
-  <h1 class="in-h1">Downloads library</h1>
-  <p class="in-lead">Offline versions of the myTrack sales toolkit. The live form and calculator are usually quicker — these are for printing, signatures and editing.</p>
+  <p class="in-eyebrow"><a href="{% url 'internal_home' %}">Home</a> · <a href="{% url 'internal_toolkit' product %}">{{ product_name }}</a></p>
+  <h1 class="in-h1">{{ product_name }} downloads</h1>
+  <p class="in-lead">Offline versions of the sales toolkit. The live form and calculator are usually quicker — these are for printing, signatures and editing.</p>
 
   <div class="in-grid">
+    {% for title, desc, path, ext in items %}
     <div class="in-card">
-      <h3>Needs Assessment (Word)</h3>
-      <p>Editable 13-section requirements form.</p>
-      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% static 'internal/downloads/myTrack_Needs_Assessment.docx' %}" download>Download .docx</a></div>
+      <h3>{{ title }}</h3>
+      <p>{{ desc }}</p>
+      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% static path %}" download>Download {{ ext }}</a></div>
     </div>
-    <div class="in-card">
-      <h3>Needs Assessment (PDF)</h3>
-      <p>Fillable / printable form with signature block.</p>
-      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% static 'internal/downloads/myTrack_Needs_Assessment.pdf' %}" download>Download .pdf</a></div>
-    </div>
-    <div class="in-card">
-      <h3>Pricing Toolkit (Excel)</h3>
-      <p>Cost inputs, quote builder, tier rate card and quote summary.</p>
-      <div class="in-card-cta"><a class="in-btn in-btn--sm" href="{% static 'internal/downloads/myTrack_Pricing_Toolkit.xlsx' %}" download>Download .xlsx</a></div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}

@@ -1,134 +1,57 @@
 {% extends "internal/base_internal.html" %}
 {% load static %}
-{% block title %}Pricing Toolkit · Mhare Internal{% endblock %}
+{% block title %}{{ product_name }} Pricing Toolkit · Mhare Internal{% endblock %}
 
 {% block content %}
 <div class="in-container">
-  <p class="in-eyebrow">myTrack</p>
-  <h1 class="in-h1">Pricing Toolkit</h1>
-  <p class="in-lead">Build a subscription quote. Cost figures are editable assumptions — set them to your real costs.
-    Mirrors the <a href="{% url 'internal_downloads' %}">Excel model</a>.</p>
+  <p class="in-eyebrow"><a href="{% url 'internal_home' %}">Home</a> · <a href="{% url 'internal_toolkit' product %}">{{ product_name }}</a></p>
+  <h1 class="in-h1">{{ product_name }} Pricing Toolkit</h1>
+  <p class="in-lead">Each quote starts fresh. Cost figures are editable assumptions — set them to your real costs. Progress is saved in this browser.</p>
+
+  <div id="ph-resume" class="in-alert in-alert--ok" role="status" hidden></div>
 
   <div class="in-pricing-layout">
-    <!-- INPUTS -->
-    <div>
-      <div class="in-panel" style="margin-top:0;">
-        <h2>Deal</h2>
-        <div class="in-fieldgrid">
-          <div class="in-field">
-            <label>Hardware billing</label>
-            <select id="ph-billing"><option value="Amortised">Amortised into monthly</option><option value="Upfront">Upfront (once-off)</option></select>
-          </div>
-          <div class="in-field">
-            <label>Contract term (months)</label>
-            <input type="number" id="ph-term" min="1" value="36">
-          </div>
-        </div>
-      </div>
+    <!-- inputs built by pricing.js from the embedded config -->
+    <div id="ph-left"></div>
 
-      <div class="in-panel">
-        <h2>Fleet</h2>
-        <p class="in-panel-sub">One row per vehicle group. Accessories tick per unit.</p>
-        <div class="in-table-wrap">
-          <table class="in-table" id="ph-rows">
-            <thead><tr>
-              <th>Group</th><th>Qty</th><th>Source</th>
-              <th>Panic</th><th>Immob</th><th>RFID</th><th>Temp</th><th>Batt</th>
-              <th>Install</th><th></th>
-            </tr></thead>
-            <tbody>
-              <!-- seeded by JS -->
-            </tbody>
-          </table>
-        </div>
-        <div class="in-table-actions">
-          <button type="button" class="in-btn in-btn--ghost in-btn--sm" id="ph-add">+ Add group</button>
-        </div>
-      </div>
-
-      <details class="in-assumptions">
-        <summary>Cost assumptions &amp; margins (editable — placeholders)</summary>
-        <div>
-          <div class="in-subhead" style="padding:12px 14px 0;">Hardware (R / item)</div>
-          <div class="in-assumptions-body">
-            <div class="in-field"><label>FMB tracker</label><input type="number" data-key="tracker" value="1200"></div>
-            <div class="in-field"><label>CAN adapter (LV-CAN200)</label><input type="number" data-key="can" value="1800"></div>
-            <div class="in-field"><label>OBD harness</label><input type="number" data-key="obd" value="350"></div>
-            <div class="in-field"><label>LLS fuel probe</label><input type="number" data-key="probe" value="2200"></div>
-            <div class="in-field"><label>Panic button</label><input type="number" data-key="panic" value="180"></div>
-            <div class="in-field"><label>Immobiliser / cut-off</label><input type="number" data-key="immob" value="450"></div>
-            <div class="in-field"><label>RFID / iButton</label><input type="number" data-key="rfid" value="320"></div>
-            <div class="in-field"><label>Temp sensor</label><input type="number" data-key="temp" value="650"></div>
-            <div class="in-field"><label>Backup battery</label><input type="number" data-key="batt" value="280"></div>
-            <div class="in-field"><label>SIM (once-off)</label><input type="number" data-key="sim" value="50"></div>
-            <div class="in-field"><label>Harness / cabling</label><input type="number" data-key="cable" value="150"></div>
-          </div>
-          <div class="in-subhead" style="padding:12px 14px 0;">Installation &amp; initiation (R)</div>
-          <div class="in-assumptions-body">
-            <div class="in-field"><label>Install — Basic /veh</label><input type="number" data-key="lab_basic" value="250"></div>
-            <div class="in-field"><label>Install — Standard /veh</label><input type="number" data-key="lab_standard" value="650"></div>
-            <div class="in-field"><label>Install — Advanced /veh</label><input type="number" data-key="lab_advanced" value="1400"></div>
-            <div class="in-field"><label>Account initiation fee</label><input type="number" data-key="init" value="3500"></div>
-          </div>
-          <div class="in-subhead" style="padding:12px 14px 0;">Monthly run cost (R / unit / mo)</div>
-          <div class="in-assumptions-body">
-            <div class="in-field"><label>SIM / data</label><input type="number" data-key="m_sim" value="35"></div>
-            <div class="in-field"><label>Hosting</label><input type="number" data-key="m_host" value="18"></div>
-            <div class="in-field"><label>Software licence</label><input type="number" data-key="m_lic" value="25"></div>
-            <div class="in-field"><label>Support reserve</label><input type="number" data-key="m_support" value="20"></div>
-            <div class="in-field"><label>Notifications</label><input type="number" data-key="m_notif" value="12"></div>
-            <div class="in-field"><label>Map / routing API</label><input type="number" data-key="m_api" value="8"></div>
-            <div class="in-field"><label>Warranty reserve</label><input type="number" data-key="m_warranty" value="15"></div>
-          </div>
-          <div class="in-subhead" style="padding:12px 14px 0;">Pricing levers</div>
-          <div class="in-assumptions-body">
-            <div class="in-field"><label>Gross margin % (monthly)</label><input type="number" step="1" data-key="margin_pct" value="45"></div>
-            <div class="in-field"><label>Hardware markup %</label><input type="number" step="1" data-key="hwmk_pct" value="30"></div>
-            <div class="in-field"><label>Install markup %</label><input type="number" step="1" data-key="insmk_pct" value="20"></div>
-            <div class="in-field"><label>Discount — Small %</label><input type="number" step="1" data-key="disc_small" value="0"></div>
-            <div class="in-field"><label>Discount — Medium %</label><input type="number" step="1" data-key="disc_med" value="8"></div>
-            <div class="in-field"><label>Discount — Enterprise %</label><input type="number" step="1" data-key="disc_ent" value="15"></div>
-          </div>
-        </div>
-      </details>
-    </div>
-
-    <!-- RESULTS -->
+    <!-- results -->
     <div class="in-results">
       <div class="in-panel" style="margin-top:0;">
         <h2>Quote <span class="in-tier-tag" id="r-tier">—</span></h2>
-        <div class="in-hero-figure">
-          <div class="in-kpi in-kpi--hero"><span class="k">Total once-off</span><span class="v" id="r-onceoff">R0</span></div>
+        <div class="in-fieldgrid" style="margin:2px 0 10px;">
+          <div class="in-field"><label>Prepared for</label><input id="q-for" type="text" placeholder="Client name"></div>
+          <div class="in-field"><label>Prepared by</label><input id="q-by" type="text" placeholder="Consultant"></div>
         </div>
-        <div class="in-hero-figure">
-          <div class="in-kpi in-kpi--hero"><span class="k">Total monthly</span><span class="v" id="r-monthly">R0</span></div>
-        </div>
-        <div class="in-hero-figure">
-          <div class="in-kpi in-kpi--hero"><span class="k">Contract total value</span><span class="v" id="r-tcv">R0</span></div>
-        </div>
+        <div class="in-hero-figure"><div class="in-kpi in-kpi--hero"><span class="k">Total once-off</span><span class="v" id="r-onceoff">R0</span></div></div>
+        <div class="in-hero-figure"><div class="in-kpi in-kpi--hero"><span class="k">Total monthly</span><span class="v" id="r-monthly">R0</span></div></div>
+        <div class="in-hero-figure"><div class="in-kpi in-kpi--hero"><span class="k">Contract total value</span><span class="v" id="r-tcv">R0</span></div></div>
 
         <div style="margin-top:14px;">
-          <div class="in-kpi"><span class="k">Total units</span><span class="v" id="r-units">0</span></div>
-          <div class="in-kpi"><span class="k">Hardware + installation</span><span class="v" id="r-hwinstall">R0</span></div>
-          <div class="in-kpi"><span class="k">Account initiation fee</span><span class="v" id="r-init">R0</span></div>
+          <div class="in-kpi"><span class="k">Units</span><span class="v" id="r-units">0</span></div>
+          <div class="in-kpi"><span class="k" id="r-sub-label">Subtotal</span><span class="v" id="r-sub">R0</span></div>
+          <div class="in-kpi"><span class="k" id="r-fee-label">Fee</span><span class="v" id="r-fee">R0</span></div>
           <div class="in-kpi"><span class="k">Volume discount</span><span class="v" id="r-disc">0%</span></div>
           <div class="in-kpi"><span class="k">Avg monthly / unit</span><span class="v" id="r-avg">R0</span></div>
         </div>
 
-        <div class="in-subhead" style="margin-top:16px;">Per group (monthly / once-off per unit)</div>
+        <div class="in-subhead" style="margin-top:16px;">Breakdown</div>
         <div id="r-breakdown" style="font-size:.85rem; color:var(--muted-hi);"></div>
 
         <div class="in-toolbar">
-          <button type="button" class="in-btn" onclick="window.print()">Print quote</button>
-          <a class="in-btn in-btn--ghost" href="{% static 'internal/downloads/myTrack_Pricing_Toolkit.xlsx' %}" download>Excel model</a>
+          <button type="button" class="in-btn" id="q-pdf">Generate quote PDF</button>
+          {% if has_downloads %}<a class="in-btn in-btn--ghost" href="{% static 'internal/downloads/myTrack_Pricing_Toolkit.xlsx' %}" download>Excel model</a>{% endif %}
         </div>
         <p class="in-panel-sub" style="margin-top:12px;">Indicative. Subject to site survey. E&amp;OE.</p>
       </div>
     </div>
   </div>
+
+  <script id="pricing-config" type="application/json">{{ config_json|safe }}</script>
+  <div id="ph-urls" data-quote="{% url 'internal_quote_pdf' %}" hidden></div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'js/internal_draft.js' %}"></script>
 <script src="{% static 'js/pricing.js' %}"></script>
 {% endblock %}

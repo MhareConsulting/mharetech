@@ -21,7 +21,8 @@
     </a>
     <ul class="in-links">
       <li><a href="{% url 'internal_home' %}" class="{% if active == 'home' %}is-active{% endif %}">Home</a></li>
-      <li><a href="{% url 'internal_toolkit' %}" class="{% if active == 'toolkit' %}is-active{% endif %}">myTrack Sales Toolkit</a></li>
+      <li><a href="{% url 'internal_toolkit' 'mytrack' %}" class="{% if active == 'mytrack' %}is-active{% endif %}">myTrack</a></li>
+      <li><a href="{% url 'internal_toolkit' 'myroutes' %}" class="{% if active == 'myroutes' %}is-active{% endif %}">myRoutes</a></li>
     </ul>
     <a class="in-logout" href="{% url 'internal_logout' %}">Log out</a>
   </div>
