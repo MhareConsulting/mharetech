@@ -2792,6 +2792,464 @@ window.myWMS = { myWMSBoothFrame };
 </script>
 
 <!-- ============================================================
+     BLOCK 6.6 · Car Guard component
+     ============================================================ -->
+<style>
+@keyframes cg-spin{to{transform:rotate(360deg);}}
+@keyframes cg-halo{0%{opacity:.9;transform:scale(1);}100%{opacity:0;transform:scale(1.18);}}
+@keyframes cg-urgent{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+@keyframes cg-drop{0%{opacity:0;transform:translateY(-24px);}100%{opacity:1;transform:translateY(0);}}
+</style>
+<script type="text/babel" data-presets="env,react">
+/* global React, MH, RealQR */
+const { MhareLogo: MhLogoG, COLORS: COLO_G } = MH;
+
+const CG_GREEN      = "#10B981";
+const CG_GREEN_TXT  = "#34D399";
+const CG_AMBER      = "#F59E0B";
+const CG_AMBER_TXT  = "#FBBF24";
+const CG_RED        = "#E11D48";
+const CG_RED_TXT    = "#FB7185";
+const CG_PANEL      = "#0F172A";
+const CG_LINE       = "#1E293B";
+
+const CgIcons = {
+  Shield: ({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>),
+  Siren:  ({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M7 18v-6a5 5 0 0110 0v6"/><path d="M5 21h14v-3H5z"/><path d="M12 2v2M4.2 5.2l1.4 1.4M19.8 5.2l-1.4 1.4"/></svg>),
+  Power:  ({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round"><path d="M12 3v8"/><path d="M6.4 7.4a8 8 0 1011.2 0"/></svg>),
+  Key:    ({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>),
+  Move:   ({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M3 17h2l2-5h8l2 5h2"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/><path d="M14 4h7M17 1l3 3-3 3"/></svg>),
+  Jam:    ({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round"><path d="M2 9a16 16 0 0120 0"/><path d="M5 13a11 11 0 0114 0"/><path d="M8.5 16.5a6 6 0 017 0"/><path d="M3 3l18 18"/></svg>),
+  Tow:    ({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M2 17h9V9H6l-4 5z"/><path d="M11 13l6-6 3 3"/><path d="M14 17h8"/><circle cx="6" cy="18" r="1.8"/><circle cx="18" cy="18" r="1.8"/></svg>),
+  Battery:({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/><path d="M11 9l-2 4h4l-2 4"/></svg>),
+  Silent: ({ s = 20 }) => (<svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>),
+};
+
+// State badge — distinct SHAPE per state so it reads without colour (mirrors the live app)
+function GuardBadge({ state = "armed", size = 150 }) {
+  const cfg = {
+    off:    { label:"OFF",       color:"#64748B", bg:CG_PANEL,                 radius:"50%",            Icon:CgIcons.Power },
+    arming: { label:"ARMING…",   color:CG_AMBER_TXT, bg:"rgba(69,26,3,.35)",   radius:"50%",            Icon:CgIcons.Shield },
+    armed:  { label:"ARMED",     color:CG_GREEN_TXT, bg:"rgba(2,44,34,.5)",    radius:size*0.2,         Icon:CgIcons.Shield },
+    alarm:  { label:"ALARM",     color:CG_RED_TXT,   bg:"rgba(76,5,25,.65)",   radius:size*0.1,         Icon:CgIcons.Siren },
+  }[state];
+  const border = state === "alarm" ? CG_RED : state === "armed" ? CG_GREEN : state === "arming" ? `${CG_AMBER}bb` : "#334155";
+  return (
+    <div style={{ position:"relative", width:size, height:size, flexShrink:0 }}>
+      {state === "arming" && (
+        <div style={{ position:"absolute", inset:-8, borderRadius:"50%", border:`1.5px dashed ${CG_AMBER}99`, animation:"cg-spin 6s linear infinite" }}/>
+      )}
+      {state === "alarm" && (
+        <div style={{ position:"absolute", inset:-12, borderRadius:size*0.14, border:`2px solid ${CG_RED}88`, animation:"cg-halo 1.2s ease-out infinite" }}/>
+      )}
+      <div style={{
+        position:"absolute", inset:0, borderRadius:cfg.radius, background:cfg.bg,
+        border:`${state === "alarm" ? 3 : 2}px solid ${border}`,
+        boxShadow: state === "alarm" ? `0 16px 44px ${CG_RED}55` : state === "armed" ? `0 12px 34px ${CG_GREEN}33` : "none",
+        display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:size*0.05,
+        color:cfg.color, animation: state === "alarm" ? "cg-urgent .9s ease-in-out infinite" : "none"
+      }}>
+        <cfg.Icon s={size*0.3}/>
+        <div style={{ fontFamily:"monospace", fontWeight:900, fontSize:size*0.12, letterSpacing:".1em" }}>{cfg.label}</div>
+      </div>
+    </div>
+  );
+}
+
+// Phone shell sized for the 1600×900 artboard
+function GuardPhone({ children, glow = CG_GREEN, width = 340 }) {
+  return (
+    <div style={{
+      width, aspectRatio:"9/19", borderRadius:44, padding:9, background:"#05070d",
+      boxShadow:`0 40px 80px -20px ${glow}66, 0 0 0 1.5px rgba(255,255,255,.08)`, position:"relative"
+    }}>
+      <div style={{ position:"absolute", top:16, left:"50%", transform:"translateX(-50%)", width:96, height:24, background:"#000", borderRadius:99, zIndex:4 }}/>
+      <div style={{ width:"100%", height:"100%", borderRadius:36, background:"#020617", overflow:"hidden", display:"flex", flexDirection:"column", color:"#F1F5F9", position:"relative" }}>
+        <div style={{ display:"flex", justifyContent:"space-between", padding:"14px 26px 6px", fontSize:11, fontWeight:700, opacity:.85 }}>
+          <span>02:33</span><span>● ● ●</span>
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function GuardAppHeader({ reg = "GP 12-34 JK", sub = "Toyota Hilux · Sandton" }) {
+  return (
+    <div style={{ padding:"18px 20px 4px", display:"flex", alignItems:"center", gap:10 }}>
+      <div style={{ width:30, height:30, borderRadius:9, background:"linear-gradient(135deg,#00c8ff,#8a2be2)", display:"grid", placeItems:"center", color:"#fff" }}><CgIcons.Shield s={17}/></div>
+      <div style={{ flex:1 }}>
+        <div style={{ fontWeight:900, fontSize:15, letterSpacing:"-.01em" }}>{reg}</div>
+        <div style={{ fontSize:10, color:"#94A3B8", marginTop:1 }}>{sub}</div>
+      </div>
+      <div style={{ fontSize:10, fontWeight:800, color:"#94A3B8", letterSpacing:".1em" }}>CAR GUARD</div>
+    </div>
+  );
+}
+
+function CarGuardBoothFrame({ scene = 1 }) {
+  return (
+    <div className="mh-artboard mh-grain" style={{ width:1600, height:900, background:COLO_G.navy }}>
+      <div style={{ position:"absolute", inset:0, background:
+        scene === 2
+          ? "radial-gradient(70% 60% at 85% 15%, rgba(225,29,72,.42), transparent 60%), radial-gradient(70% 80% at 6% 100%, rgba(72,39,204,.40), transparent 65%)"
+          : "radial-gradient(70% 60% at 85% 12%, rgba(16,185,129,.30), transparent 60%), radial-gradient(70% 80% at 6% 100%, rgba(72,39,204,.42), transparent 65%)" }}/>
+      <div className="mh-noise"/>
+
+      <div style={{ position:"absolute", top:28, left:32, zIndex:5, display:"flex", gap:8, alignItems:"center" }}>
+        {[1,2,3,4,5,6,7].map(n => (
+          <div key={n} style={{ width: n===scene ? 36 : 8, height:8, borderRadius:4, background: n===scene ? CG_GREEN : "rgba(255,255,255,.25)", transition:"all .3s ease" }}/>
+        ))}
+        <div style={{ fontFamily:"monospace", fontSize:11, opacity:.7, marginLeft:10, color:"#fff", letterSpacing:".15em" }}>
+          SCENE 0{scene} / 07 · CAR GUARD
+        </div>
+      </div>
+
+      <div style={{ position:"absolute", top:22, right:32, zIndex:5 }}><MhLogoG height={36}/></div>
+
+      <div style={{ position:"absolute", inset:0, padding:"96px 80px", display:"flex", zIndex:3 }}>
+        {scene === 1 && <GuardHook/>}
+        {scene === 2 && <GuardAlarm/>}
+        {scene === 3 && <GuardTriggers/>}
+        {scene === 4 && <GuardAutoArm/>}
+        {scene === 5 && <GuardGarage/>}
+        {scene === 6 && <GuardAccess/>}
+        {scene === 7 && <GuardCTA/>}
+      </div>
+    </div>
+  );
+}
+
+// Scene 1 — Hook
+function GuardHook() {
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1.25fr 1fr", gap:56, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${CG_GREEN}66`, color:CG_GREEN_TXT, background:`${CG_GREEN}14` }}>
+          <span className="mh-dot" style={{ background:CG_GREEN, boxShadow:`0 0 12px ${CG_GREEN}` }}/> Car Guard · Vehicle protection
+        </div>
+        <h1 style={{ fontWeight:900, fontSize:124, lineHeight:.86, letterSpacing:"-0.045em", margin:"24px 0 0" }}>
+          Park it.<br/>Arm it.<br/><span style={{ color:CG_GREEN_TXT }}>Walk away.</span>
+        </h1>
+        <div style={{ fontWeight:600, fontSize:28, opacity:.88, marginTop:24, letterSpacing:"-0.01em", maxWidth:620 }}>
+          Your myTrack tracker becomes an alarm you control from your phone — and it tells you the moment anything moves.
+        </div>
+        <div style={{ marginTop:30, display:"flex", gap:14 }}>
+          {[
+            { val:"10 min",  label:"Auto-arm after engine off", color:CG_GREEN_TXT },
+            { val:"6",       label:"Theft triggers watched",    color:CG_RED_TXT },
+            { val:"No app store", label:"Installs from browser", color:"#FF9D00" },
+          ].map((s,i)=>(
+            <div key={i} style={{ textAlign:"center", padding:"12px 22px", background:"rgba(255,255,255,.04)", borderRadius:10, border:"1px solid rgba(255,255,255,.1)" }}>
+              <div style={{ fontWeight:900, fontSize:20, color:s.color, letterSpacing:"-.01em" }}>{s.val}</div>
+              <div style={{ fontSize:9, opacity:.7, marginTop:5, letterSpacing:".1em", textTransform:"uppercase", color:"#cbd5e1" }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center" }}>
+        <GuardPhone glow={CG_GREEN}>
+          <GuardAppHeader/>
+          <div style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:18 }}>
+            <GuardBadge state="armed" size={170}/>
+            <div style={{ fontSize:12, fontWeight:700, color:CG_GREEN_TXT }}>Armed 22:14 · tracker confirmed</div>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, padding:"0 18px" }}>
+            <div style={{ background:CG_PANEL, border:`1px solid ${CG_LINE}`, borderRadius:12, padding:"10px 12px" }}>
+              <div style={{ fontSize:9, color:"#94A3B8", letterSpacing:".12em", textTransform:"uppercase" }}>Battery</div>
+              <div style={{ fontWeight:900, fontSize:16, color:CG_GREEN_TXT, marginTop:3 }}>12.6 V</div>
+            </div>
+            <div style={{ background:CG_PANEL, border:`1px solid ${CG_LINE}`, borderRadius:12, padding:"10px 12px" }}>
+              <div style={{ fontSize:9, color:"#94A3B8", letterSpacing:".12em", textTransform:"uppercase" }}>Tracker</div>
+              <div style={{ fontWeight:900, fontSize:16, color:CG_GREEN_TXT, marginTop:3 }}>Online</div>
+            </div>
+          </div>
+          <div style={{ margin:"14px 18px 22px", padding:"15px", borderRadius:16, background:"#F1F5F9", color:"#020617", textAlign:"center", fontWeight:900, fontSize:15, letterSpacing:".08em" }}>DISARM</div>
+        </GuardPhone>
+      </div>
+    </div>
+  );
+}
+
+// Scene 2 — The alarm
+function GuardAlarm() {
+  const reasons = [
+    { t:"02:31:08", label:"Ignition switched on", why:"Someone started the engine while armed." },
+    { t:"02:31:40", label:"Vehicle moving",       why:"34 km/h on Rivonia Rd, heading north." },
+    { t:"02:32:15", label:"GPS jamming detected",  why:"The tracker reports its signal is blocked." },
+  ];
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:56, width:"100%", alignItems:"center", color:"#fff" }}>
+      <div>
+        <div style={{ fontFamily:"monospace", fontSize:14, color:CG_RED_TXT, letterSpacing:".15em" }}>02:31:08 · SANDTON · ARMED VEHICLE</div>
+        <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.035em", lineHeight:.95, margin:"16px 0 24px" }}>
+          Someone just<br/>started<br/><span style={{ color:CG_RED_TXT }}>your car.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:22, opacity:.85, maxWidth:560 }}>
+          Car Guard raises the alarm on the owner’s lock screen, by email, and in the myTrack control room — with every reason, numbered and time-stamped.
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center", position:"relative" }}>
+        <GuardPhone glow={CG_RED}>
+          <div style={{ margin:"40px 12px 0", padding:"10px 12px", borderRadius:16, background:"rgba(30,41,59,.95)", border:"1px solid rgba(255,255,255,.1)", display:"flex", gap:10, animation:"cg-drop .6s ease-out both" }}>
+            <div style={{ width:28, height:28, borderRadius:8, background:CG_RED, display:"grid", placeItems:"center", color:"#fff", flexShrink:0 }}><CgIcons.Siren s={16}/></div>
+            <div>
+              <div style={{ fontSize:11, fontWeight:800 }}>GP 12-34 JK — ALARM</div>
+              <div style={{ fontSize:10, color:"#CBD5E1", marginTop:2 }}>The ignition was switched on.</div>
+            </div>
+          </div>
+          <div style={{ display:"flex", justifyContent:"center", margin:"22px 0 16px" }}>
+            <GuardBadge state="alarm" size={118}/>
+          </div>
+          <div style={{ margin:"0 12px", background:"rgba(76,5,25,.7)", border:`2px solid ${CG_RED}cc`, borderRadius:18, padding:12 }}>
+            <div style={{ display:"flex", justifyContent:"space-between", fontSize:10, fontWeight:800, color:CG_RED_TXT, letterSpacing:".06em", textTransform:"uppercase", marginBottom:8 }}>
+              <span>Alarm reasons (3)</span><span style={{ fontWeight:500, textTransform:"none", letterSpacing:0 }}>Newest last</span>
+            </div>
+            {reasons.map((r,i)=>(
+              <div key={i} style={{ display:"flex", gap:9, padding:"7px 0", borderTop: i ? "1px solid rgba(251,113,133,.2)" : "none" }}>
+                <div style={{ width:20, height:20, borderRadius:6, background:CG_RED, color:"#fff", fontSize:11, fontWeight:900, display:"grid", placeItems:"center", flexShrink:0 }}>{i+1}</div>
+                <div style={{ flex:1 }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", gap:6 }}>
+                    <span style={{ fontSize:12, fontWeight:800 }}>{r.label}</span>
+                    <span style={{ fontFamily:"monospace", fontSize:9, color:"#FDA4AF" }}>{r.t}</span>
+                  </div>
+                  <div style={{ fontSize:10, color:"#FECDD3", opacity:.85, marginTop:2 }}>{r.why}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ flex:1 }}/>
+          <div style={{ margin:"0 12px", background:CG_PANEL, border:`1px solid ${CG_LINE}`, borderRadius:12, padding:"10px 12px" }}>
+            <div style={{ fontSize:9, color:"#94A3B8", letterSpacing:".12em", textTransform:"uppercase" }}>Last seen · 02:32</div>
+            <div style={{ fontSize:12, fontWeight:700, marginTop:3 }}>Rivonia Rd, Sandton</div>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, margin:"8px 12px 0" }}>
+            <div style={{ background:CG_PANEL, border:`1px solid ${CG_LINE}`, borderRadius:12, padding:"8px 12px" }}>
+              <div style={{ fontSize:9, color:"#94A3B8", letterSpacing:".12em", textTransform:"uppercase" }}>Battery</div>
+              <div style={{ fontWeight:900, fontSize:14, color:CG_GREEN_TXT, marginTop:2 }}>12.4 V</div>
+            </div>
+            <div style={{ background:CG_PANEL, border:`1px solid ${CG_RED}88`, borderRadius:12, padding:"8px 12px" }}>
+              <div style={{ fontSize:9, color:"#94A3B8", letterSpacing:".12em", textTransform:"uppercase" }}>Tracker</div>
+              <div style={{ fontWeight:900, fontSize:14, color:CG_RED_TXT, marginTop:2 }}>Jammed</div>
+            </div>
+          </div>
+          <div style={{ margin:"10px 12px 20px", padding:"13px", borderRadius:16, background:"#F1F5F9", color:"#020617", textAlign:"center", fontWeight:900, fontSize:14, letterSpacing:".08em" }}>DISARM</div>
+        </GuardPhone>
+      </div>
+    </div>
+  );
+}
+
+// Scene 3 — Six triggers
+function GuardTriggers() {
+  const items = [
+    { Icon:CgIcons.Key,     title:"Ignition on",     sub:"Someone starts the engine",     color:CG_RED_TXT },
+    { Icon:CgIcons.Move,    title:"Vehicle moving",  sub:"Over 10 km/h while armed",      color:CG_RED_TXT },
+    { Icon:CgIcons.Jam,     title:"GPS jamming",     sub:"The signal is being blocked",   color:CG_RED_TXT },
+    { Icon:CgIcons.Tow,     title:"Being towed",     sub:"Moved with the engine off",     color:CG_AMBER_TXT },
+    { Icon:CgIcons.Battery, title:"Battery cut",     sub:"Power to the tracker removed",  color:CG_AMBER_TXT },
+    { Icon:CgIcons.Silent,  title:"Tracker silent",  sub:"No signal for 90 minutes",      color:CG_AMBER_TXT },
+  ];
+  return (
+    <div style={{ width:"100%", display:"flex", flexDirection:"column", justifyContent:"center", color:"#fff" }}>
+      <div className="mh-chip" style={{ borderColor:`${CG_RED}66`, color:CG_RED_TXT, background:`${CG_RED}14`, alignSelf:"flex-start" }}>
+        <span className="mh-dot" style={{ background:CG_RED, boxShadow:`0 0 12px ${CG_RED}` }}/> Checked on every tracker ping
+      </div>
+      <h2 style={{ fontWeight:900, fontSize:84, letterSpacing:"-0.04em", lineHeight:.92, margin:"20px 0 40px" }}>
+        Six ways a theft<br/><span style={{ color:CG_RED_TXT }}>gives itself away.</span>
+      </h2>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:18 }}>
+        {items.map((it,i)=>(
+          <div key={i} style={{ display:"flex", alignItems:"center", gap:18, padding:"22px 24px", background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.09)", borderRadius:16, borderLeft:`4px solid ${it.color}` }}>
+            <div style={{ width:54, height:54, borderRadius:14, background:`${it.color}1c`, color:it.color, display:"grid", placeItems:"center", flexShrink:0 }}><it.Icon s={28}/></div>
+            <div>
+              <div style={{ fontWeight:800, fontSize:24, letterSpacing:"-.01em" }}>{it.title}</div>
+              <div style={{ fontSize:15, opacity:.65, marginTop:4 }}>{it.sub}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Scene 4 — Auto-arm + the four states
+function GuardAutoArm() {
+  const steps = [
+    { t:"22:04", label:"Engine off",          state:"off" },
+    { t:"22:14", label:"Arming…",             state:"arming" },
+    { t:"22:14", label:"Armed — confirmed",   state:"armed" },
+  ];
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1fr 1.15fr", gap:64, alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${CG_AMBER}66`, color:CG_AMBER_TXT, background:`${CG_AMBER}14` }}>
+          <span className="mh-dot" style={{ background:CG_AMBER, boxShadow:`0 0 12px ${CG_AMBER}` }}/> Auto-arm
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:96, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          Forgot to arm?<br/><span style={{ color:CG_GREEN_TXT }}>It didn’t.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:20, opacity:.82, maxWidth:520, marginTop:22 }}>
+          Ten minutes after the engine goes off, Car Guard arms itself and tells the owner. Each state has its own shape, so it reads at a glance — even without colour.
+        </div>
+        <div style={{ marginTop:26, display:"inline-flex", alignItems:"center", gap:12, padding:"12px 16px", borderRadius:12, background:"rgba(255,255,255,.05)", border:"1px solid rgba(255,255,255,.1)" }}>
+          <div style={{ width:26, height:26, borderRadius:7, background:"linear-gradient(135deg,#00c8ff,#8a2be2)", display:"grid", placeItems:"center" }}><CgIcons.Shield s={15}/></div>
+          <div>
+            <div style={{ fontSize:13, fontWeight:800 }}>GP 12-34 JK armed automatically</div>
+            <div style={{ fontSize:11, opacity:.6, marginTop:2 }}>10 minutes after the engine was switched off</div>
+          </div>
+        </div>
+      </div>
+      <div style={{ display:"flex", flexDirection:"column", gap:26 }}>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          {steps.map((s,i)=>(
+            <React.Fragment key={i}>
+              <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:14 }}>
+                <GuardBadge state={s.state} size={132}/>
+                <div style={{ textAlign:"center" }}>
+                  <div style={{ fontFamily:"monospace", fontSize:13, opacity:.6 }}>{s.t}</div>
+                  <div style={{ fontWeight:800, fontSize:16, marginTop:3 }}>{s.label}</div>
+                </div>
+              </div>
+              {i < steps.length - 1 && (
+                <div style={{ flex:1, height:2, margin:"0 14px 52px", background:`linear-gradient(90deg, rgba(255,255,255,.15), ${i ? CG_GREEN : CG_AMBER})` }}/>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+        <div style={{ display:"flex", alignItems:"center", gap:22, padding:"18px 22px", borderRadius:16, background:"rgba(76,5,25,.35)", border:`1px solid ${CG_RED}55` }}>
+          <GuardBadge state="alarm" size={84}/>
+          <div>
+            <div style={{ fontWeight:800, fontSize:18 }}>Any trigger while armed → ALARM</div>
+            <div style={{ fontSize:14, opacity:.7, marginTop:4 }}>Stays raised until the owner disarms with their PIN.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Scene 5 — Every car, alarm first
+function GuardGarage() {
+  const cars = [
+    { reg:"GP 77-90 LM", model:"Ford Ranger",    state:"alarm",  note:"Being towed · 03:12", v:"12.1 V", vc:CG_GREEN_TXT, trk:"Online", tc:CG_GREEN_TXT },
+    { reg:"GP 12-34 JK", model:"Toyota Hilux",   state:"armed",  note:"Armed since 22:14",   v:"11.6 V", vc:CG_AMBER_TXT, trk:"Online", tc:CG_GREEN_TXT },
+    { reg:"GP 45-11 CD", model:"VW Polo Vivo",   state:"armed",  note:"Auto-armed 18:40",    v:"12.5 V", vc:CG_GREEN_TXT, trk:"Asleep", tc:"#94A3B8" },
+    { reg:"GP 03-58 XY", model:"Isuzu D-Max",    state:"off",    note:"On a trip",           v:"13.9 V", vc:CG_GREEN_TXT, trk:"Online", tc:CG_GREEN_TXT },
+  ];
+  const pill = s => ({
+    alarm: { t:"ALARM", bg:CG_RED, c:"#fff" },
+    armed: { t:"ARMED", bg:"rgba(2,44,34,.85)", c:CG_GREEN_TXT, b:`1px solid ${CG_GREEN}99` },
+    off:   { t:"OFF",   bg:"rgba(30,41,59,.9)", c:"#94A3B8" },
+  }[s]);
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1fr 1.2fr", gap:56, alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${CG_GREEN}66`, color:CG_GREEN_TXT, background:`${CG_GREEN}14` }}>
+          <span className="mh-dot live"/> Every vehicle · one screen
+        </div>
+        <h2 style={{ fontWeight:900, fontSize:92, letterSpacing:"-0.04em", lineHeight:.9, margin:"20px 0 0" }}>
+          Trouble<br/><span style={{ color:CG_RED_TXT }}>jumps the queue.</span>
+        </h2>
+        <div style={{ fontWeight:500, fontSize:20, opacity:.82, maxWidth:520, marginTop:22 }}>
+          Vehicles in alarm sort to the top with their latest reason. Battery voltage and tracker health sit beside every car — so a flat battery or a sleeping tracker is spotted before it matters.
+        </div>
+        <div style={{ marginTop:24, display:"flex", gap:12 }}>
+          {[{c:CG_GREEN_TXT,t:"≥ 11.8 V"},{c:CG_AMBER_TXT,t:"< 11.8 V"},{c:CG_RED_TXT,t:"< 9 V"}].map((b,i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:8, fontSize:13, fontWeight:700, padding:"8px 12px", borderRadius:999, background:"rgba(255,255,255,.05)" }}>
+              <span style={{ width:9, height:9, borderRadius:"50%", background:b.c }}/>{b.t}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background:"#020617", borderRadius:20, border:"1px solid rgba(255,255,255,.08)", padding:18, display:"flex", flexDirection:"column", gap:10, boxShadow:`0 40px 80px -20px ${CG_GREEN}44` }}>
+        <div style={{ display:"flex", justifyContent:"space-between", padding:"2px 6px 6px", fontSize:11, letterSpacing:".16em", textTransform:"uppercase", color:"#94A3B8", fontWeight:700 }}>
+          <span>My vehicles (4)</span><span>Alarm first</span>
+        </div>
+        {cars.map((c,i)=>{ const p = pill(c.state); return (
+          <div key={i} style={{ display:"flex", alignItems:"center", gap:14, padding:"14px 16px", borderRadius:14,
+            background: c.state==="alarm" ? "rgba(76,5,25,.55)" : CG_PANEL,
+            border: c.state==="alarm" ? `2px solid ${CG_RED}` : `1px solid ${CG_LINE}` }}>
+            <div style={{ flex:1 }}>
+              <div style={{ fontWeight:900, fontSize:17 }}>{c.reg} <span style={{ fontWeight:500, fontSize:13, color:"#94A3B8" }}>· {c.model}</span></div>
+              <div style={{ fontSize:12, marginTop:3, color: c.state==="alarm" ? CG_RED_TXT : "#94A3B8", fontWeight: c.state==="alarm" ? 700 : 500 }}>{c.note}</div>
+            </div>
+            <div style={{ textAlign:"right", fontSize:12, fontWeight:700, minWidth:64 }}>
+              <div style={{ color:c.vc }}>{c.v}</div>
+              <div style={{ color:c.tc, marginTop:3 }}>{c.trk}</div>
+            </div>
+            <div style={{ padding:"6px 12px", borderRadius:999, background:p.bg, color:p.c, border:p.b || "none", fontFamily:"monospace", fontWeight:900, fontSize:12, letterSpacing:".08em", minWidth:70, textAlign:"center" }}>{p.t}</div>
+          </div>
+        ); })}
+      </div>
+    </div>
+  );
+}
+
+// Scene 6 — Access: PIN, Home Screen, fleet + owners
+function GuardAccess() {
+  const cards = [
+    { Icon:CgIcons.Key,    color:"#00C8FF", title:"A PIN, not a password", sub:"Owners open Car Guard with a 6–8 digit PIN. Repeated wrong guesses are locked out." },
+    { Icon:CgIcons.Shield, color:CG_GREEN_TXT, title:"Lives on the Home Screen", sub:"Installs from the browser in three taps — lock-screen alarm alerts, no app store." },
+    { Icon:CgIcons.Siren,  color:CG_RED_TXT, title:"Owner and control room", sub:"Every alarm also lands in myTrack, so a fleet desk can act alongside the owner." },
+    { Icon:CgIcons.Silent, color:"#FF9D00", title:"A full audit trail", sub:"Every arm, auto-arm, confirmation, alarm and disarm is logged with who and when." },
+  ];
+  return (
+    <div style={{ width:"100%", display:"flex", flexDirection:"column", justifyContent:"center", color:"#fff" }}>
+      <div className="mh-chip" style={{ borderColor:"rgba(0,200,255,.45)", color:"#7DD3FC", background:"rgba(0,200,255,.08)", alignSelf:"flex-start" }}>
+        <span className="mh-dot" style={{ background:"#00C8FF", boxShadow:"0 0 12px #00C8FF" }}/> For owners · for fleets
+      </div>
+      <h2 style={{ fontWeight:900, fontSize:84, letterSpacing:"-0.04em", lineHeight:.92, margin:"20px 0 40px" }}>
+        Simple for the driver.<br/><span style={{ color:CG_GREEN_TXT }}>Serious for the fleet.</span>
+      </h2>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:18 }}>
+        {cards.map((c,i)=>(
+          <div key={i} style={{ padding:"26px 24px", background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.09)", borderRadius:18, borderTop:`3px solid ${c.color}` }}>
+            <div style={{ width:52, height:52, borderRadius:14, background:`${c.color}1c`, color:c.color, display:"grid", placeItems:"center" }}><c.Icon s={26}/></div>
+            <div style={{ fontWeight:800, fontSize:22, marginTop:18, letterSpacing:"-.01em", lineHeight:1.15 }}>{c.title}</div>
+            <div style={{ fontSize:15, opacity:.68, marginTop:10, lineHeight:1.45 }}>{c.sub}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Scene 7 — CTA
+function GuardCTA() {
+  return (
+    <div style={{ width:"100%", display:"grid", gridTemplateColumns:"1.4fr 1fr", gap:64, alignItems:"center", color:"#fff" }}>
+      <div>
+        <div className="mh-chip" style={{ borderColor:`${CG_GREEN}66`, color:CG_GREEN_TXT, background:`${CG_GREEN}14` }}>
+          <span className="mh-dot live"/> Live on myTrack
+        </div>
+        <div style={{
+          fontWeight:900, fontSize:104, letterSpacing:"-0.04em", lineHeight:.92, marginTop:20,
+          background:`linear-gradient(90deg, #fff, ${CG_GREEN_TXT})`, WebkitBackgroundClip:"text", color:"transparent"
+        }}>
+          Arm your<br/>first car<br/>tonight.
+        </div>
+        <div style={{ marginTop:28, fontSize:20, opacity:.85, maxWidth:620 }}>
+          Already on myTrack? Car Guard switches on for your vehicles — no new hardware, no app to download.
+        </div>
+        <div style={{ marginTop:30, display:"flex", gap:16, alignItems:"center", flexWrap:"wrap" }}>
+          <div style={{ padding:"16px 26px", borderRadius:999, background:CG_GREEN, color:"#022c22", fontWeight:800, fontSize:20 }}>Get Car Guard</div>
+          <div style={{ fontSize:17, opacity:.9 }}>sales@mhareconsulting.co.za</div>
+        </div>
+      </div>
+      <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }}>
+        <div style={{ background:"#fff", borderRadius:20, padding:16, boxShadow:`0 40px 80px -20px ${CG_GREEN}aa` }}>
+          <RealQR size={200}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.CarGuard = { CarGuardBoothFrame };
+</script>
+
+<!-- ============================================================
      BLOCK 7 · Booth Player app
      ============================================================ -->
 <script type="text/babel" data-presets="env,react">
@@ -2799,6 +3257,7 @@ const { MyTrackBoothFrame }   = window.MyTrack;
 const { myRoutesBoothFrame }  = window.myRoutes;
 const { KasiStockBoothFrame } = window.KasiStock;
 const { myWMSBoothFrame }     = window.myWMS;
+const { CarGuardBoothFrame } = window.CarGuard;
 const { MhareLogo: SplashLogo } = window.MH;
 
 function MhareSplashFrame() {
@@ -2826,6 +3285,7 @@ function MhareSplashFrame() {
         <div style={{ display:"flex", gap:18 }}>
           {[
             { name:"myTrack",   accent:"#E1266B", label:"Telematics"     },
+            { name:"Car Guard", accent:"#10B981", label:"Vehicle Protection" },
             { name:"myRoutes",  accent:"#FF9D00", label:"Route Planning"  },
             { name:"KasiStock", accent:"#4827CC", label:"Community POS"   },
             { name:"myWMS",     accent:"#16C8B6", label:"Warehouse"      },
@@ -2851,6 +3311,7 @@ const SCENE_TIMINGS = [5000, 7000, 6000, 6000, 7000, 7000, 4000];
 const SCENE_FALLBACK = 6000; // scenes beyond SCENE_TIMINGS (e.g. myRoutes 8–10)
 const ALL_PRODUCTS = [
   { id:"mytrack",   name:"myTrack",   label:"Telematics",    accent:"#E1266B", Frame:MyTrackBoothFrame,   sceneCount:6 },
+  { id:"carguard",  name:"Car Guard", label:"Vehicle Protection", accent:"#10B981", Frame:CarGuardBoothFrame, sceneCount:7 },
   { id:"myroutes",  name:"myRoutes",  label:"Routing",       accent:"#FF9D00", Frame:myRoutesBoothFrame,  sceneCount:10 },
   { id:"kasistock", name:"KasiStock", label:"Bar & Bottle POS", accent:"#4827CC", Frame:KasiStockBoothFrame, sceneCount:7 },
   { id:"mywms",     name:"myWMS",     label:"Warehouse",     accent:"#16C8B6", Frame:myWMSBoothFrame,     sceneCount:7 },
@@ -3035,7 +3496,7 @@ function BoothPlayer() {
                 padding:"5px 16px", borderRadius:999, border:"none", cursor:"pointer",
                 fontFamily:"Montserrat,sans-serif", fontWeight:700, fontSize:12, letterSpacing:"0.04em",
                 background: i===productIdx ? p.accent : "rgba(255,255,255,.07)",
-                color: i===productIdx ? (p.id==="myroutes" ? "#151B29" : "#fff") : "rgba(255,255,255,.5)",
+                color: i===productIdx ? ((p.id==="myroutes" || p.id==="carguard") ? "#151B29" : "#fff") : "rgba(255,255,255,.5)",
                 transition:"all .2s", flexShrink:0
               }}>
               {p.name}
