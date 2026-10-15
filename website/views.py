@@ -87,6 +87,13 @@ def sloane_loop(request):
     return render(request, '22onsloane.html')
 
 
+def standardbank(request):
+    # Client-specific pitch deck: shared by link only, kept out of search results.
+    response = render(request, 'standardbank.html')
+    response['X-Robots-Tag'] = 'noindex, nofollow'
+    return response
+
+
 @ensure_csrf_cookie
 @require_GET
 def expo_connect(request):

@@ -1,0 +1,784 @@
+{% load static %}<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Mhare Tech × Standard Bank · Fleet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  html, body { margin:0; height:100%; background:#0B0F18; overflow:hidden; font-family:'Montserrat', Arial, sans-serif; }
+  #stage { position:absolute; inset:0 0 56px 0; overflow:hidden; }
+  #deck { position:absolute; left:50%; top:50%; width:1920px; height:1080px; transform-origin:center; }
+
+  /* Slide subset defaults: no margins, border-box, a div without display is a column */
+  .slide { position:absolute; inset:0; width:1920px; height:1080px; box-sizing:border-box; overflow:hidden;
+           opacity:0; visibility:hidden; transition:opacity .35s ease, visibility 0s linear .35s; }
+  .slide.active { opacity:1; visibility:visible; transition:opacity .35s ease; }
+  .slide *, .slide *::before, .slide *::after { box-sizing:border-box; margin:0; }
+  .slide div:not([style*="display:"]) { display:flex; flex-direction:column; }
+  .slide h1 { font-size:96px; font-weight:600; line-height:1.1; }
+  .slide h2 { font-size:64px; font-weight:600; line-height:1.15; }
+  .slide h3 { font-size:44px; font-weight:600; line-height:1.2; }
+  .slide p  { font-size:32px; line-height:1.4; }
+  .slide img { display:block; }
+  .sb-table { width:100%; border-collapse:collapse; }
+  .sb-table th, .sb-table td { padding:14px 20px; text-align:left; border-bottom:1px solid #E2DED4; }
+
+  #bar { position:absolute; left:0; right:0; bottom:0; height:56px; display:flex; align-items:center; gap:12px;
+         padding:0 16px; background:#080A10; border-top:1px solid rgba(255,255,255,.07); color:#C9CCD6; font-size:13px; }
+  #bar button { border:none; background:rgba(255,255,255,.08); color:#fff; width:36px; height:36px; border-radius:18px;
+                cursor:pointer; display:flex; align-items:center; justify-content:center; flex:none; }
+  #bar button:hover { background:rgba(255,255,255,.18); }
+  #bar button:focus-visible { outline:2px solid #FF9D00; outline-offset:2px; }
+  #progress { flex:1; height:3px; background:rgba(255,255,255,.1); border-radius:2px; overflow:hidden; }
+  #progress > i { display:block; height:100%; background:#FF9D00; width:0; transition:width .3s ease; }
+  #count { font-family:'JetBrains Mono', monospace; letter-spacing:.08em; min-width:64px; text-align:right; }
+  @media (max-width:600px) { #bar { gap:8px; padding:0 10px; } }
+</style>
+</head>
+<body>
+<main id="stage" aria-live="polite">
+<div id="deck">
+<section id="cover" class="slide active" aria-roledescription="slide" aria-label="1 of 22" style="background:radial-gradient(ellipse at 85% 20%, #3a1f5c 0%, #151B29 60%);color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<img src="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Secondary Logo.svg' %}" alt="Mhare Tech logo" style="width:240px;height:96px;object-fit:contain">
+<div style="display:flex;flex-direction:column;gap:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#FF9D00">Prepared for Vehicle &amp; Asset Finance · Technology, Fleet</p>
+<h1 style="font-size:120px;font-weight:900;line-height:0.95;letter-spacing:-3px">Every vehicle.<br>Every rand.<br><span style="color:#FF9D00">Accounted for.</span></h1>
+<p style="font-size:32px;font-weight:500;color:#C9CCD6;width:1100px;line-height:1.4">Fleet intelligence and route optimisation from Mhare Tech — built in South Africa, run on South African roads.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">myTrack · myRoutes · mharetech.co.za · [Meeting date]</p>
+</section>
+<section id="context" class="slide" aria-roledescription="slide" aria-label="2 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#C01E59">Where you are today</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Standard Bank already sees<br>where the fleet’s money goes.</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:48px;height:48px;flex:none"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>
+<h3 style="font-size:32px;font-weight:700">Fleet cards</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Per-vehicle cards with spend controls and on-the-go approvals in the Fleet Management App.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:48px;height:48px;flex:none"><path d="M3 3v18h18"/><path d="M8 17v-5M13 17V7M18 17v-8"/></svg>
+<h3 style="font-size:32px;font-weight:700">Fleet360</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">One place for fleet cost reporting — daily, weekly and monthly.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:48px;height:48px;flex:none"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+<h3 style="font-size:32px;font-weight:700">Integrated offers</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Leasing, maintenance, fuel and telematics bundled for large corporate fleets.</p>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:32px;background:#151B29;color:#F6F4EF;padding:36px 48px;border-radius:20px">
+<p style="font-size:32px;font-weight:600;line-height:1.35">The open question: <span style="color:#FF9D00">did the litres on the card reach the tank</span> — and were the kilometres driven for the business?</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Mhare Tech × Standard Bank Fleet Management · 02</p>
+</section>
+<section id="leaks" class="slide" aria-roledescription="slide" aria-label="3 of 22" style="background:#151B29;color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#FF9D00">The fleet manager’s blind spots</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Three places fleet cost hides.</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#1D2536;padding:44px;border-radius:20px;border-top:6px solid #E1266B">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3">01 · FUEL</p>
+<h3 style="font-size:44px;font-weight:800;line-height:1.1">Paid for ≠ burned</h3>
+<p style="font-size:24px;line-height:1.5;color:#C9CCD6">A swipe is logged, but a drained tank or a jerry-can fill looks the same on a statement.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#1D2536;padding:44px;border-radius:20px;border-top:6px solid #FF9D00">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00">02 · KILOMETRES</p>
+<h3 style="font-size:44px;font-weight:800;line-height:1.1">Nobody owns the trip</h3>
+<p style="font-size:24px;line-height:1.5;color:#C9CCD6">Keys change hands across shifts. Detours and after-hours use go unexplained.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#1D2536;padding:44px;border-radius:20px;border-top:6px solid #8E7BFF">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#A898FF">03 · PLANNING</p>
+<h3 style="font-size:44px;font-weight:800;line-height:1.1">Routes built by hand</h3>
+<p style="font-size:24px;line-height:1.5;color:#C9CCD6">Stops sequenced on spreadsheets burn extra kilometres before the day starts.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Mhare Tech × Standard Bank Fleet Management · 03</p>
+</section>
+<section id="theft" class="slide" aria-roledescription="slide" aria-label="4 of 22" style="background:#FF9D00;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:grid;grid-template-columns:1.2fr 1fr;gap:96px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:3px">02:34 · N3 HEIDELBERG OFF-RAMP</p>
+<h1 style="font-size:120px;font-weight:900;line-height:0.95;letter-spacing:-3px">62 litres<br>gone in<br>9 minutes.</h1>
+</div>
+<div style="display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;gap:20px;align-items:center;background:#151B29;color:#F6F4EF;padding:28px 32px;border-radius:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00">+0s</p>
+<p style="font-size:28px;font-weight:600">Abnormal fuel drop detected</p>
+</div>
+<div style="display:flex;gap:20px;align-items:center;background:#151B29;color:#F6F4EF;padding:28px 32px;border-radius:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00">+2s</p>
+<p style="font-size:28px;font-weight:600">Vehicle, driver and location logged</p>
+</div>
+<div style="display:flex;gap:20px;align-items:center;background:#151B29;color:#F6F4EF;padding:28px 32px;border-radius:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00">+14s</p>
+<p style="font-size:28px;font-weight:600">WhatsApp alert on the manager’s phone</p>
+</div>
+<p style="font-size:24px;font-weight:600">Not at month-end. While it’s happening.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px">Illustrative scenario from the myTrack live demo · 04</p>
+</section>
+<section id="about" class="slide" aria-roledescription="slide" aria-label="5 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#C01E59">Who we are</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">We build the software — and run it.</h2>
+<p style="font-size:32px;line-height:1.4;color:#4A4F5E;width:1400px">Mhare Tech is the product studio of the Mhare group. Our platforms are designed, built and operated in South Africa, shaped by production feedback from real fleets.</p>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:40px 0;border-top:3px solid #151B29">
+<p style="font-size:120px;font-weight:900;line-height:1;letter-spacing:-3px;color:#4827CC">&lt;1s</p>
+<p style="font-size:28px;font-weight:700">GPS update latency</p>
+<p style="font-size:24px;color:#4A4F5E">Live feed, no page refresh</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:40px 0;border-top:3px solid #151B29">
+<p style="font-size:120px;font-weight:900;line-height:1;letter-spacing:-3px;color:#C01E59">−31%</p>
+<p style="font-size:28px;font-weight:700">Route distance</p>
+<p style="font-size:24px;color:#4A4F5E">Average, vs manual planning</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:40px 0;border-top:3px solid #151B29">
+<p style="font-size:120px;font-weight:900;line-height:1;letter-spacing:-3px">24/7</p>
+<p style="font-size:28px;font-weight:700">Telemetry, always on</p>
+<p style="font-size:24px;color:#4A4F5E">No planned downtime windows</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Figures as published on mharetech.co.za · 05</p>
+</section>
+<section id="track-fuel" class="slide" aria-roledescription="slide" aria-label="6 of 22" style="background:#151B29;color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#F47BA3">myTrack · Fuel intelligence</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">See every litre, not just every swipe.</h2>
+<p style="font-size:28px;line-height:1.5;color:#C9CCD6">Live tank-level telemetry shows fills, drops and consumption as they happen — per vehicle, against its own baseline.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;gap:24px;align-items:flex-start;background:#1D2536;padding:32px;border-radius:16px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#E1266B;width:40px;height:40px;flex:none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700">Abnormal-drop alerts</h3>
+<p style="font-size:24px;color:#C9CCD6">Flagged the moment fuel falls outside normal.</p>
+</div>
+</div>
+<div style="display:flex;gap:24px;align-items:flex-start;background:#1D2536;padding:32px;border-radius:16px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#FF9D00;width:40px;height:40px;flex:none"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700">Fill and consumption log</h3>
+<p style="font-size:24px;color:#C9CCD6">Tank capacity baseline set per vehicle.</p>
+</div>
+</div>
+<div style="display:flex;gap:24px;align-items:flex-start;background:#1D2536;padding:32px;border-radius:16px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#8E7BFF;width:40px;height:40px;flex:none"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700">Acknowledge and resolve</h3>
+<p style="font-size:24px;color:#C9CCD6">Every alert has an owner and an audit trail.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Mhare Tech × Standard Bank Fleet Management · 06</p>
+</section>
+<section id="track-account" class="slide" aria-roledescription="slide" aria-label="7 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#C01E59">myTrack · Accountability</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">A record that writes itself.</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:40px;height:40px;flex:none"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18 14a6.5 6.5 0 013.5 6"/></svg>
+<h3 style="font-size:32px;font-weight:700">Driver per shift</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Every shift tied to the driver and the vehicle they took out.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:40px;height:40px;flex:none"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg>
+<h3 style="font-size:32px;font-weight:700">Trip playback</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Replay any vehicle, any day — route, stops, time, distance.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:40px;height:40px;flex:none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+<h3 style="font-size:32px;font-weight:700">After-hours use</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Geofenced depots and zones; movement outside hours stands out.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:40px;height:40px;flex:none"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3z"/></svg>
+<h3 style="font-size:32px;font-weight:700">Driver rankings</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Harsh braking, acceleration and speeding in a 7-day league.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:40px;height:40px;flex:none"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+<h3 style="font-size:32px;font-weight:700">Hours of service</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Tracked from ignition data and flagged before a breach.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:40px;height:40px;flex:none"><path d="M12 3L2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
+<h3 style="font-size:32px;font-weight:700">Incident video</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">G-force events trigger clips, linked to the safety log.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Mhare Tech × Standard Bank Fleet Management · 07</p>
+</section>
+<section id="routes" class="slide" aria-roledescription="slide" aria-label="8 of 22" style="background:#151B29;color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#FF9D00">myRoutes · Plan and dispatch</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Fewer kilometres before the first wheel turns.</h2>
+<p style="font-size:28px;line-height:1.5;color:#C9CCD6">A routing solver on real South African road data plans the whole fleet in seconds. Your dispatcher reviews, adjusts and dispatches in one click.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:0px;border-top:1px solid #3A4358">
+<div style="display:flex;gap:28px;align-items:center;padding:28px 0;border-bottom:1px solid #3A4358">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00;width:56px">01</p>
+<p style="font-size:28px;font-weight:600">Capacity, driver hours and delivery windows enforced</p>
+</div>
+<div style="display:flex;gap:28px;align-items:center;padding:28px 0;border-bottom:1px solid #3A4358">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00;width:56px">02</p>
+<p style="font-size:28px;font-weight:600">Addresses validated before a route is committed</p>
+</div>
+<div style="display:flex;gap:28px;align-items:center;padding:28px 0;border-bottom:1px solid #3A4358">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00;width:56px">03</p>
+<p style="font-size:28px;font-weight:600">Urgent orders inserted mid-day, no full replan</p>
+</div>
+<div style="display:flex;gap:28px;align-items:center;padding:28px 0;border-bottom:1px solid #3A4358">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00;width:56px">04</p>
+<p style="font-size:28px;font-weight:600">Photo and signature proof of delivery</p>
+</div>
+<div style="display:flex;gap:28px;align-items:center;padding:28px 0;border-bottom:1px solid #3A4358">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00;width:56px">05</p>
+<p style="font-size:28px;font-weight:600">Planned vs actual distance, every run</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Mhare Tech × Standard Bank Fleet Management · 08</p>
+</section>
+<section id="car-guard-hook" class="slide" aria-roledescription="slide" aria-label="9 of 22" style="background:radial-gradient(ellipse at 88% 12%, #0F3B33 0%, #151B29 58%);color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:96px 128px 160px;display:grid;grid-template-columns:1.2fr 1fr;gap:96px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#34D399">Car Guard · Vehicle protection</p>
+<h1 style="font-size:120px;font-weight:900;line-height:0.92;letter-spacing:-3px">Park it.<br>Arm it.<br><span style="color:#34D399">Walk away.</span></h1>
+<p style="font-size:28px;line-height:1.5;color:#C9CCD6">The myTrack tracker becomes an alarm the owner controls from their phone — and it tells them the moment anything moves.</p>
+<div style="display:flex;gap:20px">
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#1D2536;border:1px solid #2E3850;padding:20px 24px;border-radius:14px">
+<p style="font-size:32px;font-weight:900;color:#34D399">10 min</p>
+<p style="font-size:24px;color:#C9CCD6">Auto-arm</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#1D2536;border:1px solid #2E3850;padding:20px 24px;border-radius:14px">
+<p style="font-size:32px;font-weight:900;color:#FB7185">6</p>
+<p style="font-size:24px;color:#C9CCD6">Theft triggers</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#1D2536;border:1px solid #2E3850;padding:20px 24px;border-radius:14px">
+<p style="font-size:32px;font-weight:900;color:#FF9D00">0</p>
+<p style="font-size:24px;color:#C9CCD6">App store installs</p>
+</div>
+</div>
+</div>
+<div style="display:flex;justify-content:center">
+<div style="width:460px;display:flex;flex-direction:column;gap:24px;align-items:center;background:#05070D;border:2px solid #2E3850;border-radius:52px;padding:44px 32px;box-shadow:0 40px 80px -20px rgba(16,185,129,0.45)">
+<div style="align-self:stretch;display:flex;justify-content:space-between;align-items:center">
+<p style="font-size:28px;font-weight:900">GP 12-34 JK</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#94A3B8">CAR GUARD</p>
+</div>
+<div style="width:240px;height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#062C22;border:3px solid #10B981;border-radius:48px;box-shadow:0 12px 34px rgba(16,185,129,0.3)">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#34D399;width:72px;height:72px;flex:none"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;font-weight:700;letter-spacing:4px;color:#34D399">ARMED</p>
+</div>
+<p style="font-size:24px;font-weight:700;color:#34D399">Armed 22:14 · confirmed</p>
+<div style="align-self:stretch;display:flex;gap:12px">
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#0F172A;border:1px solid #1E293B;padding:14px 18px;border-radius:14px">
+<p style="font-size:24px;color:#94A3B8">Battery</p>
+<p style="font-size:28px;font-weight:900;color:#34D399">12.6 V</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#0F172A;border:1px solid #1E293B;padding:14px 18px;border-radius:14px">
+<p style="font-size:24px;color:#94A3B8">Tracker</p>
+<p style="font-size:28px;font-weight:900;color:#34D399">Online</p>
+</div>
+</div>
+<p style="align-self:stretch;font-size:28px;font-weight:900;letter-spacing:3px;text-align:center;background:#F1F5F9;color:#020617;padding:18px;border-radius:18px">DISARM</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Illustrative screen · Mhare Tech × Standard Bank Fleet Management · 09</p>
+</section>
+<section id="car-guard" class="slide" aria-roledescription="slide" aria-label="10 of 22" style="background:radial-gradient(ellipse at 88% 12%, #4A1027 0%, #151B29 58%);color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:96px 128px 160px;display:grid;grid-template-columns:1.15fr 1fr;gap:96px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:3px;color:#FB7185">02:31:08 · SANDTON · ARMED VEHICLE</p>
+<h1 style="font-size:120px;font-weight:900;line-height:0.92;letter-spacing:-3px">Someone just started <span style="color:#FB7185">your car.</span></h1>
+<p style="font-size:28px;line-height:1.5;color:#C9CCD6">Car Guard raises the alarm on the owner’s lock screen, by email and in the myTrack control room — every reason numbered and time-stamped.</p>
+</div>
+<div style="display:flex;justify-content:center">
+<div style="width:500px;display:flex;flex-direction:column;gap:18px;background:#05070D;border:2px solid #2E3850;border-radius:52px;padding:40px 28px;box-shadow:0 40px 80px -20px rgba(225,29,72,0.5)">
+<div style="display:flex;gap:16px;align-items:center;background:#1E293B;padding:16px 18px;border-radius:18px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#FB7185;width:36px;height:36px;flex:none"><path d="M12 3L2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
+<div style="display:flex;flex-direction:column;gap:2px">
+<p style="font-size:24px;font-weight:800">GP 12-34 JK — ALARM</p>
+<p style="font-size:24px;color:#CBD5E1">Ignition switched on</p>
+</div>
+</div>
+<div style="align-self:center;width:150px;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:#4C0519;border:4px solid #E11D48;border-radius:18px;box-shadow:0 0 0 10px rgba(225,29,72,0.25)">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#FB7185;width:52px;height:52px;flex:none"><path d="M12 3L2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;letter-spacing:3px;color:#FB7185">ALARM</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#3A0A1C;border:2px solid #E11D48;border-radius:20px;padding:18px 20px">
+<p style="font-size:24px;font-weight:800;color:#FB7185">Alarm reasons · newest last</p>
+<div style="display:flex;gap:14px;align-items:center">
+<p style="font-size:24px;font-weight:900;background:#E11D48;padding:2px 12px;border-radius:8px">1</p>
+<p style="flex:1;font-size:24px;font-weight:700">Ignition on</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FDA4AF">02:31</p>
+</div>
+<div style="display:flex;gap:14px;align-items:center">
+<p style="font-size:24px;font-weight:900;background:#E11D48;padding:2px 12px;border-radius:8px">2</p>
+<p style="flex:1;font-size:24px;font-weight:700">Vehicle moving</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FDA4AF">02:31</p>
+</div>
+<div style="display:flex;gap:14px;align-items:center">
+<p style="font-size:24px;font-weight:900;background:#E11D48;padding:2px 12px;border-radius:8px">3</p>
+<p style="flex:1;font-size:24px;font-weight:700">GPS jamming</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FDA4AF">02:32</p>
+</div>
+</div>
+<p style="font-size:24px;font-weight:900;letter-spacing:3px;text-align:center;background:#F1F5F9;color:#020617;padding:16px;border-radius:16px">DISARM</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Illustrative screen · Mhare Tech × Standard Bank Fleet Management · 10</p>
+</section>
+<section id="car-guard-triggers" class="slide" aria-roledescription="slide" aria-label="11 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#C01E59">Car Guard · When armed</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Six ways a theft gives itself away.</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;padding:32px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #C01E59">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:40px;height:40px;flex:none"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>
+<h3 style="font-size:32px;font-weight:700">Ignition on</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A4F5E">Someone starts the engine.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;padding:32px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #C01E59">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:40px;height:40px;flex:none"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+<h3 style="font-size:32px;font-weight:700">Vehicle moving</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A4F5E">Over 10 km/h while armed.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;padding:32px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #C01E59">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:40px;height:40px;flex:none"><path d="M12 3L2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
+<h3 style="font-size:32px;font-weight:700">GPS jamming</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A4F5E">The signal is being blocked.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;padding:32px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #4827CC">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:40px;height:40px;flex:none"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.8-.7-.7-2.8 2.5-2.5z"/></svg>
+<h3 style="font-size:32px;font-weight:700">Being towed</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A4F5E">Moved with the engine off.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;padding:32px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #4827CC">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:40px;height:40px;flex:none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+<h3 style="font-size:32px;font-weight:700">Battery cut</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A4F5E">Power to the tracker is removed.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;padding:32px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #4827CC">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:40px;height:40px;flex:none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+<h3 style="font-size:32px;font-weight:700">Tracker silent</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A4F5E">No signal for 90 minutes.</p>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:32px;background:#151B29;color:#F6F4EF;padding:32px 44px;border-radius:20px">
+<p style="font-size:28px;font-weight:600;line-height:1.4">Push and email alerts to the owner, an alert in the fleet control room, and a full audit log. <span style="color:#FF9D00">It protects the client’s vehicle — and the bank’s collateral.</span></p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Mhare Tech × Standard Bank Fleet Management · 11</p>
+</section>
+<section id="car-guard-states" class="slide" aria-roledescription="slide" aria-label="12 of 22" style="background:radial-gradient(ellipse at 88% 12%, #0F3B33 0%, #151B29 58%);color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#FBBF24">Car Guard · Auto-arm</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Forgot to arm? <span style="color:#34D399">It didn’t.</span></h2>
+<p style="font-size:28px;line-height:1.45;color:#C9CCD6;width:1400px">Ten minutes after the engine goes off, Car Guard arms itself and tells the owner. Each state has its own shape, so it reads at a glance — even without colour.</p>
+</div>
+<div style="display:flex;align-items:center;gap:24px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:260px">
+<div style="width:180px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#0F172A;border:3px solid #475569;border-radius:50%">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#94A3B8;width:48px;height:48px;flex:none"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;letter-spacing:3px;color:#94A3B8">OFF</p>
+</div>
+<p style="font-size:24px;font-weight:700;text-align:center">22:04 · Engine off</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:72px;height:36px;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#475569"/></svg>
+<div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:260px">
+<div style="width:180px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#3B1A05;border:3px dashed #F59E0B;border-radius:50%">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#FBBF24;width:48px;height:48px;flex:none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;letter-spacing:2px;color:#FBBF24">ARMING</p>
+</div>
+<p style="font-size:24px;font-weight:700;text-align:center">22:14 · Arming…</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:72px;height:36px;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#F59E0B"/></svg>
+<div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:260px">
+<div style="width:180px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#062C22;border:3px solid #10B981;border-radius:40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#34D399;width:48px;height:48px;flex:none"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;letter-spacing:3px;color:#34D399">ARMED</p>
+</div>
+<p style="font-size:24px;font-weight:700;text-align:center">22:14 · Confirmed</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:72px;height:36px;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#E11D48"/></svg>
+<div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:260px">
+<div style="width:180px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#4C0519;border:4px solid #E11D48;border-radius:16px;box-shadow:0 0 0 10px rgba(225,29,72,0.22)">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#FB7185;width:48px;height:48px;flex:none"><path d="M12 3L2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;letter-spacing:3px;color:#FB7185">ALARM</p>
+</div>
+<p style="font-size:24px;font-weight:700;text-align:center">Any trigger</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Mhare Tech × Standard Bank Fleet Management · 12</p>
+</section>
+<section id="car-guard-garage" class="slide" aria-roledescription="slide" aria-label="13 of 22" style="background:radial-gradient(ellipse at 88% 12%, #0F3B33 0%, #151B29 58%);color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:grid;grid-template-columns:1fr 1.25fr;gap:80px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#34D399">Car Guard · Every vehicle</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Trouble <span style="color:#FB7185">jumps the queue.</span></h2>
+<p style="font-size:28px;line-height:1.5;color:#C9CCD6">Vehicles in alarm sort to the top. Battery voltage and tracker health sit beside every car, so a flat battery or a sleeping tracker is spotted early.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#05070D;border:1px solid #2E3850;border-radius:24px;padding:28px">
+<div style="display:flex;align-items:center;gap:20px;background:#3A0A1C;border:2px solid #E11D48;padding:18px 22px;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:28px;font-weight:900">GP 77-90 LM</p>
+<p style="font-size:24px;font-weight:700;color:#FB7185">Being towed · 03:12</p>
+</div>
+<p style="font-size:24px;font-weight:700;color:#34D399">12.1 V</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;background:#E11D48;padding:6px 16px;border-radius:999px">ALARM</p>
+</div>
+<div style="display:flex;align-items:center;gap:20px;background:#0F172A;border:1px solid #1E293B;padding:18px 22px;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:28px;font-weight:900">GP 12-34 JK</p>
+<p style="font-size:24px;color:#94A3B8">Armed since 22:14</p>
+</div>
+<p style="font-size:24px;font-weight:700;color:#FBBF24">11.6 V</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#34D399;border:1px solid #10B981;padding:6px 16px;border-radius:999px">ARMED</p>
+</div>
+<div style="display:flex;align-items:center;gap:20px;background:#0F172A;border:1px solid #1E293B;padding:18px 22px;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:28px;font-weight:900">GP 45-11 CD</p>
+<p style="font-size:24px;color:#94A3B8">Auto-armed 18:40 · asleep</p>
+</div>
+<p style="font-size:24px;font-weight:700;color:#34D399">12.5 V</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#34D399;border:1px solid #10B981;padding:6px 16px;border-radius:999px">ARMED</p>
+</div>
+<div style="display:flex;align-items:center;gap:20px;background:#0F172A;border:1px solid #1E293B;padding:18px 22px;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:28px;font-weight:900">GP 03-58 XY</p>
+<p style="font-size:24px;color:#94A3B8">On a trip</p>
+</div>
+<p style="font-size:24px;font-weight:700;color:#34D399">13.9 V</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#94A3B8;background:#1E293B;padding:6px 16px;border-radius:999px">OFF</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Battery: green ≥ 11.8 V · amber below 11.8 V · red below 9 V · 13</p>
+</section>
+<section id="car-guard-access" class="slide" aria-roledescription="slide" aria-label="14 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#047857">Car Guard · For owners and fleets</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Simple for the driver. <span style="color:#047857">Serious for the fleet.</span></h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #0284C7">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#0284C7;width:44px;height:44px;flex:none"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>
+<h3 style="font-size:32px;font-weight:700;line-height:1.15">A PIN, not a password</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">6–8 digits. Repeated wrong guesses are locked out.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #047857">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#047857;width:44px;height:44px;flex:none"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+<h3 style="font-size:32px;font-weight:700;line-height:1.15">On the Home Screen</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Installs from the browser. Lock-screen alarm alerts.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #BE123C">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#BE123C;width:44px;height:44px;flex:none"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18 14a6.5 6.5 0 013.5 6"/></svg>
+<h3 style="font-size:32px;font-weight:700;line-height:1.15">Owner and control room</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Every alarm also lands in myTrack for the fleet desk.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4;border-top:6px solid #B45309">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#B45309;width:44px;height:44px;flex:none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V2H6.5A2.5 2.5 0 004 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 004 19.5 2.5 2.5 0 006.5 22H20v-5"/></svg>
+<h3 style="font-size:32px;font-weight:700;line-height:1.15">Full audit trail</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Every arm, alarm and disarm logged with who and when.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Mhare Tech × Standard Bank Fleet Management · 14</p>
+</section>
+<section id="alerts" class="slide" aria-roledescription="slide" aria-label="15 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#C01E59">Built for how managers work</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Answers arrive where people already are.</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:44px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#1E8E4E;width:48px;height:48px;flex:none"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>
+<h3 style="font-size:32px;font-weight:700">WhatsApp alerts</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Fuel drops, harsh driving and geofence breaches, in seconds.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:44px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:48px;height:48px;flex:none"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+<h3 style="font-size:32px;font-weight:700">Scheduled digests</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Daily, weekly and monthly by email — no login needed.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:44px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:48px;height:48px;flex:none"><path d="M10 13a5 5 0 007.1 0l3-3a5 5 0 00-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.1 0l-3 3a5 5 0 007.1 7.1l1.7-1.7"/></svg>
+<h3 style="font-size:32px;font-weight:700">Tracking links</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Customers see a live ETA in any browser. Links expire after.</p>
+</div>
+</div>
+<p style="font-size:32px;font-weight:600;line-height:1.4;width:1400px">No new app for drivers or customers. <span style="color:#C01E59">Adoption is the difference between data and decisions.</span></p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Mhare Tech × Standard Bank Fleet Management · 15</p>
+</section>
+<section id="fit" class="slide" aria-roledescription="slide" aria-label="16 of 22" style="background:#151B29;color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#FF9D00">How we fit</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Alongside what you run — not instead of it.</h2>
+</div>
+<div style="display:flex;align-items:stretch;gap:0px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#1D2536;padding:28px 32px;border-radius:16px;border-left:6px solid #9EA3B5">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">STANDARD BANK</p>
+<h3 style="font-size:32px;font-weight:700">Card spend · Fleet360</h3>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#1D2536;padding:28px 32px;border-radius:16px;border-left:6px solid #9EA3B5">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">VEHICLE</p>
+<h3 style="font-size:32px;font-weight:700">GPS · fuel probe · camera</h3>
+</div>
+</div>
+<div style="width:160px;display:flex;align-items:center;justify-content:center">
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:96px;height:48px;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#FF9D00"/></svg>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;background:#FF9D00;color:#151B29;padding:40px;border-radius:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px">MHARE LAYER</p>
+<h3 style="font-size:44px;font-weight:900;line-height:1.1">Match the swipe to the tank and the trip</h3>
+</div>
+<div style="width:160px;display:flex;align-items:center;justify-content:center">
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:96px;height:48px;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#FF9D00"/></svg>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#1D2536;padding:28px 32px;border-radius:16px;border-left:6px solid #E1266B">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3">FLEET MANAGER</p>
+<h3 style="font-size:32px;font-weight:700">Exceptions, same day</h3>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#1D2536;padding:28px 32px;border-radius:16px;border-left:6px solid #E1266B">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3">BANK</p>
+<h3 style="font-size:32px;font-weight:700">Cleaner risk view</h3>
+</div>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.45;color:#C9CCD6;width:1500px">Card-to-telemetry reconciliation is a joint build we would scope together in the pilot — using an export or API from your side.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Mhare Tech × Standard Bank Fleet Management · 16</p>
+</section>
+<section id="vaf" class="slide" aria-roledescription="slide" aria-label="17 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#C01E59">For Vehicle &amp; Asset Finance</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">The same data protects the financed asset.</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+<div style="display:flex;gap:28px;align-items:flex-start;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:48px;height:48px;flex:none"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+<div style="display:flex;flex-direction:column;gap:10px">
+<h3 style="font-size:32px;font-weight:700">Asset verification</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Confirm a financed vehicle exists, where it is based, and that it is in use.</p>
+</div>
+</div>
+<div style="display:flex;gap:28px;align-items:flex-start;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4827CC;width:48px;height:48px;flex:none"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+<div style="display:flex;flex-direction:column;gap:10px">
+<h3 style="font-size:32px;font-weight:700">Usage and wear</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Kilometres, engine hours and driving style to inform residual values and lease-end pricing.</p>
+</div>
+</div>
+<div style="display:flex;gap:28px;align-items:flex-start;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:48px;height:48px;flex:none"><path d="M12 3L2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
+<div style="display:flex;flex-direction:column;gap:10px">
+<h3 style="font-size:32px;font-weight:700">Early-warning signals</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">A fleet parked for weeks or falling utilisation can flag client stress before arrears.</p>
+</div>
+</div>
+<div style="display:flex;gap:28px;align-items:flex-start;background:#FFFFFF;padding:36px;border-radius:20px;border:1px solid #E2DED4">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#C01E59;width:48px;height:48px;flex:none"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+<div style="display:flex;flex-direction:column;gap:10px">
+<h3 style="font-size:32px;font-weight:700">Recovery support</h3>
+<p style="font-size:24px;line-height:1.45;color:#4A4F5E">Car Guard theft alarms plus last known location for at-risk assets.</p>
+</div>
+</div>
+</div>
+<p style="font-size:28px;font-weight:600;line-height:1.4">Fleet intelligence for the client. <span style="color:#C01E59">Portfolio intelligence for the bank.</span></p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Use cases built on myTrack data — to be validated with VAF credit and collections · 17</p>
+</section>
+<section id="platform" class="slide" aria-roledescription="slide" aria-label="18 of 22" style="background:#151B29;color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#FF9D00">Platform and integration</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Built to connect, not replace.</h2>
+</div>
+<div style="display:flex;align-items:stretch">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">IN</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:20px 24px;border-radius:12px">Card transactions (export or API)</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:20px 24px;border-radius:12px">Telematics devices: [models to confirm]</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:20px 24px;border-radius:12px">Orders, stops and schedules</p>
+</div>
+<div style="width:128px;display:flex;align-items:center;justify-content:center">
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:80px;height:40px;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#FF9D00"/></svg>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#2A2350;border:2px solid #8E7BFF;padding:28px;border-radius:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#A898FF">MHARE PLATFORM</p>
+<p style="font-size:24px;font-weight:600">Live stream · &lt;1s updates</p>
+<p style="font-size:24px;font-weight:600">Rules, alerts and scoring</p>
+<p style="font-size:24px;font-weight:600">Route solver on SA roads</p>
+<p style="font-size:24px;font-weight:600">Trip and fuel history</p>
+</div>
+<div style="width:128px;display:flex;align-items:center;justify-content:center">
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:80px;height:40px;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#FF9D00"/></svg>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">OUT</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:20px 24px;border-radius:12px">API and webhooks [confirm]</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:20px 24px;border-radius:12px">Scheduled reports and data exports</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:20px 24px;border-radius:12px">WhatsApp, email, tracking links</p>
+</div>
+</div>
+<div style="display:flex;gap:24px;flex-wrap:wrap">
+<p style="font-size:24px;font-weight:600;border:1px solid #3A4358;padding:14px 24px;border-radius:999px">We own the full stack</p>
+<p style="font-size:24px;font-weight:600;border:1px solid #3A4358;padding:14px 24px;border-radius:999px">Hosting: [region]</p>
+<p style="font-size:24px;font-weight:600;border:1px solid #3A4358;padding:14px 24px;border-radius:999px">Sign-in: [SSO options]</p>
+<p style="font-size:24px;font-weight:600;border:1px solid #3A4358;padding:14px 24px;border-radius:999px">Hardware-agnostic: [confirm]</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Mhare Tech × Standard Bank Fleet Management · 18</p>
+</section>
+<section id="trust" class="slide" aria-roledescription="slide" aria-label="19 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#C01E59">Security and vendor readiness</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Ready for your third-party review.</h2>
+</div>
+<table class="sb-table" style="font-family:'Montserrat', Arial, sans-serif;font-size:26px;color:#151B29">
+<tr style="background:#151B29"><th style="width:28%;color:#F6F4EF;text-align:left">Area</th><th style="width:52%;color:#F6F4EF;text-align:left">What we commit to</th><th style="width:20%;color:#F6F4EF;text-align:left">Status</th></tr>
+<tr style="background:#FFFFFF"><td>POPIA</td><td>Purpose-limited driver data, signed operator agreement</td><td>[__]</td></tr>
+<tr style="background:#F6F4EF"><td>Data residency</td><td>Hosted in [region], with data export on exit</td><td>[__]</td></tr>
+<tr style="background:#FFFFFF"><td>Encryption</td><td>In transit and at rest</td><td>[__]</td></tr>
+<tr style="background:#F6F4EF"><td>Access control</td><td>Role-based access, SSO, full audit log</td><td>[__]</td></tr>
+<tr style="background:#FFFFFF"><td>Testing</td><td>Independent penetration test, shared on request</td><td>[__]</td></tr>
+<tr style="background:#F6F4EF"><td>Availability</td><td>[__]% uptime SLA, support hours [__]</td><td>[__]</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Mhare Tech × Standard Bank Fleet Management · 19</p>
+</section>
+<section id="models" class="slide" aria-roledescription="slide" aria-label="20 of 22" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#C01E59">Working together</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">Two ways to start.</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FFFFFF;padding:48px;border-radius:20px;border:1px solid #E2DED4;border-top:8px solid #4827CC">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#4827CC">OPTION A</p>
+<h3 style="font-size:44px;font-weight:800;line-height:1.1">Standard Bank’s own fleet</h3>
+<p style="font-size:28px;line-height:1.45;color:#4A4F5E">Pilot myTrack and myRoutes on [__] of the bank’s own vehicles. The fleet manager sees results first-hand.</p>
+<p style="font-size:24px;font-weight:700;color:#4827CC">Fastest to start · internal sponsor</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FFFFFF;padding:48px;border-radius:20px;border:1px solid #E2DED4;border-top:8px solid #C01E59">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#C01E59">OPTION B</p>
+<h3 style="font-size:44px;font-weight:800;line-height:1.1">Standard Bank’s VAF clients</h3>
+<p style="font-size:28px;line-height:1.45;color:#4A4F5E">Offer Mhare alongside vehicle finance and the fleet card — at origination or as a value-add.</p>
+<p style="font-size:24px;font-weight:700;color:#C01E59">Bigger reach · stickier finance and card relationships</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7A7F8C">Mhare Tech × Standard Bank Fleet Management · 20</p>
+</section>
+<section id="pilot" class="slide" aria-roledescription="slide" aria-label="21 of 22" style="background:#151B29;color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#FF9D00">90-day pilot</p>
+<h2 style="font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-1.5px">One fleet. Ninety days. Numbers you can defend.</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;padding-top:28px;border-top:4px solid #8E7BFF">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#A898FF">WEEKS 1–2 · CONNECT</p>
+<p style="font-size:28px;line-height:1.45;color:#C9CCD6">Connect vehicles and fuel probes. Agree the data-sharing terms and card-data export.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;padding-top:28px;border-top:4px solid #FF9D00">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#FF9D00">WEEKS 3–6 · BASELINE</p>
+<p style="font-size:28px;line-height:1.45;color:#C9CCD6">Measure fuel variance, unaccounted kilometres and planning time as they are today.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;padding-top:28px;border-top:4px solid #E1266B">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3">WEEKS 7–12 · PROVE</p>
+<p style="font-size:28px;line-height:1.45;color:#C9CCD6">Alerts and optimised routes go live. Compare against the baseline.</p>
+</div>
+</div>
+<div style="display:flex;gap:24px;flex-wrap:wrap">
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:16px 28px;border-radius:999px">Fuel variance flagged: [__]%</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:16px 28px;border-radius:999px">Route km saved: [__]%</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:16px 28px;border-radius:999px">Trips with a known driver: [__]%</p>
+<p style="font-size:24px;font-weight:600;background:#1D2536;padding:16px 28px;border-radius:999px">Planning time: [__] min/day</p>
+<p style="font-size:24px;font-weight:600;background:#2A2350;padding:16px 28px;border-radius:999px">Integration live in [__] days</p>
+<p style="font-size:24px;font-weight:600;background:#2A2350;padding:16px 28px;border-radius:999px">Platform uptime: [__]%</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Mhare Tech × Standard Bank Fleet Management · 21</p>
+</section>
+<section id="close" class="slide" aria-roledescription="slide" aria-label="22 of 22" style="background:radial-gradient(ellipse at 85% 20%, #3a1f5c 0%, #151B29 60%);color:#F6F4EF;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:#FF9D00">Next steps</p>
+<h1 style="font-size:120px;font-weight:900;line-height:0.95;letter-spacing:-3px">Let’s pick<br>the first<br><span style="color:#FF9D00">fleet.</span></h1>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;gap:24px;align-items:center;background:#1D2536;padding:28px 32px;border-radius:16px">
+<p style="font-size:44px;font-weight:900;color:#FF9D00;width:48px">1</p>
+<p style="font-size:28px;font-weight:600">Choose Option A or B</p>
+</div>
+<div style="display:flex;gap:24px;align-items:center;background:#1D2536;padding:28px 32px;border-radius:16px">
+<p style="font-size:44px;font-weight:900;color:#FF9D00;width:48px">2</p>
+<p style="font-size:28px;font-weight:600">Name a data contact for card exports</p>
+</div>
+<div style="display:flex;gap:24px;align-items:center;background:#1D2536;padding:28px 32px;border-radius:16px">
+<p style="font-size:44px;font-weight:900;color:#FF9D00;width:48px">3</p>
+<p style="font-size:28px;font-weight:600">Book a technical deep-dive with your architects</p>
+</div>
+<p style="font-size:28px;font-weight:600;padding-top:16px">sales@mhareconsulting.co.za</p>
+</div>
+<img src="{% static 'Assets/Digital logos/SVG/Mhare Consulting_Secondary Logo.svg' %}" alt="Mhare Tech logo" style="position:absolute;left:128px;bottom:56px;width:160px;height:64px;object-fit:contain">
+<p style="position:absolute;right:128px;bottom:64px;width:900px;text-align:right;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">mharetech.co.za · 22</p>
+</section>
+</div>
+</main>
+<nav id="bar" aria-label="Slide controls">
+  <button id="prev" aria-label="Previous slide"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M13 4L7 10l6 6"/></svg></button>
+  <button id="next" aria-label="Next slide"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 4l6 6-6 6"/></svg></button>
+  <div id="progress" aria-hidden="true"><i></i></div>
+  <span id="count">1 / 1</span>
+  <button id="full" aria-label="Full screen"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 5V1h4M11 1h4v4M15 11v4h-4M5 15H1v-4"/></svg></button>
+</nav>
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var deck = document.getElementById('deck'), stage = document.getElementById('stage');
+  var bar = document.querySelector('#progress > i'), count = document.getElementById('count');
+  var idx = 0;
+
+  function fit() {
+    var s = Math.min(stage.clientWidth / 1920, stage.clientHeight / 1080);
+    deck.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+  }
+  function show(n, push) {
+    idx = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, i) { el.classList.toggle('active', i === idx); el.setAttribute('aria-hidden', i === idx ? 'false' : 'true'); });
+    count.textContent = (idx + 1) + ' / ' + slides.length;
+    bar.style.width = ((idx + 1) / slides.length * 100) + '%';
+    if (push !== false) history.replaceState(null, '', '#' + (idx + 1));
+  }
+  function fromHash() { var n = parseInt(location.hash.slice(1), 10); return isNaN(n) ? 0 : n - 1; }
+
+  document.getElementById('prev').onclick = function () { show(idx - 1); };
+  document.getElementById('next').onclick = function () { show(idx + 1); };
+  document.getElementById('full').onclick = function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+  };
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].indexOf(e.key) > -1) { e.preventDefault(); show(idx + 1); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].indexOf(e.key) > -1) { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key === 'f') document.getElementById('full').click();
+  });
+  stage.addEventListener('click', function (e) {
+    var r = stage.getBoundingClientRect();
+    show(e.clientX - r.left < r.width / 3 ? idx - 1 : idx + 1);
+  });
+  var x0 = null;
+  stage.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive:true });
+  stage.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+  });
+  window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', function () { show(fromHash(), false); });
+  fit(); show(fromHash(), false);
+})();
+</script>
+</body>
+</html>
