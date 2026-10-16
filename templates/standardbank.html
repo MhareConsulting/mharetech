@@ -106,22 +106,105 @@
 <div style="display:flex;flex-direction:column;gap:32px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;letter-spacing:4px;color:#F47BA3">02:34 · N3 HEIDELBERG OFF-RAMP</p>
 <h1 style="font-size:120px;font-weight:900;line-height:0.95;letter-spacing:-3px">62 litres<br>gone in<br><span style="color:#F47BA3">9 minutes.</span></h1>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:20px;align-items:center;background:#1D2536;padding:16px 24px;border-radius:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3;width:72px">+0s</p>
+<p style="font-size:24px;font-weight:600">Abnormal fuel drop detected</p>
 </div>
-<div style="display:flex;flex-direction:column;gap:28px">
-<div style="display:flex;gap:20px;align-items:center;background:#1D2536;color:#F6F4EF;padding:28px 32px;border-radius:16px">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3">+0s</p>
-<p style="font-size:28px;font-weight:600">Abnormal fuel drop detected</p>
+<div style="display:flex;gap:20px;align-items:center;background:#1D2536;padding:16px 24px;border-radius:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3;width:72px">+2s</p>
+<p style="font-size:24px;font-weight:600">Vehicle, driver and location logged</p>
 </div>
-<div style="display:flex;gap:20px;align-items:center;background:#1D2536;color:#F6F4EF;padding:28px 32px;border-radius:16px">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3">+2s</p>
-<p style="font-size:28px;font-weight:600">Vehicle, driver and location logged</p>
+<div style="display:flex;gap:20px;align-items:center;background:#1D2536;padding:16px 24px;border-radius:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3;width:72px">+14s</p>
+<p style="font-size:24px;font-weight:600">WhatsApp alert on the manager’s phone</p>
 </div>
-<div style="display:flex;gap:20px;align-items:center;background:#1D2536;color:#F6F4EF;padding:28px 32px;border-radius:16px">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F47BA3">+14s</p>
-<p style="font-size:28px;font-weight:600">WhatsApp alert on the manager’s phone</p>
 </div>
-<p style="font-size:24px;font-weight:600;color:#C9CCD6">Not at month-end. While it’s happening.</p>
 </div>
+<div></div>
+<iframe class="sb-embed" title="Live demo" sandbox="allow-scripts" loading="eager" style="position:absolute;left:1079px;top:120px;width:713px;height:800px;border:0;background:transparent" srcdoc="<!doctype html>
+<html><head><link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap&quot;><meta charset=&quot;utf-8&quot;>
+<style>
+html,body{margin:0;height:100%;background:transparent;overflow:hidden}
+body{font-family:Montserrat,'Segoe UI',system-ui,-apple-system,Arial,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+#fit{position:absolute;left:0;top:0;width:625px;height:708px;transform-origin:0 0}
+#w{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:#0a0518;border:1px solid rgba(255,255,255,.08);box-shadow:0 0 80px -10px #4827CCaa;display:flex;flex-direction:column;padding:22px;gap:14px;box-sizing:border-box;transition:border-color .4s}
+.hd{display:flex;align-items:center;gap:10px}
+#dot{width:8px;height:8px;border-radius:50%;background:#27D17F;box-shadow:0 0 10px #27D17F;transition:all .4s}
+#st{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#27D17F;transition:color .4s}
+.reg{margin-left:auto;font-family:monospace;font-size:10px;opacity:.35}
+#card{flex:1;background:rgba(255,255,255,.04);border-radius:16px;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;gap:12px;transition:border-color .4s}
+.lbl{font-size:8px;letter-spacing:.22em;text-transform:uppercase;opacity:.45;font-weight:700}
+.rate{width:100%}
+.rl{font-size:10px;opacity:.55;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px;font-weight:700}
+#bars{display:flex;gap:4px}
+#bars i{flex:1;height:8px;border-radius:3px;background:rgba(255,255,255,.12);transition:background .15s}
+#crit{display:none;margin-top:10px;padding:7px 12px;border-radius:8px;background:#E1266B1a;border:1px solid #E1266B55;font-size:13px;color:#E1266B;font-weight:900;letter-spacing:.14em;text-transform:uppercase;text-align:center}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:rgba(255,255,255,.04);border-radius:12px;padding:14px 16px;border:1px solid rgba(255,255,255,.07)}
+.tile.m{border-color:#E1266B22}
+.tl{font-size:7.5px;opacity:.4;letter-spacing:.14em;text-transform:uppercase}
+.tv{font-weight:900;font-size:26px;margin-top:6px;letter-spacing:-.01em}
+</style></head>
+<body>
+<div id=&quot;fit&quot;><div id=&quot;w&quot;>
+  <div class=&quot;hd&quot;><div id=&quot;dot&quot;></div><span id=&quot;st&quot;>LIVE MONITORING</span><span class=&quot;reg&quot;>NDP-44-GP</span></div>
+  <div id=&quot;card&quot;>
+    <div class=&quot;lbl&quot;>REAL-TIME FUEL LEVEL</div>
+    <svg width=&quot;152&quot; height=&quot;152&quot; viewBox=&quot;0 0 100 100&quot;>
+      <circle id=&quot;glow&quot; cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;38&quot; fill=&quot;none&quot; stroke=&quot;#27D17F&quot; stroke-width=&quot;18&quot; opacity=&quot;.08&quot;/>
+      <circle cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;38&quot; fill=&quot;none&quot; stroke=&quot;rgba(255,255,255,.07)&quot; stroke-width=&quot;9&quot;/>
+      <circle id=&quot;arc&quot; cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;38&quot; fill=&quot;none&quot; stroke=&quot;#27D17F&quot; stroke-width=&quot;9&quot; stroke-dasharray=&quot;238.76&quot; stroke-dashoffset=&quot;42.98&quot; stroke-linecap=&quot;round&quot; transform=&quot;rotate(-90 50 50)&quot; shape-rendering=&quot;geometricPrecision&quot;/>
+      <text id=&quot;pct&quot; x=&quot;50&quot; y=&quot;44&quot; text-anchor=&quot;middle&quot; font-family=&quot;Montserrat,'Segoe UI',system-ui,Arial,sans-serif&quot; font-weight=&quot;900&quot; font-size=&quot;20&quot; fill=&quot;#27D17F&quot;>82%</text>
+      <g transform=&quot;translate(37,50)&quot; fill=&quot;none&quot; stroke=&quot;rgba(255,255,255,.4)&quot; stroke-width=&quot;1.4&quot; stroke-linecap=&quot;round&quot;>
+        <rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;9&quot; height=&quot;15&quot; rx=&quot;1&quot;/>
+        <path d=&quot;M9 4h3a1.5 1.5 0 011.5 1.5v6a1.5 1.5 0 001.5 1.5&quot;/>
+        <path d=&quot;M3 5h3&quot;/>
+      </g>
+    </svg>
+    <div class=&quot;rate&quot;>
+      <div class=&quot;rl&quot;>CONSUMPTION RATE</div>
+      <div id=&quot;bars&quot;><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div id=&quot;crit&quot;>&amp;#9888; CRITICAL DROP DETECTED</div>
+    </div>
+  </div>
+  <div class=&quot;tiles&quot;>
+    <div class=&quot;tile m&quot;><div class=&quot;tl&quot;>DRAIN VOLUME</div><div class=&quot;tv&quot; id=&quot;vol&quot; style=&quot;color:#E1266B&quot;>&amp;#8722;0 L</div></div>
+    <div class=&quot;tile&quot;><div class=&quot;tl&quot;>DRAIN DURATION</div><div class=&quot;tv&quot;>02:45 Min</div></div>
+  </div>
+</div></div>
+<script>
+(function(){
+  var MAG=&quot;#E1266B&quot;, C=238.76, S_P=82, E_P=20, S_L=0, E_L=42.5, DUR=3600;
+  var $=function(id){return document.getElementById(id);};
+  var bars=document.querySelectorAll('#bars i'), raf=0, t0=0;
+  function fit(){var s=Math.min(innerWidth/625,innerHeight/708);var f=$('fit');f.style.transform='scale('+s+')';f.style.left=((innerWidth-625*s)/2)+'px';f.style.top=((innerHeight-708*s)/2)+'px';}
+  function draw(pct,drained){
+    var col=pct>50?&quot;#27D17F&quot;:pct>28?&quot;#FF9D00&quot;:MAG, crit=pct<=28, act=Math.ceil((1-pct/100)*7);
+    $('arc').setAttribute('stroke',col);$('arc').setAttribute('stroke-dashoffset',C*(1-pct/100));
+    $('glow').setAttribute('stroke',col);$('pct').setAttribute('fill',col);$('pct').textContent=pct+'%';
+    for(var i=0;i<7;i++)bars[i].style.background=i<act?MAG:'rgba(255,255,255,.12)';
+    $('crit').style.display=crit?'block':'none';
+    var sc=crit?MAG:'#27D17F';$('dot').style.background=sc;$('dot').style.boxShadow='0 0 10px '+sc;
+    $('st').style.color=sc;$('st').textContent=crit?'CRITICAL ALERT':'LIVE MONITORING';
+    $('w').style.borderColor=crit?MAG+'44':'rgba(255,255,255,.08)';
+    $('card').style.borderColor=crit?MAG+'33':'rgba(255,255,255,.07)';
+    $('vol').innerHTML='&amp;#8722;'+drained+' L';
+  }
+  function tick(){
+    var p=Math.max(0,Math.min((Date.now()-t0)/DUR,1)), e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+    draw(Math.round(S_P+(E_P-S_P)*e),Math.round((S_L+(E_L-S_L)*e)*10)/10);
+    if(p<1)raf=requestAnimationFrame(tick);
+  }
+  function play(){cancelAnimationFrame(raf);draw(S_P,0);t0=Date.now()+350;raf=requestAnimationFrame(tick);}
+  addEventListener('resize',fit);fit();
+  addEventListener('message',function(e){if(e.data==='mh-play')play();});
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')play();});
+  if('IntersectionObserver' in window){var seen=false;new IntersectionObserver(function(es){var v=es[0].isIntersecting;if(v&amp;&amp;!seen)play();seen=v;}).observe(document.body);}else play();
+})();
+</script>
+</body></html>
+"></iframe>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#9EA3B5">Illustrative scenario from the myTrack live demo · 04</p>
 </section>
 <section id="about" class="slide" aria-roledescription="slide" aria-label="5 of 14" style="background:#F6F4EF;color:#151B29;font-family:'Montserrat', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
@@ -462,6 +545,10 @@
   function show(n, push) {
     idx = Math.max(0, Math.min(slides.length - 1, n));
     slides.forEach(function (el, i) { el.classList.toggle('active', i === idx); el.setAttribute('aria-hidden', i === idx ? 'false' : 'true'); });
+    // replay any live demo (e.g. the fuel-drain gauge) each time its slide comes up
+    slides[idx].querySelectorAll('iframe.sb-embed').forEach(function (f) {
+      if (f.contentWindow) f.contentWindow.postMessage('mh-play', '*');
+    });
     count.textContent = (idx + 1) + ' / ' + slides.length;
     bar.style.width = ((idx + 1) / slides.length * 100) + '%';
     if (push !== false) history.replaceState(null, '', '#' + (idx + 1));
