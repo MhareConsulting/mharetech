@@ -375,9 +375,9 @@ function FuelDrainWidget() {
       const ease = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2, 3)/2;
       setPct(Math.round(S_P + (E_P - S_P) * ease));
       setDrained(Math.round((S_L + (E_L - S_L) * ease) * 10) / 10);
-      if (p < 1) requestAnimationFrame(tick);
+      if (p < 1) id = requestAnimationFrame(tick);
     };
-    const id = requestAnimationFrame(tick);
+    let id = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(id);
   }, []);
 
@@ -518,9 +518,9 @@ function FuelGauge() {
       const p = Math.min((Date.now() - t0) / DUR, 1);
       const ease = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2, 3)/2;
       setPct(Math.round(START + (END - START) * ease));
-      if (p < 1) requestAnimationFrame(tick);
+      if (p < 1) id = requestAnimationFrame(tick);
     };
-    const id = requestAnimationFrame(tick);
+    let id = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(id);
   }, []);
   const C = 238.76; // 2π × 38
@@ -2875,7 +2875,32 @@ function BoothPlayer() {
   const progRef  = React.useRef(null);
   const startRef = React.useRef(Date.now());
   const hideRef  = React.useRef(null);
+  const rootRef  = React.useRef(null);
   const product  = PRODUCTS[productIdx];
+
+  // Only run while someone can actually see the player. Embedded on a product
+  // page the iframe loads well below the fold, and browsers throttle off-screen
+  // iframes and background tabs — so the scene animations (fuel drain, gauges)
+  // would finish unseen. Pause while hidden and replay the scene on reveal.
+  const [inView,    setInView]    = React.useState(false);
+  const [pageShown, setPageShown] = React.useState(document.visibilityState !== "hidden");
+  const [replayKey, setReplayKey] = React.useState(0);
+  const active = inView && pageShown;
+
+  React.useEffect(() => {
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting && entry.intersectionRatio >= 0.4),
+      { threshold:[0, 0.4, 0.75] }
+    );
+    if (rootRef.current) io.observe(rootRef.current);
+    const onVis = () => setPageShown(document.visibilityState !== "hidden");
+    document.addEventListener("visibilitychange", onVis);
+    return () => { io.disconnect(); document.removeEventListener("visibilitychange", onVis); };
+  }, []);
+
+  React.useEffect(() => {
+    if (active) setReplayKey(k => k + 1); // remount the frame so its animations start from the top
+  }, [active]);
 
   const revealControls = React.useCallback(() => {
     setShowCtrl(true);
@@ -2904,7 +2929,7 @@ function BoothPlayer() {
     clearTimeout(timerRef.current);
     cancelAnimationFrame(progRef.current);
     setProgress(0);
-    if (!playing) return;
+    if (!playing || !active) return;
     startProgress();
     timerRef.current = setTimeout(() => {
       if (loopAll && scene === product.sceneCount) {
@@ -2918,7 +2943,7 @@ function BoothPlayer() {
       clearTimeout(timerRef.current);
       cancelAnimationFrame(progRef.current);
     };
-  }, [scene, playing, productIdx, loopAll]);
+  }, [scene, playing, productIdx, loopAll, active]);
 
   const goScene    = n  => { setScene(n); setProgress(0); };
   const togglePlay = () => setPlaying(p => !p);
@@ -2937,6 +2962,7 @@ function BoothPlayer() {
 
   return (
     <div
+      ref={rootRef}
       style={{ width:"100vw", height:"100vh", background:"#000", display:"flex", flexDirection:"column", overflow:"hidden" }}
       onMouseMove={revealControls}
       onMouseLeave={() => playing && setShowCtrl(false)}
@@ -2948,7 +2974,7 @@ function BoothPlayer() {
           transform:`translate(-50%,-50%) scale(${scale})`,
           transformOrigin:"center", width:1600, height:900
         }}>
-          <Frame scene={scene}/>
+          <Frame key={replayKey} scene={scene}/>
         </div>
 
         {/* Side arrows — fade with controls */}
