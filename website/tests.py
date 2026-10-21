@@ -149,3 +149,17 @@ class ExpoViewsTests(SimpleTestCase):
         )
         self.assertEqual(r.status_code, 503)
         self.assertContains(r, 'not configured', status_code=503)
+
+
+@override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
+class StandardBankDeckTests(SimpleTestCase):
+    def test_new_deck_is_served_and_not_indexed(self):
+        r = self.client.get('/standardbank/')
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r['X-Robots-Tag'], 'noindex, nofollow')
+        self.assertContains(r, 'Standard Bank')
+
+    def test_previous_deck_is_still_reachable(self):
+        r = self.client.get('/standardbank/previous/')
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r['X-Robots-Tag'], 'noindex, nofollow')
