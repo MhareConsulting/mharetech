@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Plans · myTrack · mhare tech{% endblock %}
+{% block description %}myTrack plans: pick a tier for Fuel Savings, Tracking, the Driver App or Car Guard, or build your own plan.{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/plans.css' %}" />{% endblock %}
+
+{% block content %}
+<div class="pl-page">
+<main class="pl-main">
+  <section class="pl-hero">
+    <h1>Plans that <em>fit</em> your fleet</h1>
+    <p>Pick a tier for each product, add single functions, or build your own. Your selection builds up at the bottom of the page.</p>
+    <div class="pl-switch" role="tablist" aria-label="Products">
+      {% for p in products %}<button type="button" role="tab" data-product-tab="{{ p.key }}"{% if forloop.first %} aria-selected="true"{% else %} aria-selected="false"{% endif %}>{{ p.label }}</button>{% endfor %}
+    </div>
+  </section>
+
+  {% for p in products %}
+  <section class="pl-panel" id="{{ p.key }}" data-product="{{ p.key }}" data-label="{{ p.label }}" aria-label="{{ p.label }}">
+    <header class="pl-panel-head">
+      <h2>{{ p.label }}</h2>
+      <p>{{ p.intro }}</p>
+    </header>
+
+    <div class="pl-cards">
+      {% for c in p.cards %}
+      <div class="pl-col">
+        <div class="pl-flag{% if not c.recommended %} is-empty{% endif %}">{% if c.recommended %}Recommended{% endif %}</div>
+        <article class="pl-card{% if c.recommended %} is-rec{% endif %}" data-tier="{{ c.key }}" data-name="{{ c.name }}" data-keys="{{ c.keys|join:' ' }}">
+          <h3>{{ c.name }}</h3>
+          <p class="pl-sum">{{ c.summary }}</p>
+          <div class="pl-price{% if not c.price %} is-quiet{% endif %}">{% if c.price %}{{ c.price }}{% else %}On request{% endif %}</div>
+          <button type="button" class="pl-btn{% if c.recommended %} is-primary{% endif %}" data-pick aria-pressed="false">Select {{ c.name }}</button>
+          <ul class="pl-incl">{% for f in c.included %}<li>{{ f.label }}</li>{% endfor %}</ul>
+        </article>
+      </div>
+      {% endfor %}
+      <div class="pl-col">
+        <div class="pl-flag is-empty"></div>
+        <article class="pl-card pl-custom" data-custom>
+          <h3>Custom</h3>
+          <p class="pl-sum">{% if p.cards %}Pick exactly the functions you need, or add single functions to a tier.{% else %}Pick the functions you need.{% endif %}</p>
+          <div class="pl-price is-quiet">Quoted for you</div>
+          <button type="button" class="pl-btn" data-build aria-pressed="false">Build your own</button>
+          <ul class="pl-incl"><li>Any mix of the {{ p.functions|length }} functions</li><li>What a function needs is added for you</li></ul>
+        </article>
+      </div>
+    </div>
+
+    <section class="pl-build" aria-label="Build your {{ p.label }} plan">
+      <h3>Build or adjust your {{ p.label }} plan</h3>
+      <p class="pl-hint">Tick the functions you need. What a function depends on is added for you. A tier's own functions stay ticked.</p>
+      <ul class="pl-fns">
+        {% for f in p.functions %}
+        <li data-fn="{{ f.key }}" data-label="{{ f.label }}" data-requires="{{ f.requires }}" data-requires-any="{{ f.requires_any }}" data-free-with="{{ f.free_with }}"{% if f.free %} data-free{% endif %}>
+          <label><input type="checkbox"{% if f.free %} disabled{% endif %}>
+            <span class="pl-fn"><b>{{ f.label }}</b><small>{{ f.summary }}</small></span></label>
+          <span class="pl-note"></span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    {% if p.rows %}
+    <details class="pl-compare">
+      <summary>Compare what each tier includes</summary>
+      <div class="pl-table-wrap"><table>
+        <thead><tr><th>Function</th>{% for c in p.cards %}<th class="ctr">{{ c.name }}</th>{% endfor %}</tr></thead>
+        <tbody>{% for r in p.rows %}
+          <tr><td><b>{{ r.label }}</b><small>{{ r.summary }}</small></td>
+            {% for yes in r.in %}<td class="ctr">{% if yes %}<span class="pl-tick" aria-label="Included">&#10003;</span>{% else %}<span class="pl-no" aria-label="Not included">&middot;</span>{% endif %}</td>{% endfor %}</tr>
+        {% endfor %}</tbody>
+      </table></div>
+    </details>
+    {% endif %}
+  </section>
+  {% endfor %}
+
+  <p class="pl-foot">Prices are shown where we have set them, otherwise they are quoted for your fleet. Already a client? Log on to myTrack to see your own plan. Changing a plan is agreed with your account manager and starts the day you agree.</p>
+
+  <aside class="pl-bar" id="pl-bar" aria-live="polite" data-email="{{ contact_email }}" data-org="">
+    <div class="pl-bar-in">
+      <div class="pl-bar-main">
+        <strong>Your selection</strong>
+        <span class="pl-bar-empty">Nothing yet. Select a tier or build your own.</span>
+        <ul class="pl-chips"></ul>
+      </div>
+      <div class="pl-bar-act">
+        <button type="button" class="pl-link" data-clear hidden>Clear</button>
+        <a class="pl-btn is-primary" data-request href="#" aria-disabled="true">Request this plan</a>
+      </div>
+    </div>
+  </aside>
+</main>
+</div>
+<script src="{% static 'js/plans.js' %}" defer></script>
+{% endblock %}
