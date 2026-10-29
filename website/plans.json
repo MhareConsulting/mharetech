@@ -1,0 +1,658 @@
+{
+  "products": [
+    {
+      "key": "fuel_savings",
+      "label": "Fuel Savings",
+      "intro": "Check fleet-card spend against the tracker, find cheaper fuel, and plan trips and fuel stops.",
+      "cards": [
+        {
+          "key": "fuel-card",
+          "name": "Card",
+          "summary": "Fleet-card files and spend analytics. No tracker needed.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "fuel.card"
+          ],
+          "included": [
+            {
+              "key": "fuel.card",
+              "label": "Card file analytics"
+            },
+            {
+              "key": "fuel.insights",
+              "label": "Overview and attention queue"
+            }
+          ]
+        },
+        {
+          "key": "fuel-verified",
+          "name": "Verified",
+          "summary": "Card analytics plus the card vs tracker check, the station directory and the trip planner.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "fuel.card",
+            "fuel.verify",
+            "fuel.directory",
+            "fuel.planner"
+          ],
+          "included": [
+            {
+              "key": "fuel.directory",
+              "label": "Station directory"
+            },
+            {
+              "key": "fuel.planner",
+              "label": "Trip and stop planner"
+            },
+            {
+              "key": "fuel.card",
+              "label": "Card file analytics"
+            },
+            {
+              "key": "fuel.verify",
+              "label": "Card vs tracker check"
+            },
+            {
+              "key": "fuel.insights",
+              "label": "Overview and attention queue"
+            }
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "key": "fuel.directory",
+          "label": "Station directory",
+          "summary": "Search stations and truck stops, incident zones and out-of-stock reports.",
+          "free": false,
+          "requires": "",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "fuel.planner",
+          "label": "Trip and stop planner",
+          "summary": "Plan trips and fuel stops, with card limits per trip.",
+          "free": false,
+          "requires": "fuel.directory",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "fuel.card",
+          "label": "Card file analytics",
+          "summary": "Import fleet-card files and see spend by vehicle, station and price.",
+          "free": false,
+          "requires": "",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "fuel.verify",
+          "label": "Card vs tracker check",
+          "summary": "Check card purchases against the tracker and review mismatches.",
+          "free": false,
+          "requires": "fuel.card",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "fuel.savings",
+          "label": "Savings finder",
+          "summary": "Compare what was paid with affiliate prices and show missed savings.",
+          "free": false,
+          "requires": "fuel.directory",
+          "requires_any": "fuel.card fuel.verify",
+          "free_with": ""
+        },
+        {
+          "key": "fuel.insights",
+          "label": "Overview and attention queue",
+          "summary": "The overview, trends and the list of things that need attention.",
+          "free": true,
+          "requires": "",
+          "requires_any": "",
+          "free_with": "fuel.card fuel.verify fuel.savings"
+        }
+      ],
+      "rows": [
+        {
+          "key": "fuel.directory",
+          "label": "Station directory",
+          "summary": "Search stations and truck stops, incident zones and out-of-stock reports.",
+          "in": [
+            false,
+            true
+          ]
+        },
+        {
+          "key": "fuel.planner",
+          "label": "Trip and stop planner",
+          "summary": "Plan trips and fuel stops, with card limits per trip.",
+          "in": [
+            false,
+            true
+          ]
+        },
+        {
+          "key": "fuel.card",
+          "label": "Card file analytics",
+          "summary": "Import fleet-card files and see spend by vehicle, station and price.",
+          "in": [
+            true,
+            true
+          ]
+        },
+        {
+          "key": "fuel.verify",
+          "label": "Card vs tracker check",
+          "summary": "Check card purchases against the tracker and review mismatches.",
+          "in": [
+            false,
+            true
+          ]
+        },
+        {
+          "key": "fuel.insights",
+          "label": "Overview and attention queue",
+          "summary": "The overview, trends and the list of things that need attention.",
+          "in": [
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "key": "tracking",
+      "label": "Tracking",
+      "intro": "Live map, trips, alerts, geofences, driver behaviour, reports and fuel monitoring for every vehicle.",
+      "cards": [
+        {
+          "key": "tracking-essential",
+          "name": "Essential",
+          "summary": "Live map, trips and route replay.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "tracking.live",
+            "tracking.trips"
+          ],
+          "included": [
+            {
+              "key": "tracking.live",
+              "label": "Live map"
+            },
+            {
+              "key": "tracking.trips",
+              "label": "Trips and replay"
+            }
+          ]
+        },
+        {
+          "key": "tracking-standard",
+          "name": "Standard",
+          "summary": "Essential plus alerts and events, geofences and delivery shares.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "tracking.live",
+            "tracking.trips",
+            "tracking.alerts",
+            "tracking.geofences",
+            "tracking.deliveries"
+          ],
+          "included": [
+            {
+              "key": "tracking.live",
+              "label": "Live map"
+            },
+            {
+              "key": "tracking.trips",
+              "label": "Trips and replay"
+            },
+            {
+              "key": "tracking.alerts",
+              "label": "Alerts and events"
+            },
+            {
+              "key": "tracking.geofences",
+              "label": "Geofences"
+            },
+            {
+              "key": "tracking.deliveries",
+              "label": "Delivery shares"
+            }
+          ]
+        },
+        {
+          "key": "tracking-advanced",
+          "name": "Advanced",
+          "summary": "Standard plus driver behaviour, reports and fuel monitoring.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "tracking.live",
+            "tracking.trips",
+            "tracking.alerts",
+            "tracking.geofences",
+            "tracking.deliveries",
+            "tracking.behaviour",
+            "tracking.reports",
+            "tracking.fuel"
+          ],
+          "included": [
+            {
+              "key": "tracking.live",
+              "label": "Live map"
+            },
+            {
+              "key": "tracking.trips",
+              "label": "Trips and replay"
+            },
+            {
+              "key": "tracking.alerts",
+              "label": "Alerts and events"
+            },
+            {
+              "key": "tracking.geofences",
+              "label": "Geofences"
+            },
+            {
+              "key": "tracking.behaviour",
+              "label": "Driver behaviour"
+            },
+            {
+              "key": "tracking.deliveries",
+              "label": "Delivery shares"
+            },
+            {
+              "key": "tracking.reports",
+              "label": "Reports"
+            },
+            {
+              "key": "tracking.fuel",
+              "label": "Fuel monitoring"
+            }
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "key": "tracking.live",
+          "label": "Live map",
+          "summary": "Where every vehicle is now, with the fleet dashboard.",
+          "free": false,
+          "requires": "",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "tracking.trips",
+          "label": "Trips and replay",
+          "summary": "Trips, route replay, route monitoring and the SARS logbook.",
+          "free": false,
+          "requires": "tracking.live",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "tracking.alerts",
+          "label": "Alerts and events",
+          "summary": "Alerts, the event list and the dispatcher console.",
+          "free": false,
+          "requires": "tracking.live",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "tracking.geofences",
+          "label": "Geofences",
+          "summary": "Draw geofences and see who entered or left them.",
+          "free": false,
+          "requires": "tracking.live",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "tracking.behaviour",
+          "label": "Driver behaviour",
+          "summary": "Driver scores and what drove them: harsh driving, speeding and fatigue.",
+          "free": false,
+          "requires": "tracking.live",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "tracking.deliveries",
+          "label": "Delivery shares",
+          "summary": "Share a vehicle's live location with a customer for one delivery.",
+          "free": false,
+          "requires": "tracking.live",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "tracking.reports",
+          "label": "Reports",
+          "summary": "The report builder, schedules, dwell time and fleet cost.",
+          "free": false,
+          "requires": "tracking.live",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "tracking.fuel",
+          "label": "Fuel monitoring",
+          "summary": "Fuel level, refuels and drops, efficiency and calibration.",
+          "free": false,
+          "requires": "tracking.live",
+          "requires_any": "",
+          "free_with": ""
+        }
+      ],
+      "rows": [
+        {
+          "key": "tracking.live",
+          "label": "Live map",
+          "summary": "Where every vehicle is now, with the fleet dashboard.",
+          "in": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "key": "tracking.trips",
+          "label": "Trips and replay",
+          "summary": "Trips, route replay, route monitoring and the SARS logbook.",
+          "in": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "key": "tracking.alerts",
+          "label": "Alerts and events",
+          "summary": "Alerts, the event list and the dispatcher console.",
+          "in": [
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "key": "tracking.geofences",
+          "label": "Geofences",
+          "summary": "Draw geofences and see who entered or left them.",
+          "in": [
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "key": "tracking.behaviour",
+          "label": "Driver behaviour",
+          "summary": "Driver scores and what drove them: harsh driving, speeding and fatigue.",
+          "in": [
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "key": "tracking.deliveries",
+          "label": "Delivery shares",
+          "summary": "Share a vehicle's live location with a customer for one delivery.",
+          "in": [
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "key": "tracking.reports",
+          "label": "Reports",
+          "summary": "The report builder, schedules, dwell time and fleet cost.",
+          "in": [
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "key": "tracking.fuel",
+          "label": "Fuel monitoring",
+          "summary": "Fuel level, refuels and drops, efficiency and calibration.",
+          "in": [
+            false,
+            false,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "key": "driver_app",
+      "label": "Driver App",
+      "intro": "Drivers clock in on their own phone with a PIN and a selfie, do pre-trip inspections and raise an SOS.",
+      "cards": [
+        {
+          "key": "driver-clockin",
+          "name": "Clock-in",
+          "summary": "Drivers clock in with a PIN and a selfie on their own phone.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "driver.clockin"
+          ],
+          "included": [
+            {
+              "key": "driver.clockin",
+              "label": "Driver clock-in"
+            }
+          ]
+        },
+        {
+          "key": "driver-safety",
+          "name": "Safety",
+          "summary": "Clock-in plus pre-trip inspections and SOS alerts.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "driver.clockin",
+            "driver.inspections",
+            "driver.sos"
+          ],
+          "included": [
+            {
+              "key": "driver.clockin",
+              "label": "Driver clock-in"
+            },
+            {
+              "key": "driver.inspections",
+              "label": "Pre-trip inspections"
+            },
+            {
+              "key": "driver.sos",
+              "label": "SOS alerts"
+            }
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "key": "driver.clockin",
+          "label": "Driver clock-in",
+          "summary": "Drivers clock in with a PIN and a selfie on their own phone; photo review and paired devices.",
+          "free": false,
+          "requires": "",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "driver.inspections",
+          "label": "Pre-trip inspections",
+          "summary": "Drivers do a walk-round on their phone; defects come to the fleet manager.",
+          "free": false,
+          "requires": "driver.clockin",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "driver.sos",
+          "label": "SOS alerts",
+          "summary": "Drivers raise an emergency alert from their phone; the fleet manager acknowledges and resolves it.",
+          "free": false,
+          "requires": "driver.clockin",
+          "requires_any": "",
+          "free_with": ""
+        }
+      ],
+      "rows": [
+        {
+          "key": "driver.clockin",
+          "label": "Driver clock-in",
+          "summary": "Drivers clock in with a PIN and a selfie on their own phone; photo review and paired devices.",
+          "in": [
+            true,
+            true
+          ]
+        },
+        {
+          "key": "driver.inspections",
+          "label": "Pre-trip inspections",
+          "summary": "Drivers do a walk-round on their phone; defects come to the fleet manager.",
+          "in": [
+            false,
+            true
+          ]
+        },
+        {
+          "key": "driver.sos",
+          "label": "SOS alerts",
+          "summary": "Drivers raise an emergency alert from their phone; the fleet manager acknowledges and resolves it.",
+          "in": [
+            false,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "key": "car_guard",
+      "label": "Car Guard",
+      "intro": "Owners arm and disarm their vehicles from their phone and get an alarm when a parked vehicle is touched.",
+      "cards": [
+        {
+          "key": "guard-basic",
+          "name": "Basic",
+          "summary": "Owners arm and disarm from their phone, with a PIN.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "guard.control"
+          ],
+          "included": [
+            {
+              "key": "guard.control",
+              "label": "Arm and disarm"
+            }
+          ]
+        },
+        {
+          "key": "guard-plus",
+          "name": "Plus",
+          "summary": "Basic plus alarms, push alerts and the activity log.",
+          "price": "",
+          "recommended": false,
+          "keys": [
+            "guard.control",
+            "guard.alarms"
+          ],
+          "included": [
+            {
+              "key": "guard.control",
+              "label": "Arm and disarm"
+            },
+            {
+              "key": "guard.alarms",
+              "label": "Alarms and alerts"
+            }
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "key": "guard.control",
+          "label": "Arm and disarm",
+          "summary": "Owners arm and disarm their vehicles from their own phone, with a PIN; the fleet manager pairs owners and phones.",
+          "free": false,
+          "requires": "",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "guard.alarms",
+          "label": "Alarms and alerts",
+          "summary": "Alarms when a guarded vehicle moves, starts or loses power, with push alerts and the activity log.",
+          "free": false,
+          "requires": "guard.control",
+          "requires_any": "",
+          "free_with": ""
+        }
+      ],
+      "rows": [
+        {
+          "key": "guard.control",
+          "label": "Arm and disarm",
+          "summary": "Owners arm and disarm their vehicles from their own phone, with a PIN; the fleet manager pairs owners and phones.",
+          "in": [
+            true,
+            true
+          ]
+        },
+        {
+          "key": "guard.alarms",
+          "label": "Alarms and alerts",
+          "summary": "Alarms when a guarded vehicle moves, starts or loses power, with push alerts and the activity log.",
+          "in": [
+            false,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "key": "people",
+      "label": "People & Assets",
+      "intro": "Depots and the renewals overview. Drivers and Vehicles are included for every client.",
+      "cards": [],
+      "functions": [
+        {
+          "key": "people.depots",
+          "label": "Depots",
+          "summary": "Depots, vehicle-to-depot assignments and the depot filter in the header.",
+          "free": false,
+          "requires": "",
+          "requires_any": "",
+          "free_with": ""
+        },
+        {
+          "key": "people.renewals",
+          "label": "Renewals and assignments",
+          "summary": "The overview of licences and permits to renew and vehicles or drivers still to assign.",
+          "free": false,
+          "requires": "",
+          "requires_any": "",
+          "free_with": ""
+        }
+      ],
+      "rows": []
+    }
+  ]
+}

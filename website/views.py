@@ -1,3 +1,7 @@
+import json
+from functools import lru_cache
+from pathlib import Path
+
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.clickjacking import xframe_options_sameorigin
@@ -85,6 +89,20 @@ def sloane_loop(request):
     # Embedded as a same-origin iframe on the product pages (?product=<id>),
     # so override Django's default X-Frame-Options: DENY.
     return render(request, '22onsloane.html')
+
+
+SALES_EMAIL = 'sales@mhareconsulting.co.za'
+
+
+@lru_cache(maxsize=1)
+def _plans_catalogue():
+    """The myTrack tiers and functions, as exported by myTrack (website/plans.json; see PLANS.md to refresh it)."""
+    return json.loads((Path(__file__).parent / 'plans.json').read_text(encoding='utf-8'))
+
+
+@require_GET
+def plans(request):
+    return render(request, 'plans.html', {**_plans_catalogue(), 'contact_email': SALES_EMAIL})
 
 
 @ensure_csrf_cookie
