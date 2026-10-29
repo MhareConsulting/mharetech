@@ -105,6 +105,20 @@ def plans(request):
     return render(request, 'plans.html', {**_plans_catalogue(), 'contact_email': SALES_EMAIL})
 
 
+def standardbank(request):
+    # Client-specific pitch deck: shared by link only, kept out of search results.
+    response = render(request, 'standardbank.html')
+    response['X-Robots-Tag'] = 'noindex, nofollow'
+    return response
+
+
+def standardbank_previous(request):
+    # The deck as it was before the October 2026 rebuild, kept reachable by link.
+    response = render(request, 'standardbank_previous.html')
+    response['X-Robots-Tag'] = 'noindex, nofollow'
+    return response
+
+
 @ensure_csrf_cookie
 @require_GET
 def expo_connect(request):
